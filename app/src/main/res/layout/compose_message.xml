@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:padding="14dp" >
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/area_send"
+        android:fillViewport="true" >
+
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/areaTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="To"
+                    android:gravity="center_vertical"
+                    android:minWidth="60dp"/>
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dp"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textPersonName"
+                    android:maxHeight="48dp"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_below="@+id/areaTo"
+                android:id="@+id/areaSubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Subject"
+                    android:gravity="center_vertical"
+                    android:minWidth="60dp"/>
+                <EditText
+                    android:id="@+id/etSubject"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dp"
+                    android:ems="10"
+                    android:hint="Name of the Subject"
+                    android:inputType="textPersonName"
+                    android:maxHeight="48dp"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/areaSubject"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="Message content"
+                android:padding="20dp"
+                android:inputType="textMultiLine"
+                android:minLines="18"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </ScrollView>
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/area_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:background="@android:color/background_dark"
+            android:maxHeight="48dp"
+            android:text="Send"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

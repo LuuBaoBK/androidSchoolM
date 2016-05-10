@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Admin Info"
+        android:id="@+id/tvTitle"
+        android:gravity="center"
+         />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="First Name"
+            android:id="@+id/etFirstName"
+            android:layout_gravity="center" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText3"
+            android:layout_gravity="right"
+            android:layout_below="@+id/tvTitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
+            android:editable="true"
+            android:enabled="false"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Middle Name"
+            android:id="@+id/etMiddleName"
+            android:layout_gravity="center" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText4"
+            android:layout_gravity="right"
+            android:layout_below="@+id/tvTitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
+            android:editable="true"
+            android:enabled="false"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="LastName"
+            android:id="@+id/etLastName"
+            android:layout_gravity="center" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText5"
+            android:layout_gravity="right"
+            android:layout_below="@+id/tvTitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
+            android:editable="true"
+            android:enabled="false"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvTitle">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="120dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Email"
+                android:layout_gravity="center"
+                android:id="@+id/etEmail" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText"
+                android:layout_gravity="right"
+                android:layout_below="@+id/tvTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
+                android:editable="true"
+                android:enabled="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="120dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Date Of Birth"
+                android:layout_gravity="center"
+                android:id="@+id/textView" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText8"
+                android:layout_gravity="right"
+                android:layout_below="@+id/tvTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
+                android:editable="true"
+                android:enabled="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="120dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Mobile Phone"
+                android:layout_gravity="center"
+                android:id="@+id/tvMobile" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText7"
+                android:layout_margin="5dp"
+                android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="120dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Home Phone"
+                android:layout_gravity="center"
+                android:id="@+id/tvHomePhone" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText10"
+                android:layout_margin="5dp"
+                android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="120dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Address"
+                android:layout_gravity="center"
+                android:id="@+id/etAddress" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText6"
+                android:layout_gravity="right"
+                android:layout_below="@+id/tvTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
+                 />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
