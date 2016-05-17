@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:background="@drawable/background"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+        <View
+            android:background="#b93221"
+            android:id="@+id/chip"
+            android:adjustViewBounds="false"
+            android:layout_height="match_parent"
+            android:layout_width="4dp"
+            android:layout_marginRight="4dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Thi nghiem ly"
+            android:id="@+id/tvSubject"
+            android:layout_weight="2.5"
+            android:gravity="center"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Thông báo về việc học bù"
+            android:id="@+id/tvNotice"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="1"
+            android:id="@+id/tvLevel"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textColor="#f39c12"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="28/03/2016"
+            android:id="@+id/tvDeadline"
+            android:layout_weight="3.2"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

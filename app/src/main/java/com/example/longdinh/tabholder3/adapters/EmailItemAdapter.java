@@ -42,14 +42,16 @@ public class EmailItemAdapter extends ArrayAdapter<EmailItem> {
     @SuppressLint("ViewHolder") @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View v = View.inflate(context, resLayout, null);
+        View v = View.inflate(context, R.layout.item_email, null);
 
+        TextView tvStand  = (TextView) v.findViewById(R.id.tvStand);
         TextView tvSubject  = (TextView) v.findViewById(R.id.tvSubject);
         TextView tvPreview = (TextView) v.findViewById(R.id.tvPreview);
         TextView tvSender =  (TextView) v.findViewById(R.id.tvSender);
         TextView tvDate =  (TextView) v.findViewById(R.id.tvDate);
 
         EmailItem navItem = listNavItems.get(position);
+        tvStand.setText(Character.toString(Character.toUpperCase(navItem.getSubject().charAt(0))));
         tvSubject.setText(navItem.getSubject());
         tvPreview.setText(navItem.getPreview());
         tvSender.setText(navItem.getSender());

@@ -15,4 +15,16 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+    <string-array name="month_array">
+        <item>Tháng 08</item>
+        <item>Tháng 09</item>
+        <item>Tháng 10</item>
+        <item>Tháng 11</item>
+        <item>Tháng 12</item>
+        <item>Tháng 01</item>
+        <item>Tháng 02</item>
+        <item>Tháng 03</item>
+        <item>Tháng 04</item>
+        <item>Tháng 05</item>
+    </string-array>
 </resources>

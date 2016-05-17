@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="NEW NOTICE"
+        android:id="@+id/tvTitle"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:background="#ffa000"
+        android:layout_margin="5dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:layout_margin="5dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Người tạo:"
+                android:layout_weight="1.1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Trần Hùng Vương"
+                android:id="@+id/tvAuthor"
+                android:layout_weight="2.6"
+                android:textSize="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:background="@drawable/fillentry"
+                android:padding="3dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Chủ đề:"
+                android:layout_weight="1.1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Ngữ Văn"
+                android:id="@+id/etSubject"
+                android:layout_weight="2.6"
+                android:textSize="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:background="@drawable/fillentry"
+                android:padding="3dp" />
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Người nhận:"
+                android:layout_weight="1.1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Trần Hùng Vương"
+                android:id="@+id/etAuthor"
+                android:layout_weight="2.6"
+                android:textSize="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:background="@drawable/fillentry"
+                android:padding="3dp" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Thời hạn:"
+                android:id="@+id/textView5"
+                android:layout_weight="1.1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="29-08-2015"
+                android:id="@+id/etDeadline"
+                android:layout_weight="2.6"
+                android:textSize="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:inputType="date"
+                android:editable="true"
+                android:background="@drawable/fillentry"
+                android:padding="3dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:layout_weight="1"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Nội dung:"
+                android:id="@+id/textView9"
+                android:layout_weight="1.1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Mừng nghĩ lễ ngày 28/2 -1/3, nhà trường tổ chưc đi chơi giã ngại, sinh viên vu long lien he vơi sgiaon vien chủ nhiểm đẻ co thể đang kí."
+                android:id="@+id/etNotice"
+                android:layout_weight="2.6"
+                android:textSize="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:background="@drawable/fillentry"
+                android:padding="3dp" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            android:id="@+id/btnSave"
+            android:layout_gravity="center_horizontal"
+            android:background="#ffa000"
+            android:layout_margin="5dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

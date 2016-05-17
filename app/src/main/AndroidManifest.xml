@@ -29,7 +29,42 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MailContent">
+            android:name=".activities.MailContent"
+            android:windowSoftInputMode="adjustPan|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT_OR_EDIT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ShowDetailNotice">
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT_OR_EDIT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.ShowDetailStudent">
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT_OR_EDIT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".activities.ReadMailAcitivity"
+            android:windowSoftInputMode="adjustPan|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT_OR_EDIT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.CreateNoticeActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

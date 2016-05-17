@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -22,12 +20,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
+import com.example.longdinh.tabholder3.fragments.MyClass;
+import com.example.longdinh.tabholder3.fragments.NoticeBoardParent;
 import com.example.longdinh.tabholder3.fragments.MyProfile;
+import com.example.longdinh.tabholder3.fragments.NoticeBoardStudent;
+import com.example.longdinh.tabholder3.fragments.NoticeTeacher;
 import com.example.longdinh.tabholder3.fragments.Schedule_Person;
-import com.example.longdinh.tabholder3.fragments.MyHome;
-import com.example.longdinh.tabholder3.fragments.MyMail;
-import com.example.longdinh.tabholder3.fragments.MySettings;
 import com.example.longdinh.tabholder3.fragments.Schedule_Parent;
+import com.example.longdinh.tabholder3.fragments.Transcript_Show;
+import com.example.longdinh.tabholder3.fragments.Transcript_Show_Student;
+import com.example.longdinh.tabholder3.models.StudentItemSpinner;
 import com.example.longdinh.tabholder3.inner_fragments.Tab1Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab2Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab3Fragment;
@@ -35,9 +37,15 @@ import com.example.longdinh.tabholder3.inner_fragments.Tab4Fragment;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.example.longdinh.tabholder3.models.NavItem;
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.models.UserInfo;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,16 +56,23 @@ public class MainActivity extends AppCompatActivity {
     TextView tvUserId;
     TextView tvFullname;
     TextView tvRole;
+    CircleImageView ivIcon;
     int offsetNavList = 0;
     MyExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<NavItem> listDataHeader;
     HashMap<String, List<NavItem>> listDataChild;
-
-
     List<NavItem> listNavItems;
     List<Fragment> listFragments;
-    UserInfo userInfo;
+//    List<String> listMaChild;// using for user parent for getschedule
+//    List<String> listFullnameChild;// using for user parent show item navlist
+    List<StudentItemSpinner> listChildren;
+    String id;
+    String token;
+    String role;
+    MyApplication app;
+    int numChildren = 0;
+
 
     ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -67,16 +82,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        Intent login = getIntent();
-        try {
-            userInfo = new UserInfo(login.getStringExtra("userinfo_string"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            finish();
-        }
-
-
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        ImageLoader.getInstance().init(config);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerPane = (RelativeLayout) findViewById(R.id.drawer_pane);
@@ -84,23 +97,73 @@ public class MainActivity extends AppCompatActivity {
         tvFullname = (TextView) findViewById(R.id.tvFullname);
         tvRole = (TextView) findViewById(R.id.tvRole);
         tvUserId = (TextView) findViewById(R.id.tvUserId);
-        tvFullname.setText(userInfo.getFullname());
-        tvUserId.setText(userInfo.getId());
-        tvRole.setText(userInfo.getRole());
+        app = (MyApplication)getApplicationContext();
 
+
+//        Intent login = getIntent();
+        //String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
+        //su dung rieng cho parent
+        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"4\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
+        try {
+            JSONObject user = new JSONObject(data);
+            id = user.getString("id");
+            token = user.getString("token");
+
+            app.setId(id);
+            app.setToken(token);
+            app.setFullName(user.getString("fullname"));
+
+            tvFullname.setText(user.getString("fullname"));
+            tvUserId.setText(id);
+
+            role = user.getString("role");
+            app.setRole(role);
+            if(role.equals("1")){
+                tvRole.setText("Admin");
+                offsetNavList = 1;
+            }else if (role.equals("2")){
+                tvRole.setText("Teacher");
+                offsetNavList = 4;
+            }else if(role.equals("3")){
+                tvRole.setText("Parent");
+                numChildren = user.getInt("numchild");
+                offsetNavList = 4;
+                listChildren  = new ArrayList<>();
+                JSONArray children = user.getJSONArray("children");
+                listChildren.add(new StudentItemSpinner("0", "Choose a student"));
+                for(int i = 0; i < numChildren; i++){
+                    listChildren.add(new  StudentItemSpinner(children.getJSONObject(i).getString("ma"), children.getJSONObject(i).getString("fullname")));
+                }
+                app.setListchildren(listChildren);
+            }else{
+                tvRole.setText("Student");
+                offsetNavList = 4;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            finish();
+        }
 
         listFragments = new ArrayList<Fragment>();
+
         listFragments.add(new MyProfile());
-        listFragments.add(new MySettings());
-        System.out.println("-----------------------------------"+userInfo.getRole());
-        if(userInfo.getRole().equals("Teacher") || userInfo.getRole().equals("Student")){
+        if(role.equals("1")){
+            //do nothing
+        }else if(role.equals("2")){
+            listFragments.add(new MyClass());
             listFragments.add(new Schedule_Person());
-            offsetNavList = 1;
-        }else if(userInfo.getRole().equals("Parent")){
+            listFragments.add(new NoticeTeacher());
+        }else if(role.equals("3")){
             listFragments.add(new Schedule_Parent());
-            offsetNavList = 1;
+            listFragments.add(new Transcript_Show());
+            listFragments.add(new NoticeBoardParent());
+        }else if(role.equals("4")){
+            listFragments.add(new Schedule_Person());
+            listFragments.add(new Transcript_Show_Student());
+            listFragments.add(new NoticeBoardStudent());
         }
-        listFragments.add(new MyMail());
+
         listFragments.add(new Tab1Fragment());
         listFragments.add(new Tab2Fragment());
         listFragments.add(new Tab3Fragment());
@@ -109,13 +172,6 @@ public class MainActivity extends AppCompatActivity {
         prepareListData();
         listAdapter = new MyExpandableListAdapter(this, listDataHeader, listDataChild);
         expListView.setAdapter(listAdapter);
-
-        SharedPreferences prefs = getSharedPreferences("toGetData", 0);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("token", userInfo.getToken());
-        editor.commit();
-        //them ham xu li lua chon, if(role is child or parent or teacher)
-        //schedule for child and teacher are the same
 
         // load first fragment as default:
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -130,15 +186,15 @@ public class MainActivity extends AppCompatActivity {
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (listAdapter.getChildrenCount(groupPosition) == 0){
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.main_content, listFragments.get(groupPosition))
-                            .commit();
+                if (listAdapter.getChildrenCount(groupPosition) == 0){// neu nhu khong co con thi xu li thang
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager
+                                .beginTransaction()
+                                .replace(R.id.main_content, listFragments.get(groupPosition))
+                                .commit();
+                        setTitle(listDataHeader.get(groupPosition).getTitle());
+                        drawerLayout.closeDrawer(drawerPane);
 
-                    setTitle(listDataHeader.get(groupPosition).getTitle());
-                    drawerLayout.closeDrawer(drawerPane);
                 }
                 return false;
             }
@@ -150,17 +206,20 @@ public class MainActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 expListView.expandGroup(groupPosition);
                 expListView.setSelectedChild(groupPosition, childPosition, true);
-                System.out.println("------------------------print:" + groupPosition + childPosition);
+                System.out.println("--------item nav--------print:" + groupPosition + childPosition);
 
-                List<NavItem> mailList = listDataChild.get(listDataHeader.get(3).getTitle());
+
+                List<NavItem> mailList = listDataChild.get(listDataHeader.get(offsetNavList).getTitle());
                 String title = new String();
                 title = "MailBox-"+ mailList.get(childPosition).getTitle();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.main_content, listFragments.get(3 + offsetNavList + childPosition))
+                        .replace(R.id.main_content, listFragments.get(offsetNavList + childPosition))
                         .commit();
                 setTitle(title);
+
+
                 drawerLayout.closeDrawer(drawerPane);
                 return false;
             }
@@ -202,6 +261,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -211,31 +274,41 @@ public class MainActivity extends AppCompatActivity {
         listDataHeader = new ArrayList<NavItem>();
         listDataChild = new HashMap<String, List<NavItem>>();
 
-        // Adding child data
-        listDataHeader.add(new NavItem("Dashboard", R.drawable.ic_action_home));
-        listDataHeader.add(new NavItem("Class",  R.drawable.ic_action_settings));
-        if(offsetNavList != 0)
-            listDataHeader.add(new NavItem("Schedule", R.drawable.ic_action_about));
-        listDataHeader.add(new NavItem("MailBox",R.drawable.icon_action_mail_box));
+        ///---------------------------------------------------------
+        if(role.equals("1")){
+            listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
+            listDataHeader.add(new NavItem("MailBox",R.drawable.icon_mailbox1));
+        }else if(role.equals("2")){
+            listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
+            listDataHeader.add(new NavItem("Class",  R.drawable.icon_class));
+            listDataHeader.add(new NavItem("Schedule", R.drawable.icon_schedule));
+            listDataHeader.add(new NavItem("Notice Board",  R.drawable.icon_notice));
+            listDataHeader.add(new NavItem("MailBox",R.drawable.icon_mailbox1));
+
+        }else if(role.equals("3")){
+            listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
+            listDataHeader.add(new NavItem("Schedule", R.drawable.icon_schedule));
+            listDataHeader.add(new NavItem("Transcript",  R.drawable.icon_notice));
+            listDataHeader.add(new NavItem("Notice Board",  R.drawable.icon_notice));
+            listDataHeader.add(new NavItem("MailBox",R.drawable.icon_mailbox1));
+        }else if(role.equals("4")){
+            listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
+            listDataHeader.add(new NavItem("Schedule", R.drawable.icon_schedule));
+            listDataHeader.add(new NavItem("Transcript",  R.drawable.icon_notice));
+            listDataHeader.add(new NavItem("Notice Board",  R.drawable.icon_notice));
+            listDataHeader.add(new NavItem("MailBox",R.drawable.icon_mailbox1));
+        }
+
 
         // Adding child data
         List<NavItem> mailList = new ArrayList<NavItem>();
-
-        mailList.add(new NavItem("Inbox", R.drawable.ic_action_home));
-        mailList.add(new NavItem("Sent",  R.drawable.ic_action_settings));
-        mailList.add(new NavItem("Drafts", R.drawable.ic_action_about));
-        mailList.add(new NavItem("Trash",R.drawable.icon_action_logout));
-
-        listDataChild.put(listDataHeader.get(2 + offsetNavList).getTitle(), mailList); // Header, Child data
-
+        mailList.add(new NavItem("Inbox", R.drawable.icon_inbox));
+        mailList.add(new NavItem("Sent",  R.drawable.icon_send));
+        mailList.add(new NavItem("Drafts", R.drawable.icon_draft));
+        mailList.add(new NavItem("Trash",R.drawable.icon_trash));
+        listDataChild.put(listDataHeader.get(offsetNavList).getTitle(), mailList); // Header, Child data
 
         //create  data sharing
-        SharedPreferences draftPre = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editDraftPre = draftPre.edit();
-        MyApplication app = (MyApplication) getApplicationContext();
-
-
-
         List<EmailItem>        InboxMailList = new ArrayList<EmailItem>();
         InboxMailList.add(new EmailItem(0,"Thu moi hop 1", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
         InboxMailList.add(new EmailItem(1, "Thu moi hop 1", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
@@ -267,7 +340,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

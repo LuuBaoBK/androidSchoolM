@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/itemstudent"
+    android:layout_margin="5dp"
+    android:padding="5dp"
+    android:minHeight="60dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_avatar"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#ffffff"
+            android:id="@+id/ivAvatar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Đinh Tấn Lộc"
+            android:id="@+id/tvTen"
+            android:textColor="#808080"
+            android:layout_gravity="center"
+            android:gravity="center|left"
+            android:textSize="18dp"
+            android:paddingLeft="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="s_0000003"
+            android:id="@+id/tvMa"
+            android:textColor="#808080"
+            android:layout_gravity="center"
+            android:gravity="center|left"
+            android:paddingLeft="10dp" />
+    </LinearLayout>
+
+</LinearLayout>

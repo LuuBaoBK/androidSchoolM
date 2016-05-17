@@ -3,6 +3,7 @@ package com.example.longdinh.tabholder3.activities;
 import android.app.Application;
 
 import com.example.longdinh.tabholder3.models.EmailItem;
+import com.example.longdinh.tabholder3.models.StudentItemSpinner;
 
 import java.util.List;
 
@@ -14,6 +15,47 @@ public class MyApplication extends Application {
     private List<EmailItem> SendMailList;
     private List<EmailItem> DraftMailList;
     private List<EmailItem> TrashMailList;
+
+    public List<StudentItemSpinner> getListchildren() {
+        return listchildren;
+    }
+
+    public void setListchildren(List<StudentItemSpinner> listchildren) {
+        this.listchildren = listchildren;
+    }
+
+    private List<StudentItemSpinner> listchildren;
+    private String id;
+    private String token;
+    private String fullName;
+    private String currentchild;
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public String getCurrentchild() {
+        return currentchild;
+    }
+
+    public void setCurrentchild(String currentchild) {
+        this.currentchild = currentchild;
+    }
+
+
+
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public List<EmailItem> getData_InboxMailList() {return InboxMailList;}
     public void setData_InboxMailList(List<EmailItem> data) {this.InboxMailList = data;}
@@ -52,4 +94,20 @@ public class MyApplication extends Application {
         else return -1;
     };
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

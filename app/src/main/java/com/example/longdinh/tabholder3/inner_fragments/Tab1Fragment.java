@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.SparseBooleanArray;
@@ -21,14 +20,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.activities.Constant;
 import com.example.longdinh.tabholder3.activities.MailContent;
-import com.example.longdinh.tabholder3.activities.ManageMailData;
-import com.example.longdinh.tabholder3.activities.MyApplication;
+import com.example.longdinh.tabholder3.activities.ReadMailAcitivity;
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.software.shell.fab.ActionButton;
@@ -37,16 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import static com.example.longdinh.tabholder3.activities.ManageMailData.*;
+
 public class Tab1Fragment extends Fragment {
     List<EmailItem> emailItemList;
     ListView lvEmailItem;
@@ -128,17 +117,25 @@ public class Tab1Fragment extends Fragment {
 
 //        createData();
         emailItemList = new ArrayList<EmailItem>();
-        adapter = new EmailItemAdapter(getContext(), R.layout.email_item, emailItemList);
+        adapter = new EmailItemAdapter(getContext(), R.layout.item_email, emailItemList);
         lvEmailItem.setAdapter(adapter);
         lvEmailItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                vitri = position + "";
-                new showMailDetail().execute(emailItemList.get(position).getId()+ "");
+//                vitri = position + "";
+//                new showMailDetail().execute(emailItemList.get(position).getId()+ "");
+
+                Intent intent = new Intent(getContext(), ReadMailAcitivity.class);
+                intent.putExtra("id", emailItemList.get(position).getId()+ "");
+                startActivityForResult(intent, 700);
             }
         });
         return v;
     }
+
+
+
+
 
 
     @Override
@@ -151,18 +148,7 @@ public class Tab1Fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
-            if(requestCode == EMAIL_COMPOSE_NEW){
-                Toast.makeText(getContext(), "Message send", Toast.LENGTH_SHORT).show();
-//                MyApplication app = (MyApplication) this.getContext().getApplicationContext();
-//                app.addItem_SendMailList(item);
-//                adapter.notifyDataSetChanged();
-            }
-        }else {
-            if(data.getBooleanExtra("isSave", false)){
-                Toast.makeText(getContext(), "Saved as draft", Toast.LENGTH_SHORT).show();
-            }
-        };
+        //do nothing
     }
 
 //    private void createData(){

@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MailContent;
-import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.software.shell.fab.ActionButton;
@@ -117,7 +116,7 @@ public class Tab2Fragment extends Fragment {
 
 //        createData();
         emailItemList = new ArrayList<EmailItem>();
-        adapter = new EmailItemAdapter(getContext(), R.layout.email_item, emailItemList);
+        adapter = new EmailItemAdapter(getContext(), R.layout.item_email, emailItemList);
         lvEmailItem.setAdapter(adapter);
         lvEmailItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

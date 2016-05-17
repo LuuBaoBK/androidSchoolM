@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center_vertical"
+    android:background="@drawable/background"
+    android:gravity="center"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <View
+        android:background="@color/colorAccent"
+        android:id="@+id/chip"
+        android:adjustViewBounds="false"
+        android:layout_height="match_parent"
+        android:layout_width="4dip"
+        android:layout_marginRight="4dp"
+        />
+    <TextView
+        android:id="@+id/tvStand"
+        android:layout_marginRight="8dip"
+        android:layout_marginTop="4dip"
+        android:layout_marginBottom="3dip"
+        android:layout_height="40dip"
+        android:layout_width="40dip"
+        android:layout_gravity="center"
+        android:layout_marginLeft="4dp"
+        android:text="C"
+        android:textSize="30dp"
+        android:background="@drawable/cirle_background"
+        android:gravity="center"
+        android:textColor="#ffffff" />
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/list_item_inner"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingTop="3dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_gravity="center_vertical"
+        android:paddingBottom="3dp"
+        android:paddingLeft="5dp">
+
+        <TextView
+            android:text="Thu moi hop"
+            android:id="@+id/tvSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:bufferType="spannable"
+            android:singleLine="false"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#212121"
+            android:longClickable="false"
+            android:gravity="top"
+            android:textSize="14dp" />
+
+        <TextView
+            android:text="To: locdinh@gmail.com"
+            android:id="@+id/tvSender"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_marginBottom="1dip"
+            android:layout_marginLeft="1dip"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#757575"
+            android:textSize="14dp" />
+
+        <TextView
+            android:text="mot phan noi dung cua tin nhan"
+            android:id="@+id/tvPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dip"
+            android:layout_marginLeft="1dip"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#757575"
+            android:textSize="14dp" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="65dp"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tvDate"
+            android:text="Apr 30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:paddingRight="8dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#757575"/>
+    </LinearLayout>
+
+
+</LinearLayout>
+

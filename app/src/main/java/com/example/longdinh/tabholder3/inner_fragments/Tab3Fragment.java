@@ -51,7 +51,7 @@ public class Tab3Fragment extends Fragment {
         });
 
         createData();
-        adapter = new EmailItemAdapter(getContext(), R.layout.email_item, emailItemList);
+        adapter = new EmailItemAdapter(getContext(), R.layout.item_email, emailItemList);
 
         lvEmailItem.setAdapter(adapter);
         lvEmailItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
