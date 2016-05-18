@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MyApplication;
+import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.activities.ShowDetailNotice;
 import com.example.longdinh.tabholder3.adapters.NoticeBoardAdapter;
 import com.example.longdinh.tabholder3.models.NoticeBoardItem;
@@ -23,13 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,23 +83,16 @@ public class NoticeT4 extends Fragment {
 
         @Override
         protected List<NoticeBoardItem> doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            BufferedReader bufferedReader = null;
-
             try {
-                URL url = new URL(params[0]);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.connect();
 
-                InputStream inputStream = httpURLConnection.getInputStream();
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line = null;
-                StringBuffer stringBuffer = new StringBuffer();
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuffer.append(line + "\n");
+//                String data = "{\"listnotice\":[{\"nid\":\"99\",\"subject\":\"Ngữ Văn\",\"notice\":\"Dạy bù môn ngữ văn sẽ tổ chức bình thường như dự kiến\",\"level\":\"1\",\"deadline\":\"10/08/2013\"},{\"nid\":\"12\",\"subject\":\"GDCD\",\"notice\":\"thong bao hoc bu\",\"level\":\"2\",\"deadline\":\"10/08/2013\"},{\"nid\":\"11\",\"subject\":\"Toán\",\"notice\":\"thong bao hoc bu\",\"level\":\"3\",\"deadline\":\"10/08/2013\"},{\"nid\":\"02\",\"subject\":\"Sinh học\",\"notice\":\"thong bao hoc bu\",\"level\":\"1\",\"deadline\":\"10/08/2013\"}]}";
+                RequestManager requestManager = new RequestManager();
+                String data;
+                if(app.getRole().equals("2")) {
+                    data = requestManager.studentGetNotice("api/post/student/get_noticeboard", app.getToken(), "2");
+                }else{
+                    data = requestManager.parentGetNotice("api/post/parent/get_noticeboard", app.getToken(), "2", app.getCurrentchild());
                 }
-
-                String data = "{\"listnotice\":[{\"nid\":\"99\",\"subject\":\"Ngữ Văn\",\"notice\":\"Dạy bù môn ngữ văn sẽ tổ chức bình thường như dự kiến\",\"level\":\"1\",\"deadline\":\"10/08/2013\"},{\"nid\":\"12\",\"subject\":\"GDCD\",\"notice\":\"thong bao hoc bu\",\"level\":\"2\",\"deadline\":\"10/08/2013\"},{\"nid\":\"11\",\"subject\":\"Toán\",\"notice\":\"thong bao hoc bu\",\"level\":\"3\",\"deadline\":\"10/08/2013\"},{\"nid\":\"02\",\"subject\":\"Sinh học\",\"notice\":\"thong bao hoc bu\",\"level\":\"1\",\"deadline\":\"10/08/2013\"}]}";
                 JSONObject jsonObject = new JSONObject(data);
                 JSONArray jsonArray = jsonObject.getJSONArray("listnotice");
 
@@ -122,21 +109,10 @@ public class NoticeT4 extends Fragment {
                 }
 
                 return noticeBoardItemList;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
-                if (httpURLConnection != null)
-                    httpURLConnection.disconnect();
-                try {
-                    if (bufferedReader != null)
-                        bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
             }
             return null;
         }

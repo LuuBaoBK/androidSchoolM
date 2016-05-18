@@ -17,9 +17,6 @@ import com.pusher.client.Pusher;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -147,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                 StringBuffer stringBuffer = new StringBuffer();
                 while ((line = bufferedReader.readLine()) != null) {
                     stringBuffer.append(line + "\n");
+//                    System.out.println(line);
                 }
 
 //                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
@@ -177,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
             if (!result.equals(WRONGPASS)) {
                 System.out.println(result + "----");
                 Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
-                Idashboard.putExtra("userinfo_string",userinfo_string);
+                Idashboard.putExtra("userinfo_string",result);
                 startActivity(Idashboard);
                 Idashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 finish();

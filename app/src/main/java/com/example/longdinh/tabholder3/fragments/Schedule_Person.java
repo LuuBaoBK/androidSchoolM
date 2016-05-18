@@ -3,7 +3,6 @@ package com.example.longdinh.tabholder3.fragments;
 /**
  * Created by long dinh on 12/04/2016.
  */
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,19 +13,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.activities.Constant;
 import com.example.longdinh.tabholder3.activities.MyApplication;
+import com.example.longdinh.tabholder3.activities.RequestManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Calendar;
 
 public class Schedule_Person extends Fragment {
@@ -89,46 +81,15 @@ public class Schedule_Person extends Fragment {
     public class getSchedule extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            BufferedReader bufferedReader = null;
-            String url_ = Constant.ROOT_API + "api/get_schedule";
-//            try {
-//                URL url = new URL(url_);
-//                httpURLConnection = (HttpURLConnection) url.openConnection();
-//                httpURLConnection.setRequestMethod("GET");
-//                httpURLConnection.setRequestProperty(Constant.X_AUTH, token);
-//
-//
-//                httpURLConnection.connect();
-//                InputStream inputStream = httpURLConnection.getInputStream();
-//                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//                String line = null;
-//                StringBuffer stringBuffer = new StringBuffer();
-//                while ((line = bufferedReader.readLine()) != null) {
-//                    stringBuffer.append(line + "\n");
-//                }
-//
-//                return stringBuffer.toString();
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//                return "e1";
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return "e2";
-//            } finally {
-//                if (httpURLConnection != null)
-//                    httpURLConnection.disconnect();
-//                try {
-//                    if (bufferedReader != null)
-//                        bufferedReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    return "e4";
-//                }
-//            }
-//            IT WORK
-            String data ="{\"status\":\"schedule\",\"date\":\"11-04-2016\",\"class\":\"9A2\",\"teacher\":\"Trấn Thu Hà\",\"tkb\":{\"t0\":\"Chào Cờ\",\"t1\":\"Anh Văn\",\"t2\":\"Toán\",\"t3\":\"Toán\",\"t4\":\"Mỹ thuật\",\"t5\":\"Anh Văn\",\"t6\":\"Toán\",\"t7\":\"Toán\",\"t8\":\"Vật Lý\",\"t9\":\"Chào Cờ\",\"t10\":\"Anh Văn\",\"t11\":\"Anh Văn\",\"t12\":\"Toán\",\"t13\":\"Toán\",\"t14\":\"Tin Học\",\"t15\":\"Anh Văn\",\"t16\":\"Toán\",\"t17\":\"Toán\",\"t18\":\"Tin Học\",\"t19\":\"Vật Lý\",\"t20\":\"GDCD\",\"t21\":\"\",\"t22\":\"\",\"t23\":\"\",\"t24\":\"\",\"t25\":\"\",\"t26\":\"\",\"t27\":\"\",\"t28\":\"\",\"t29\":\"\",\"t30\":\"Công nghệ\",\"t31\":\"Sinh Học\",\"t32\":\"Sinh Học\",\"t33\":\"Ngữ Văn\",\"t34\":\"Ngữ Văn\",\"t35\":\"Ngữ Văn\",\"t36\":\"Địa Lý\",\"t37\":\"\",\"t38\":\"Hóa Học\",\"t39\":\"Hóa Học\",\"t40\":\"Anh Văn\",\"t41\":\"Hát nhạc\",\"t42\":\"Thể Dục\",\"t43\":\"Ngữ Văn\",\"t44\":\"SHCN\",\"t45\":\"Thể Dục\",\"t46\":\"Lịch Sử\",\"t47\":\"Ngữ Văn\",\"t48\":\"Công nghệ\",\"t49\":\"SHCN\"}}";
+
+            String data;
+            String url = "api/get_schedule";
+            RequestManager requestManager = new RequestManager();
+
+            data = requestManager.methodGet(url,app.getToken());
+
+
+//            String data ="{\"status\":\"schedule\",\"date\":\"11-04-2016\",\"class\":\"9A2\",\"teacher\":\"Trấn Thu Hà\",\"tkb\":{\"t0\":\"Chào Cờ\",\"t1\":\"Anh Văn\",\"t2\":\"Toán\",\"t3\":\"Toán\",\"t4\":\"Mỹ thuật\",\"t5\":\"Anh Văn\",\"t6\":\"Toán\",\"t7\":\"Toán\",\"t8\":\"Vật Lý\",\"t9\":\"Chào Cờ\",\"t10\":\"Anh Văn\",\"t11\":\"Anh Văn\",\"t12\":\"Toán\",\"t13\":\"Toán\",\"t14\":\"Tin Học\",\"t15\":\"Anh Văn\",\"t16\":\"Toán\",\"t17\":\"Toán\",\"t18\":\"Tin Học\",\"t19\":\"Vật Lý\",\"t20\":\"GDCD\",\"t21\":\"\",\"t22\":\"\",\"t23\":\"\",\"t24\":\"\",\"t25\":\"\",\"t26\":\"\",\"t27\":\"\",\"t28\":\"\",\"t29\":\"\",\"t30\":\"Công nghệ\",\"t31\":\"Sinh Học\",\"t32\":\"Sinh Học\",\"t33\":\"Ngữ Văn\",\"t34\":\"Ngữ Văn\",\"t35\":\"Ngữ Văn\",\"t36\":\"Địa Lý\",\"t37\":\"\",\"t38\":\"Hóa Học\",\"t39\":\"Hóa Học\",\"t40\":\"Anh Văn\",\"t41\":\"Hát nhạc\",\"t42\":\"Thể Dục\",\"t43\":\"Ngữ Văn\",\"t44\":\"SHCN\",\"t45\":\"Thể Dục\",\"t46\":\"Lịch Sử\",\"t47\":\"Ngữ Văn\",\"t48\":\"Công nghệ\",\"t49\":\"SHCN\"}}";
             return data;
         }
 

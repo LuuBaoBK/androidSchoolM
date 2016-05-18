@@ -8,18 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MyApplication;
+import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.adapters.ListChildrenSpinnerAdapter;
-import com.example.longdinh.tabholder3.models.NoticeBoardItem;
 import com.example.longdinh.tabholder3.models.StudentItemSpinner;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,7 +62,10 @@ public class Schedule_Parent extends Fragment implements AdapterView.OnItemSelec
     public class getSchedule extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-            String data ="{\"status\":\"schedule\",\"date\":\"11-04-2016\",\"class\":\"9A2\",\"teacher\":\"Trấn Thu Hà\",\"tkb\":{\"t0\":\"Chào Cờ\",\"t1\":\"Anh Văn\",\"t2\":\"Toán\",\"t3\":\"Toán\",\"t4\":\"Mỹ thuật\",\"t5\":\"Anh Văn\",\"t6\":\"Toán\",\"t7\":\"Toán\",\"t8\":\"Vật Lý\",\"t9\":\"Chào Cờ\",\"t10\":\"Anh Văn\",\"t11\":\"Anh Văn\",\"t12\":\"Toán\",\"t13\":\"Toán\",\"t14\":\"Tin Học\",\"t15\":\"Anh Văn\",\"t16\":\"Toán\",\"t17\":\"Toán\",\"t18\":\"Tin Học\",\"t19\":\"Vật Lý\",\"t20\":\"GDCD\",\"t21\":\"\",\"t22\":\"\",\"t23\":\"\",\"t24\":\"\",\"t25\":\"\",\"t26\":\"\",\"t27\":\"\",\"t28\":\"\",\"t29\":\"\",\"t30\":\"Công nghệ\",\"t31\":\"Sinh Học\",\"t32\":\"Sinh Học\",\"t33\":\"Ngữ Văn\",\"t34\":\"Ngữ Văn\",\"t35\":\"Ngữ Văn\",\"t36\":\"Địa Lý\",\"t37\":\"\",\"t38\":\"Hóa Học\",\"t39\":\"Hóa Học\",\"t40\":\"Anh Văn\",\"t41\":\"Hát nhạc\",\"t42\":\"Thể Dục\",\"t43\":\"Ngữ Văn\",\"t44\":\"SHCN\",\"t45\":\"Thể Dục\",\"t46\":\"Lịch Sử\",\"t47\":\"Ngữ Văn\",\"t48\":\"Công nghệ\",\"t49\":\"SHCN\"}}";
+//            String data ="{\"status\":\"schedule\",\"date\":\"11-04-2016\",\"class\":\"9A2\",\"teacher\":\"Trấn Thu Hà\",\"tkb\":{\"t0\":\"Chào Cờ\",\"t1\":\"Anh Văn\",\"t2\":\"Toán\",\"t3\":\"Toán\",\"t4\":\"Mỹ thuật\",\"t5\":\"Anh Văn\",\"t6\":\"Toán\",\"t7\":\"Toán\",\"t8\":\"Vật Lý\",\"t9\":\"Chào Cờ\",\"t10\":\"Anh Văn\",\"t11\":\"Anh Văn\",\"t12\":\"Toán\",\"t13\":\"Toán\",\"t14\":\"Tin Học\",\"t15\":\"Anh Văn\",\"t16\":\"Toán\",\"t17\":\"Toán\",\"t18\":\"Tin Học\",\"t19\":\"Vật Lý\",\"t20\":\"GDCD\",\"t21\":\"\",\"t22\":\"\",\"t23\":\"\",\"t24\":\"\",\"t25\":\"\",\"t26\":\"\",\"t27\":\"\",\"t28\":\"\",\"t29\":\"\",\"t30\":\"Công nghệ\",\"t31\":\"Sinh Học\",\"t32\":\"Sinh Học\",\"t33\":\"Ngữ Văn\",\"t34\":\"Ngữ Văn\",\"t35\":\"Ngữ Văn\",\"t36\":\"Địa Lý\",\"t37\":\"\",\"t38\":\"Hóa Học\",\"t39\":\"Hóa Học\",\"t40\":\"Anh Văn\",\"t41\":\"Hát nhạc\",\"t42\":\"Thể Dục\",\"t43\":\"Ngữ Văn\",\"t44\":\"SHCN\",\"t45\":\"Thể Dục\",\"t46\":\"Lịch Sử\",\"t47\":\"Ngữ Văn\",\"t48\":\"Công nghệ\",\"t49\":\"SHCN\"}}";
+            RequestManager requestManager = new RequestManager();
+            String data = requestManager.parentGetSchedule("api/post/parent/get_schedule",app.getToken(),params[0]);
+
             return data;
         }
         @Override

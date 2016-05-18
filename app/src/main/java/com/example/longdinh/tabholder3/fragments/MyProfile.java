@@ -1,5 +1,6 @@
 package com.example.longdinh.tabholder3.fragments;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,21 +11,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
+import com.example.longdinh.tabholder3.activities.Constant;
 import com.example.longdinh.tabholder3.activities.MyApplication;
-import com.example.longdinh.tabholder3.models.NoticeBoardItem;
+import com.example.longdinh.tabholder3.activities.RequestManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by long dinh on 05/05/2016.
@@ -38,18 +35,21 @@ public class MyProfile extends Fragment{
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
+        System.out.println("1 chay profile-----");
         app = (MyApplication) getActivity().getApplication();
         role = app.getRole();
-        if(role.equals("1")){
+        if(role.equals("0")){
             v = inflater.inflate(R.layout.fragmennt_admininfo, container, false);
-        }else if(app.getRole().equals("2")){
+        }else if(app.getRole().equals("1")){
             v = inflater.inflate(R.layout.fragmennt_teacherinfo, container, false);
         }else if(app.getRole().equals("3")){
             v = inflater.inflate(R.layout.fragmennt_parentinfo, container, false);
         }else{
             v = inflater.inflate(R.layout.fragmennt_studentinfo, container, false);
         }
-        new getInfo();
+        ((TextView)v.findViewById(R.id.tvName)).setText(app.getFullName());
+        ((TextView)v.findViewById(R.id.tvEmail)).setText(app.getId() + "@schoolm.com");
+        new getInfo().execute("");
         return v;
     }
 
@@ -58,15 +58,20 @@ public class MyProfile extends Fragment{
         protected String doInBackground(String... params) {
 
             String data;
-            if(role.equals("1")){
-                data = "{\"mobilephone\":\"0124929961\",\"address\":\"18 Nguyễn Trãi, P2, Q5, TP.HCM\"}";
-            }else if(app.getRole().equals("2")){
-                data = "{\"birthday\":\"08/08/1991\",\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"gender\":\"Nữ\",\"group\":\"Toán\",\"address\":\"18 Nguyễn Bỉnh Khiêm, P2, Q5, TP.HCM\"}";
-            }else if(app.getRole().equals("3")){
-                data = "{\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"job\":\"Công Nhân\",\"address\":\"18 Trường Chinh, P2, Q5, TP.HCM\"}";
-            }else{
-                data = "{\"birthday\":\"08/08/1991\",\"gender\":\"Nữ\",\"parent\":\"Đinh La Thăng\",\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"address\":\"18 Nô Bỉnh Khiêm, P2, Q5, TP.HCM\"}";
-            }
+            String url = "api/user_info";
+            RequestManager requestManager = new RequestManager();
+
+            data = requestManager.methodGet(url,app.getToken());
+            System.out.println(data + "----get data");
+//            if(role.equals("0")){
+////                data = "{\"mobilephone\":\"0124929961\",\"address\":\"18 Nguyễn Trãi, P2, Q5, TP.HCM\"}";
+//            }else if(app.getRole().equals("1")){
+//                data = "{\"birthday\":\"08/08/1991\",\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"gender\":\"Nữ\",\"group\":\"Toán\",\"address\":\"18 Nguyễn Bỉnh Khiêm, P2, Q5, TP.HCM\"}";
+//            }else if(app.getRole().equals("3")){
+//                data = "{\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"job\":\"Công Nhân\",\"address\":\"18 Trường Chinh, P2, Q5, TP.HCM\"}";
+//            }else{
+//                data = "{\"birthday\":\"08/08/1991\",\"gender\":\"Nữ\",\"parent\":\"Đinh La Thăng\",\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"address\":\"18 Nô Bỉnh Khiêm, P2, Q5, TP.HCM\"}";
+//            }
             return data;
         }
         @Override
@@ -75,10 +80,35 @@ public class MyProfile extends Fragment{
             try {
                 JSONObject jsonObject = new JSONObject(result);
 
-                if(role.equals("1")){
+                CircleImageView ivAvatar = (CircleImageView) v.findViewById(R.id.ivAvatar);
+                String avatar = jsonObject.getString("avatar");
+                if(!avatar.equals("empty")){
+                    avatar = Constant.ROOT_API + avatar;
+                    System.out.println(avatar);
+                    ImageLoader.getInstance().displayImage(avatar,ivAvatar, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+                        }
+                    });
+                }
+
+
+                if(role.equals("0")){
                     ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
                     ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
-                }else if(app.getRole().equals("2")){
+                }else if(app.getRole().equals("1")){
                     ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
                     ((TextView) v.findViewById(R.id.tvHomePhone)).setText(jsonObject.getString("homephone"));
                     ((TextView) v.findViewById(R.id.tvGender)).setText(jsonObject.getString("gender"));

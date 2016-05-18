@@ -1,9 +1,5 @@
 package com.example.longdinh.tabholder3.activities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,25 +20,25 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.fragments.MyClass;
-import com.example.longdinh.tabholder3.fragments.NoticeBoardParent;
 import com.example.longdinh.tabholder3.fragments.MyProfile;
+import com.example.longdinh.tabholder3.fragments.NoticeBoardParent;
 import com.example.longdinh.tabholder3.fragments.NoticeBoardStudent;
 import com.example.longdinh.tabholder3.fragments.NoticeTeacher;
-import com.example.longdinh.tabholder3.fragments.Schedule_Person;
 import com.example.longdinh.tabholder3.fragments.Schedule_Parent;
+import com.example.longdinh.tabholder3.fragments.Schedule_Person;
 import com.example.longdinh.tabholder3.fragments.Transcript_Show;
 import com.example.longdinh.tabholder3.fragments.Transcript_Show_Student;
-import com.example.longdinh.tabholder3.models.NavItemChild;
-import com.example.longdinh.tabholder3.models.StudentItemSpinner;
 import com.example.longdinh.tabholder3.inner_fragments.Tab1Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab2Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab3Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab4Fragment;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.example.longdinh.tabholder3.models.NavItem;
-import com.example.longdinh.tabholder3.R;
+import com.example.longdinh.tabholder3.models.NavItemChild;
+import com.example.longdinh.tabholder3.models.StudentItemSpinner;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -53,6 +49,10 @@ import com.pusher.client.channel.SubscriptionEventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         Intent login = getIntent();
         String data = login.getStringExtra("userinfo_string");
         //String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
+//        String data = "\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"0\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"";
         //su dung rieng cho parent
 //        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"4\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
         System.out.println(data + "----");
@@ -145,10 +146,10 @@ public class MainActivity extends AppCompatActivity {
 
             role = user.getString("role");
             app.setRole(role);
-            if(role.equals("1")){
+            if(role.equals("0")){
                 tvRole.setText("Admin");
                 offsetNavList = 1;
-            }else if (role.equals("2")){
+            }else if (role.equals("1")){
                 tvRole.setText("Teacher");
                 offsetNavList = 4;
             }else if(role.equals("3")){
@@ -175,9 +176,9 @@ public class MainActivity extends AppCompatActivity {
         listFragments = new ArrayList<Fragment>();
 
         listFragments.add(new MyProfile());
-        if(role.equals("1")){
+        if(role.equals("0")){
             //do nothing
-        }else if(role.equals("2")){
+        }else if(role.equals("1")){
             listFragments.add(new MyClass());
             listFragments.add(new Schedule_Person());
             listFragments.add(new NoticeTeacher());
@@ -185,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             listFragments.add(new Schedule_Parent());
             listFragments.add(new Transcript_Show());
             listFragments.add(new NoticeBoardParent());
-        }else if(role.equals("4")){
+        }else if(role.equals("2")){
             listFragments.add(new Schedule_Person());
             listFragments.add(new Transcript_Show_Student());
             listFragments.add(new NoticeBoardStudent());
@@ -417,10 +418,10 @@ public class MainActivity extends AppCompatActivity {
         listDataChild = new HashMap<String, List<NavItemChild>>();
 
         ///---------------------------------------------------------
-        if(role.equals("1")){
+        if(role.equals("0")){
             listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
             listDataHeader.add(new NavItem("MailBox",R.drawable.icon_mailbox1));
-        }else if(role.equals("2")){
+        }else if(role.equals("1")){
             listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
             listDataHeader.add(new NavItem("Class",  R.drawable.icon_class));
             listDataHeader.add(new NavItem("Schedule", R.drawable.icon_schedule));
@@ -433,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
             listDataHeader.add(new NavItem("Transcript",  R.drawable.icon_notice));
             listDataHeader.add(new NavItem("Notice Board",  R.drawable.icon_notice));
             listDataHeader.add(new NavItem("MailBox",R.drawable.icon_mailbox1));
-        }else if(role.equals("4")){
+        }else if(role.equals("2")){
             listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
             listDataHeader.add(new NavItem("Schedule", R.drawable.icon_schedule));
             listDataHeader.add(new NavItem("Transcript",  R.drawable.icon_notice));
