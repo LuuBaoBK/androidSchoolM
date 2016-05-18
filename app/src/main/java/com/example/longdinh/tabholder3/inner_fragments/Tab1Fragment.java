@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MailContent;
+import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.ReadMailAcitivity;
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
@@ -41,6 +42,7 @@ public class Tab1Fragment extends Fragment {
     ListView lvEmailItem;
     EmailItemAdapter adapter;
     final int  EMAIL_COMPOSE_NEW = 101;
+    MyApplication app ;
     String vitri = new String(-1 + "");
     String token;
 
@@ -49,8 +51,7 @@ public class Tab1Fragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.tab1fragment, container, false);
-        SharedPreferences settings = getActivity().getSharedPreferences("toGetData", 0);
-        token = settings.getString("token", null);
+        app = (MyApplication) getActivity().getApplication();
 
         lvEmailItem = (ListView) v.findViewById(R.id.lvEmailItem);
         lvEmailItem.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -116,7 +117,8 @@ public class Tab1Fragment extends Fragment {
         });
 
 //        createData();
-        emailItemList = new ArrayList<EmailItem>();
+//        emailItemList = new ArrayList<EmailItem>();
+        emailItemList = app.getData_InboxMailList();
         adapter = new EmailItemAdapter(getContext(), R.layout.item_email, emailItemList);
         lvEmailItem.setAdapter(adapter);
         lvEmailItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -141,8 +143,8 @@ public class Tab1Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new getListMailInbox().execute("");
-        Toast.makeText(getContext(), "da toi day", Toast.LENGTH_SHORT).show();
+//        new getListMailInbox().execute("");
+//        Toast.makeText(getContext(), "da toi day", Toast.LENGTH_SHORT).show();
     }
 
     @Override

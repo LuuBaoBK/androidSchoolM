@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -29,6 +34,7 @@ import com.example.longdinh.tabholder3.fragments.Schedule_Person;
 import com.example.longdinh.tabholder3.fragments.Schedule_Parent;
 import com.example.longdinh.tabholder3.fragments.Transcript_Show;
 import com.example.longdinh.tabholder3.fragments.Transcript_Show_Student;
+import com.example.longdinh.tabholder3.models.NavItemChild;
 import com.example.longdinh.tabholder3.models.StudentItemSpinner;
 import com.example.longdinh.tabholder3.inner_fragments.Tab1Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab2Fragment;
@@ -40,6 +46,9 @@ import com.example.longdinh.tabholder3.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.pusher.client.Pusher;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +59,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
 
     private int lastExpandedPosition = -1;
+    Boolean isSaved = false;
+    List<EmailItem>        InboxMailList = new ArrayList<EmailItem>();
     DrawerLayout drawerLayout;
     RelativeLayout drawerPane;
     ListView lvNav;
@@ -61,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
     MyExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<NavItem> listDataHeader;
-    HashMap<String, List<NavItem>> listDataChild;
+    List<NavItemChild> mailList;
+    HashMap<String, List<NavItemChild>> listDataChild;
     List<NavItem> listNavItems;
     List<Fragment> listFragments;
 //    List<String> listMaChild;// using for user parent for getschedule
@@ -91,6 +103,19 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         ImageLoader.getInstance().init(config);
 
+
+        Pusher pusher = new Pusher("APP_KEY");
+        pusher.connect();
+        Channel channel = pusher.subscribe("my-channel");
+        channel.bind("my-event", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                System.out.println(data + "-------");
+            }
+        });
+
+
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerPane = (RelativeLayout) findViewById(R.id.drawer_pane);
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -100,10 +125,12 @@ public class MainActivity extends AppCompatActivity {
         app = (MyApplication)getApplicationContext();
 
 
-//        Intent login = getIntent();
+        Intent login = getIntent();
+        String data = login.getStringExtra("userinfo_string");
         //String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
         //su dung rieng cho parent
-        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"4\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
+//        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"4\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
+        System.out.println(data + "----");
         try {
             JSONObject user = new JSONObject(data);
             id = user.getString("id");
@@ -186,15 +213,14 @@ public class MainActivity extends AppCompatActivity {
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (listAdapter.getChildrenCount(groupPosition) == 0){// neu nhu khong co con thi xu li thang
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        fragmentManager
-                                .beginTransaction()
-                                .replace(R.id.main_content, listFragments.get(groupPosition))
-                                .commit();
-                        setTitle(listDataHeader.get(groupPosition).getTitle());
-                        drawerLayout.closeDrawer(drawerPane);
-
+                if (listAdapter.getChildrenCount(groupPosition) == 0) {// neu nhu khong co con thi xu li thang
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.main_content, listFragments.get(groupPosition))
+                            .commit();
+                    setTitle(listDataHeader.get(groupPosition).getTitle());
+                    drawerLayout.closeDrawer(drawerPane);
                 }
                 return false;
             }
@@ -209,9 +235,10 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("--------item nav--------print:" + groupPosition + childPosition);
 
 
-                List<NavItem> mailList = listDataChild.get(listDataHeader.get(offsetNavList).getTitle());
+                List<NavItemChild> mailList = listDataChild.get(listDataHeader.get(offsetNavList).getTitle());
                 String title = new String();
-                title = "MailBox-"+ mailList.get(childPosition).getTitle();
+                title = "MailBox-" + mailList.get(childPosition).getTitle();
+
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
@@ -258,9 +285,124 @@ public class MainActivity extends AppCompatActivity {
         };
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        System.out.println("nearly come to end of create-----");
+        loadingdata();
+        System.out.println("the end of creating-----");
+
+
+        listAdapter.notifyDataSetChanged();
+        System.out.println("da thay doi num of mail box-----");
 
     }
 
+
+
+    // beginphan thiet lap ve luu data
+    public void creatingData(){
+        //create  data sharing
+
+        System.out.println("creating data------");
+        InboxMailList.add(new EmailItem(0,"Thu moi hop 1", "Feb 28", "vanminh@hostmail.com", "Kinh thi moi quy phu huynh..."));
+        InboxMailList.add(new EmailItem(1, "Thu moi hop 1", "Feb 27", "vanminh@hostmail.com", "Kinh  vam moi quy phu huynh..."));
+        InboxMailList.add(new EmailItem(2, "Thu hoc phi 1", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
+        app.setData_InboxMailList(InboxMailList);
+
+    };
+
+    public void loadingdata(){
+        System.out.println("loading data------");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        isSaved = sp.getBoolean("isSaved", false);
+        if(isSaved){
+            System.out.println("loading from saved------");
+            int num = sp.getInt("num", 0);
+            for (int i = 0; i < num; i++){
+                int id = sp.getInt("id"+ i, 0);
+                String subject = sp.getString("subject" + i, "");
+                String date= sp.getString("date"+ i, "");
+                String sender= sp.getString("sender"+ i, "");
+                String preview= sp.getString("preview"+ i, "");
+                System.out.println("mail---- " + i + ", " + id + ", " + subject + ", " + date + ", " + sender + ", " + preview);
+                InboxMailList.add(new EmailItem(id, subject, date, sender, preview));
+                app.setData_InboxMailList(InboxMailList);
+            }
+        }else{
+            System.out.println("loadding from creating------");
+            creatingData();
+        }
+    };
+
+    public void savingData(){
+        System.out.println("begin saving data------");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sp.edit();
+        int num = InboxMailList.size();
+        editor.clear();
+        editor.putBoolean("isSaved", true);
+        editor.putInt("num", num);
+        for (int i = 0; i < num; i++){
+            System.out.println("num mail saving----" + num);
+            editor.putInt("id" + i, InboxMailList.get(i).getId());
+            editor.putString("subject" + i, InboxMailList.get(i).getSubject());
+            editor.putString("date" + i, InboxMailList.get(i).getDate());
+            editor.putString("sender" + i, InboxMailList.get(i).getSender());
+            editor.putString("preview" + i, InboxMailList.get(i).getPreview());
+        }
+        editor.commit();
+        System.out.println("committed------");
+
+    }
+    //end  thiet lap
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Pusher pusher = new Pusher(Constant.PUSHER_APP_KEY);
+        pusher.connect();
+        Channel channel = pusher.subscribe("my-channel");
+        channel.bind("my-event", new SubscriptionEventListener() {
+
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notice();
+                    }
+                });
+                System.out.println("abchahaha");
+
+            }
+        });
+
+
+
+    }
+
+    public void notice(){
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        Intent intent = new Intent(this, LoginActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+        Notification n  = new Notification.Builder(this)
+                .setContentTitle("New mail from " + "test@gmail.com")
+                .setContentText("Subject" + mailList.get(0).getNum() + 1)
+                .setSmallIcon(R.drawable.notification_template_icon_bg)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+//                .addAction(R.drawable.notification_template_icon_bg, "Call", pIntent)
+//                .addAction(R.drawable.notification_template_icon_bg, "More", pIntent)
+//                .addAction(R.drawable.notification_template_icon_bg, "And more", pIntent)
+                .build();
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, n);
+        System.out.println("noticed");
+        mailList.get(0).setNum(mailList.get(0).getNum() + 1);
+        listAdapter.notifyDataSetChanged();
+
+    }
 
 
 
@@ -272,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void prepareListData() {
         listDataHeader = new ArrayList<NavItem>();
-        listDataChild = new HashMap<String, List<NavItem>>();
+        listDataChild = new HashMap<String, List<NavItemChild>>();
 
         ///---------------------------------------------------------
         if(role.equals("1")){
@@ -301,19 +443,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Adding child data
-        List<NavItem> mailList = new ArrayList<NavItem>();
-        mailList.add(new NavItem("Inbox", R.drawable.icon_inbox));
-        mailList.add(new NavItem("Sent",  R.drawable.icon_send));
-        mailList.add(new NavItem("Drafts", R.drawable.icon_draft));
-        mailList.add(new NavItem("Trash",R.drawable.icon_trash));
+        mailList = new ArrayList<NavItemChild>();
+        mailList.add(new NavItemChild("Inbox", R.drawable.icon_inbox));
+        mailList.add(new NavItemChild("Sent",  R.drawable.icon_send));
+        mailList.add(new NavItemChild("Drafts", R.drawable.icon_draft));
+        mailList.add(new NavItemChild("Trash",R.drawable.icon_trash));
         listDataChild.put(listDataHeader.get(offsetNavList).getTitle(), mailList); // Header, Child data
-
-        //create  data sharing
-        List<EmailItem>        InboxMailList = new ArrayList<EmailItem>();
-        InboxMailList.add(new EmailItem(0,"Thu moi hop 1", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        InboxMailList.add(new EmailItem(1, "Thu moi hop 1", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        InboxMailList.add(new EmailItem(2, "Thu hoc phi 1", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
-        app.setData_InboxMailList(InboxMailList);
 
 
         List<EmailItem>        SendMailList = new ArrayList<EmailItem>();
@@ -335,6 +470,13 @@ public class MainActivity extends AppCompatActivity {
         TrashMailList.add(new EmailItem(11,"Thu hoc phi 4", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
         app.setData_TrashMailList(TrashMailList);
 
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        savingData();
     }
 
     @Override

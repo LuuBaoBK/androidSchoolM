@@ -24,4 +24,15 @@
     android:textStyle="bold"
     android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
 
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:textColor="#f00"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingLeft="80dp"
+        android:linksClickable="false"
+        android:text="0"
+        android:id="@+id/tvNum" />
+
 </LinearLayout>

@@ -13,6 +13,9 @@ import com.example.longdinh.tabholder3.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.pusher.client.Pusher;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,6 +56,17 @@ public class LoginActivity extends AppCompatActivity {
         tvEmail = (TextView) findViewById(R.id.tvEmail);
         tvPassword = (TextView) findViewById(R.id.tvPassword);
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
+        Pusher pusher = new Pusher("APP_KEY");
+        pusher.connect();
+        Channel channel = pusher.subscribe("my-channel");
+        channel.bind("my-event", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                System.out.println(data + "-------");
+            }
+        });
     }
 
     public void login(View v) throws IOException {
@@ -135,9 +149,9 @@ public class LoginActivity extends AppCompatActivity {
                     stringBuffer.append(line + "\n");
                 }
 
-                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
-                userinfo_string = jsonObject.getString("data");
-                return userinfo_string;
+//                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
+//                userinfo_string = jsonObject.getString("data");
+                return stringBuffer.toString();
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -145,9 +159,6 @@ public class LoginActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
                 return "e2";
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return "e3";
             } finally {
                 if (httpURLConnection != null)
                     httpURLConnection.disconnect();
@@ -164,6 +175,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if (!result.equals(WRONGPASS)) {
+                System.out.println(result + "----");
                 Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
                 Idashboard.putExtra("userinfo_string",userinfo_string);
                 startActivity(Idashboard);

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.models.NavItem;
+import com.example.longdinh.tabholder3.models.NavItemChild;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,10 +27,10 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<NavItem> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<NavItem>> _listDataChild;
+    private HashMap<String, List<NavItemChild>> _listDataChild;
 
     public MyExpandableListAdapter(Context context, List<NavItem> listDataHeader,
-                                   HashMap<String, List<NavItem>> listChildData) {
+                                   HashMap<String, List<NavItemChild>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -37,7 +38,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        List<NavItem> listchild = this._listDataChild.get(this._listDataHeader.get(groupPosition).getTitle());
+        List<NavItemChild> listchild = this._listDataChild.get(this._listDataHeader.get(groupPosition).getTitle());
         if(listchild != null)
             return listchild.get(childPosititon);
         else
@@ -55,7 +56,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
 
 
-        final NavItem childItem = (NavItem) getChild(groupPosition, childPosition);
+        final NavItemChild childItem = (NavItemChild) getChild(groupPosition, childPosition);
 
         if(childItem == null)
             return null;
@@ -68,16 +69,18 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView tvTitle  = (TextView) convertView.findViewById(R.id.title);
         ImageView navIcon =  (ImageView) convertView.findViewById(R.id.nav_icon);
+        TextView tvNum =  (TextView) convertView.findViewById(R.id.tvNum);
 
         tvTitle.setText(childItem.getTitle());
         navIcon.setImageResource(childItem.getResIcon());
+        tvNum.setText((childItem.getNum() == 0)?"":(childItem.getNum()+""));
 
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        List<NavItem> listchild = this._listDataChild.get(this._listDataHeader.get(groupPosition).getTitle());
+        List<NavItemChild> listchild = this._listDataChild.get(this._listDataHeader.get(groupPosition).getTitle());
         if(listchild != null)
             return this._listDataChild.get(this._listDataHeader.get(groupPosition).getTitle())
                     .size();
