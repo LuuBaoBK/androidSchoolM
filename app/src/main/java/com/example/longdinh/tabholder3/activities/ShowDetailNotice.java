@@ -2,7 +2,6 @@ package com.example.longdinh.tabholder3.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -22,6 +21,7 @@ public class ShowDetailNotice extends Activity {
     TextView tvNgayTao;
     TextView tvDeadline;
     TextView tvNotice;
+    MyApplication app;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +32,7 @@ public class ShowDetailNotice extends Activity {
         tvNgayTao = (TextView) findViewById(R.id.tvNgayTao);
         tvDeadline = (TextView) findViewById(R.id.tvDeadline);
         tvNotice = (TextView) findViewById(R.id.tvNotice);
+        app = (MyApplication) getApplication();
 
         Intent getData = getIntent();
         String nid = getData.getStringExtra("nid");
@@ -41,9 +42,18 @@ public class ShowDetailNotice extends Activity {
     public class showNoticeDetail extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-            String id = params[0];
-            String retur ="{\"subject\":\"Ngữ Văn\",\"author\":\"Đinh Mạnh Quang\",\"ngaytao\":\"10/08/2016\",\"level\":\"1\",\"deadline\":\"12/08/2016\",\"notice\":\"Thông báo về kế hoạch dạy bù trong tuần này sẽ diễn ra bình thường theo dự kiến\"}";
-            return retur;
+            String nid = params[0];
+//            String data ="{\"subject\":\"Ngữ Văn\",\"author\":\"Đinh Mạnh Quang\",\"ngaytao\":\"10/08/2016\",\"level\":\"1\",\"deadline\":\"12/08/2016\",\"notice\":\"Thông báo về kế hoạch dạy bù trong tuần này sẽ diễn ra bình thường theo dự kiến\"}";
+            RequestManager requestManager = new RequestManager();
+            String data;
+            String url = "api/post/get_notice_detail";
+            if(app.getRole().equals("3")){
+                data = requestManager.getNoticeDetail(url, app.getToken(), nid, app.getCurrentchild());
+            }
+            else{
+                data = requestManager.getNoticeDetail(url, app.getToken(), nid, "self");
+            }
+            return data;
         }
 
         @Override
