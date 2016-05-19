@@ -13,6 +13,7 @@ public class EmailItem {
     String date;
     String sender;
     String preview;
+    Boolean isRead;
 
 
     public EmailItem(int id , String subject, String date, String sender, String preview) {
@@ -21,6 +22,24 @@ public class EmailItem {
         this.date = date;
         this.sender = sender;
         this.preview = preview;
+        this.isRead = false;
+    }
+
+    public EmailItem(int id, String subject, String date, String sender, String preview, Boolean isRead) {
+        this.id = id;
+        this.subject = subject;
+        this.date = date;
+        this.sender = sender;
+        this.preview = preview;
+        this.isRead = isRead;
+    }
+
+    public Boolean getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
     }
 
     public String getPreview() {

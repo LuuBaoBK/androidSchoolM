@@ -1,8 +1,5 @@
 package com.example.longdinh.tabholder3.inner_fragments;
 
-/**
- * Created by long dinh on 12/04/2016.
- */
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,7 +34,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tab1Fragment extends Fragment {
+/**
+ * Created by long dinh on 03/05/2016.
+ */
+public class Tab5Fragment extends Fragment{
     List<EmailItem> emailItemList;
     ListView lvEmailItem;
     EmailItemAdapter adapter;
@@ -83,16 +83,9 @@ public class Tab1Fragment extends Fragment {
                         for (int i = (selected.size() - 1); i >= 0; i--) {
                             if (selected.valueAt(i)) {
                                 EmailItem selecteditem = (EmailItem) adapter.getItem(selected.keyAt(i));
-
-
-                                //check if co mang thi gui len con neu khong co thi add vao trong list
-                                if(false){//neu nhu co mang
-                                    // goi ham update  thong tin mai
-                                }else{
-                                    app.addItem_InboxDeleteMail(selecteditem.getId()+ "");
-                                    System.out.println("Them vao inboxDelete mail ----" + selecteditem.getId());
-                                    Toast.makeText(getContext(), "Them vao inboxDelete mail", Toast.LENGTH_SHORT).show();
-                                }
+                                //thong tin ve mail mail box chi co o local nen ko can update len server
+                                //nen can canh bao nguoi dung ve hanh vi xoa cua minh
+                                Toast.makeText(getContext(), "outbox mail xoa vinh vien "+ selecteditem.getId(), Toast.LENGTH_SHORT).show();
                                 adapter.remove(selecteditem);
                             }
                         }
@@ -128,7 +121,7 @@ public class Tab1Fragment extends Fragment {
 
 //        createData();
 //        emailItemList = new ArrayList<EmailItem>();
-        emailItemList = app.getData_InboxMailList();
+        emailItemList = app.getData_OutboxMailList();
         adapter = new EmailItemAdapter(getContext(), R.layout.item_email, emailItemList);
         lvEmailItem.setAdapter(adapter);
         lvEmailItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -139,9 +132,8 @@ public class Tab1Fragment extends Fragment {
                 if(emailItemList.get(position).getIsRead()){
                     emailItemList.get(position).setIsRead(false);
                     app.addItem_InboxReadMail(emailItemList.get(position).getId() + "");
-                    Toast.makeText(getContext(), "Them vao read inbox mail", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
-                    System.out.println("read a inbox mail-----");
+                    System.out.println("da them mot mail moi-----");
                     // cam kiem tra xem co mang khong hay co thuoc 100 mail dau tien khong
                 }
                 Intent intent = new Intent(getContext(), ReadMailAcitivity.class);
@@ -201,9 +193,9 @@ public class Tab1Fragment extends Fragment {
 //                }
 //
             System.out.println("---------------da toi day 0");
-                String retur = new String("{ \"id\": 1,\"content\": \"Noi dung khong quan trong chay dung la dc\",\"title\": \"Mail sent to server\",\"date_time\": \"Apr 29\",\"author\": \"t0001@schoolm.com\"}");
+            String retur = new String("{ \"id\": 1,\"content\": \"Noi dung khong quan trong chay dung la dc\",\"title\": \"Mail sent to server\",\"date_time\": \"Apr 29\",\"author\": \"t0001@schoolm.com\"}");
 //                return stringBuffer.toString();
-                return retur;
+            return retur;
 
 //            } catch (MalformedURLException e) {
 //                e.printStackTrace();
@@ -272,7 +264,7 @@ public class Tab1Fragment extends Fragment {
             String retur = new String();
             retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
 
-                return retur;
+            return retur;
 
 //            } catch (MalformedURLException e) {
 //                e.printStackTrace();

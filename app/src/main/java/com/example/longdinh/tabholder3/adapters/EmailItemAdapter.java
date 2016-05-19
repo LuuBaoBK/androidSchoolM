@@ -3,6 +3,7 @@ package com.example.longdinh.tabholder3.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,11 @@ public class EmailItemAdapter extends ArrayAdapter<EmailItem> {
         tvPreview.setText(navItem.getPreview());
         tvSender.setText(navItem.getSender());
         tvDate.setText(navItem.getDate());
+        if(navItem.getIsRead())
+            tvSubject.setTypeface(null, Typeface.BOLD);
+        else
+            tvSubject.setTypeface(null, Typeface.NORMAL);
+
 
         return v;
     }
