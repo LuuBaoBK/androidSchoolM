@@ -210,7 +210,7 @@ public class RequestManager {
         }
     }
 
-    public String getNoticeDetail(String urlinput, String token, String nid, String child) {
+    public String getNoticeDetail(String urlinput, String token, String nid, String child)  {
         HttpURLConnection httpURLConnection = null;
         BufferedReader bufferedReader = null;
         String url_ = Constant.ROOT_API + urlinput;
