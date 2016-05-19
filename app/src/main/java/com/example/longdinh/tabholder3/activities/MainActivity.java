@@ -144,9 +144,9 @@ public class MainActivity extends AppCompatActivity {
         app = (MyApplication)getApplicationContext();
 
 
-        Intent login = getIntent();
-        String data = login.getStringExtra("userinfo_string");
-//        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
+//        Intent login = getIntent();
+//        String data = login.getStringExtra("userinfo_string");
+        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
 //        String data = "\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"0\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"";
         //su dung rieng cho parent
 //        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"3\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
@@ -323,23 +323,26 @@ public class MainActivity extends AppCompatActivity {
         //create  data sharing
 
         System.out.println("creating data------");
-        InboxMailList.add(new EmailItem(0,"Thu moi hop 1", "Feb 28", "vanminh@hostmail.com", "Kinh thi moi quy phu huynh...", true));
+        InboxMailList.add(new EmailItem(0, "Thu moi hop 1", "Feb 28", "vanminh@hostmail.com", "Kinh thi moi quy phu huynh...", true));
         InboxMailList.add(new EmailItem(1, "Thu moi hop 1", "Feb 27", "vanminh@hostmail.com", "Kinh  vam moi quy phu huynh...", true));
         InboxMailList.add(new EmailItem(2, "Thu hoc phi 1", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi...", true));
+        InboxMailList.add(new EmailItem(3, "Thu hoc phi 1", "Jan 20", "giaovien_@van.com", "Thong bao nop hoc phi...", true));
         app.setData_InboxMailList(InboxMailList);
 
 
 
         SendMailList = new ArrayList<EmailItem>();
-        SendMailList.add(new EmailItem(3, "Thu moi hop 2", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
         SendMailList.add(new EmailItem(4, "Thu moi hop 2", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        SendMailList.add(new EmailItem(5, "Thu hoc phi 2", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
+        SendMailList.add(new EmailItem(5, "Thu moi hop 2", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
+        SendMailList.add(new EmailItem(6, "Thu hoc phi 2", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
+        SendMailList.add(new EmailItem(7, "Thu hoc phi 2", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
         app.setData_SendMailList(SendMailList);
 
         DraftMailList = new ArrayList<EmailItem>();
-        DraftMailList.add(new EmailItem(6, "Thu moi hop 3", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        DraftMailList.add(new EmailItem(7, "Thu hoc phi 3", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
-        DraftMailList.add(new EmailItem(8, "Hop hoi dong 3", "July 8", "hoidong@gmail.com", "Sap co thoi khoa bieu moi..."));
+        DraftMailList.add(new EmailItem(8, "Thu moi hop 3", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
+        DraftMailList.add(new EmailItem(9, "Thu hoc phi 3", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
+        DraftMailList.add(new EmailItem(10, "Hop hoi dong 3", "July 8", "hoidong@gmail.com", "Sap co thoi khoa bieu moi..."));
+        DraftMailList.add(new EmailItem(11, "Hop hoi dong 3", "July 1", "hoidong@gmail.com", "Sap co thoi khoa bieu moi..."));
         app.setData_DraftMailList(DraftMailList);
 
 
@@ -349,8 +352,10 @@ public class MainActivity extends AppCompatActivity {
 
         OutboxMailList = new ArrayList<EmailItem>();
         OutboxMailList.add(new EmailItem(9, "Thu moi hop 5", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        OutboxMailList.add(new EmailItem(13,"Thu moi hop 5", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
+        OutboxMailList.add(new EmailItem(12,"Thu hoc phi 5", "Jan 27", "giaovien_@van.com", "Thong bao nop hoc phi..."));
+        OutboxMailList.add(new EmailItem(13,"Thu moi hop 5", "Feb 22", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
         OutboxMailList.add(new EmailItem(14,"Thu hoc phi 5", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
+
         app.setData_OutboxMailList(OutboxMailList);
 
 
@@ -518,12 +523,12 @@ public class MainActivity extends AppCompatActivity {
         int numSend = SendMailList.size();
         editor.putInt("numSend", numSend);
         for (int i = 0; i < numSend; i++){
-            System.out.println("num mail saving----" + numInbox);
-            editor.putInt("idSend" + i, InboxMailList.get(i).getId());
-            editor.putString("subjectSend" + i, InboxMailList.get(i).getSubject());
-            editor.putString("dateSend" + i, InboxMailList.get(i).getDate());
-            editor.putString("senderSend" + i, InboxMailList.get(i).getSender());
-            editor.putString("previewSend" + i, InboxMailList.get(i).getPreview());
+            System.out.println("num mail saving----" + numSend);
+            editor.putInt("idSend" + i, SendMailList.get(i).getId());
+            editor.putString("subjectSend" + i, SendMailList.get(i).getSubject());
+            editor.putString("dateSend" + i, SendMailList.get(i).getDate());
+            editor.putString("senderSend" + i, SendMailList.get(i).getSender());
+            editor.putString("previewSend" + i, SendMailList.get(i).getPreview());
         }
 
         int numDeleteSend = SendDeleteMail.size();

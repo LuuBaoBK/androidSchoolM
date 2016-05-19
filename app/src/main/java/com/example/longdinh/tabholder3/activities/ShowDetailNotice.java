@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
@@ -62,10 +63,11 @@ public class ShowDetailNotice extends Activity {
             try {
                 JSONObject notice = new JSONObject(result);
                 tvSubject.setText(notice.getString("subject"));
+                tvTitle.setText(notice.getString("title"));
                 tvAuthor.setText(notice.getString("author"));
                 tvNgayTao.setText(notice.getString("ngaytao"));
                 tvDeadline.setText(notice.getString("deadline"));
-                tvNotice.setText(notice.getString("notice"));
+                tvNotice.setText(Html.fromHtml(notice.getString("notice")));
 
             } catch (JSONException e) {
                 e.printStackTrace();

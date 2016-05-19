@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ public class Tab1Fragment extends Fragment {
     MyApplication app ;
     String vitri = new String(-1 + "");
     String token;
+    SwipeRefreshLayout refreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -52,6 +54,16 @@ public class Tab1Fragment extends Fragment {
 
         View v = inflater.inflate(R.layout.tab1fragment, container, false);
         app = (MyApplication) getActivity().getApplication();
+
+        refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getContext(), "refresh screen", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
         lvEmailItem = (ListView) v.findViewById(R.id.lvEmailItem);
         lvEmailItem.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);

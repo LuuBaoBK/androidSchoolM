@@ -111,7 +111,6 @@ public class MailContent  extends Activity implements TextWatcher{
                     return;
                 }
                 if(isDraftMail){
-                    // ghi log cho viec xoa mail draft
                     app.addItem_DraftDeleteMail(idMail);
                     List<EmailItem> draftMailList = app.getData_DraftMailList();
 
@@ -119,24 +118,44 @@ public class MailContent  extends Activity implements TextWatcher{
                     for(int i = 0; i < draftMailList.size(); i++){
                         EmailItem email = draftMailList.get(i);
                         if(idMail.equals(draftMailList.get(i).getId()+ "")){
-                            if(false){//neu co mang thi gui len luon roi cho ket qua tra ve
-                                //
-                            }else{//neu khong co mang thi cho luu vo ben outbox
-                                app.getData_OutboxMailList().add(0, email);//  thieu thong tin ve thoi gian update
-                                System.out.println("OutboxMailList --- them mail " + idMail);
-                                Toast.makeText(getApplicationContext(), "OutboxMailList them mail " + idMail, Toast.LENGTH_SHORT).show();
-                            }
                             draftMailList.remove(i);
                             System.out.println("draft mail list- xoa mail " + idMail);
                             Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
-                            return;
+                        }
+                    }
+                }
+
+                if(false){//neu co mang thi gui len luon roi cho ket qua tra ve
+                    //
+                }else{//neu khong co mang thi cho luu vo ben outbox
+                    // outbox luu thong tin nhung mail khong gui len server dc-> khong co ma
+                    List<EmailItem> outBoxmailList = app.getData_OutboxMailList();
+                    int min = 0;
+                    for(int i = 0; i < outBoxmailList.size(); i++){
+                        EmailItem email = outBoxmailList.get(i);
+                        if(email.getId() < min){
+                            min = email.getId();
                         }
                     }
 
+                    String currentDateandTime = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                    EmailItem item = new EmailItem(min-1, etSubject.getText().toString(), currentDateandTime, etNguoiNhan.getText().toString(), etContent.getText().toString());
+                    app.addItem_OutboxhMailList(item);
+                    //save nhu mail draft
+                    System.out.println("them vao trong outbox moi ");
+                    Toast.makeText(getApplicationContext(), "Save as outbox mail id=" + (min-1), Toast.LENGTH_SHORT).show();
 
                 }
+
+
+
+
 //                new sentMail( etSubject.getText().toString(),etNguoiNhan.getText().toString(), etContent.getText().toString()).execute("url send mail");
                 Toast.makeText(getApplicationContext(), "Mail sending...", Toast.LENGTH_SHORT).show();
+
+                Intent infoReturn = new Intent();
+                setResult(RESULT_OK, infoReturn);
+                finish();
                 return;
             }
         });
