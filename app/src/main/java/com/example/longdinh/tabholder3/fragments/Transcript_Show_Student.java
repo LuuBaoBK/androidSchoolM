@@ -141,10 +141,12 @@ public class Transcript_Show_Student extends Fragment {
 //                tvTheDuc.setText(jsonObject.getString("TheDuc"));
 //                        tvLichSu.setText(jsonObject.getString("LichSu"));
 
-                JSONArray listScore = jsonObject.getJSONArray("tb");
+                JSONArray returnListScore = jsonObject.getJSONArray("tb");
                 JSONArray listSubject = jsonObject.getJSONArray("subject_list");
+                if(listScore.getChildCount() > 0)
+                    listScore.removeAllViews();
                 for(int i = 0; i < listSubject.length(); i++){
-                    addnewScore(listSubject.getString(i), listScore.getString(i));
+                    addnewScore(listSubject.getString(i), returnListScore.getString(i));
                 }
 
 
