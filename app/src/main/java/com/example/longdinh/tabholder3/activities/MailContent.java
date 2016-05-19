@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
+import com.example.longdinh.tabholder3.models.EmailItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +33,8 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by long dinh on 30/04/2016.
@@ -43,22 +46,25 @@ public class MailContent  extends Activity implements TextWatcher{
     String subject;
     String type;
     Boolean ischanged = false;
-    Boolean isTrashMail =false;
+    Boolean isDraftMail =false;
     String currentString = "";
     String previousString = "";
     MyApplication app;
     String token;
-
+    String idMail;
+    EditText etNguoiNhan;
+    EditText etSubject;
+    EditText etContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.compose_message);
 
-        final EditText etNguoiNhan = (EditText) findViewById(R.id.etNguoiNhan);
-        final EditText etSubject = (EditText) findViewById(R.id.etSubject);
-        final EditText etContent = (EditText) findViewById(R.id.etContent);
-        final Button btnSend = (Button) findViewById(R.id.btnSend);
+        etNguoiNhan = (EditText) findViewById(R.id.etNguoiNhan);
+        etSubject = (EditText) findViewById(R.id.etSubject);
+        etContent = (EditText) findViewById(R.id.etContent);
+        Button btnSend = (Button) findViewById(R.id.btnSend);
 
         app = (MyApplication) getApplicationContext();
         token = app.getToken();
@@ -73,15 +79,21 @@ public class MailContent  extends Activity implements TextWatcher{
 
         if(type.equals("FORWARD")){
             etContent.setText(getData.getStringExtra("content"));
-            etSubject.setText(getData.getStringExtra("subject"));
-            isTrashMail = getData.getBooleanExtra("isTrashMail", false);
+            etSubject.setText("Forward:" + getData.getStringExtra("subject"));
+            isDraftMail = getData.getBooleanExtra("isTrashMail", false);
             System.out.println("data content da get:" + getData.getStringExtra("subject"));
         }else if(type.equals("REPLY")){
             etNguoiNhan.setText(getData.getStringExtra("sender"));
             etSubject.setText(getData.getStringExtra("subject"));
-            isTrashMail = getData.getBooleanExtra("isTrashMail", false);
+            isDraftMail = getData.getBooleanExtra("isTrashMail", false);
         }else if(type.equals("COMPOSE")){
 
+        }else if(type.equals("EDIT")){
+            etContent.setText(getData.getStringExtra("content"));
+            etSubject.setText("Forward:" + getData.getStringExtra("subject"));
+            etNguoiNhan.setText(getData.getStringExtra("sender"));
+            idMail = getData.getStringExtra("idMail");
+            isDraftMail = true;
         }
 
         // theo doi su kien co thay doi du lieu haykhong
@@ -98,8 +110,30 @@ public class MailContent  extends Activity implements TextWatcher{
                     Toast.makeText(MailContent.this, "Error Email Address", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(isTrashMail){
-                    // delete mail rac tren server
+                if(isDraftMail){
+                    // ghi log cho viec xoa mail draft
+                    app.addItem_DraftDeleteMail(idMail);
+                    List<EmailItem> draftMailList = app.getData_DraftMailList();
+
+                    // xoa mail tren hop thu mail rac them vao trong hop mail output
+                    for(int i = 0; i < draftMailList.size(); i++){
+                        EmailItem email = draftMailList.get(i);
+                        if(idMail.equals(draftMailList.get(i).getId()+ "")){
+                            if(false){//neu co mang thi gui len luon roi cho ket qua tra ve
+                                //
+                            }else{//neu khong co mang thi cho luu vo ben outbox
+                                app.getData_OutboxMailList().add(0, email);//  thieu thong tin ve thoi gian update
+                                System.out.println("OutboxMailList --- them mail " + idMail);
+                                Toast.makeText(getApplicationContext(), "OutboxMailList them mail " + idMail, Toast.LENGTH_SHORT).show();
+                            }
+                            draftMailList.remove(i);
+                            System.out.println("draft mail list- xoa mail " + idMail);
+                            Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+
+
                 }
 //                new sentMail( etSubject.getText().toString(),etNguoiNhan.getText().toString(), etContent.getText().toString()).execute("url send mail");
                 Toast.makeText(getApplicationContext(), "Mail sending...", Toast.LENGTH_SHORT).show();
@@ -116,16 +150,67 @@ public class MailContent  extends Activity implements TextWatcher{
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent infoReturn = new Intent();
             if(ischanged == false){
-                // khogn lam gi het
+                System.out.println("Noi dung mai khong co doi");
+                Toast.makeText(getApplicationContext(), "Noi dung mail ko doi", Toast.LENGTH_SHORT).show();
             }
             else{
-                if(isTrashMail){
+                String currentDateandTime = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                if(isDraftMail){
                     //ghi de
                     Toast.makeText(getApplicationContext(), "Save as draft mail... ghide", Toast.LENGTH_SHORT).show();
+
+                    app.addItem_DraftDeleteMail(idMail);
+                    List<EmailItem> draftMailList = app.getData_DraftMailList();
+
+                    for(int i = 0; i < draftMailList.size(); i++){
+                        EmailItem email = draftMailList.get(i);
+                        if(idMail.equals(draftMailList.get(i).getId()+ "")){
+                            if(false){//neu co mang thi gui len luon roi cho ket qua tra ve
+                                //
+                            }else{//neu khong co mang thi cho luu vo ben outbox
+                                app.getData_OutboxMailList().add(0, email);//  thieu thong tin ve thoi gian update
+                                System.out.println("OutboxMailList --- them mail " + idMail);
+                                Toast.makeText(getApplicationContext(), "OutboxMailList them mail " + idMail, Toast.LENGTH_SHORT).show();
+                            }
+
+                            email.setSubject(etSubject.getText().toString());
+                            email.setPreview(etContent.getText().toString());
+                            email.setDate(currentDateandTime);
+
+                            System.out.println("draft mail list- xoa mail " + idMail);
+                            Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
                 else{
                     //luu mail rac
+
+                    //mail draft se luu bang so am theo chieu nguoc lai bat dau tu -1
+                    app.addItem_DraftDeleteMail(idMail);
+                    List<EmailItem> draftMailList = app.getData_DraftMailList();
+                    int min = 0;
+                    for(int i = 0; i < draftMailList.size(); i++){
+                        EmailItem email = draftMailList.get(i);
+                        if(email.getId() < min){
+                            min = email.getId();
+                        }
+                    }
+
+                    System.out.println("draft mail list- xoa mail " + idMail);
+                    Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
+                    if(false){//neu co mang
+                        //update save mail moi
+                    }else{
+                        app.addItem_DraftNewMail((min-1)+"");
+                    }
+
+                    EmailItem item = new EmailItem(min-1, etSubject.getText().toString(), currentDateandTime, etNguoiNhan.getText().toString(), etContent.getText().toString());
+                    app.addItem_DraftMailList(item);
+                    //save nhu mail draft
+                    System.out.println("save nhu mail draft moi ");
                     Toast.makeText(getApplicationContext(), "Save as draft mail... khongde", Toast.LENGTH_SHORT).show();
+//                    ham lay chi so lon nhat cua mail draft tai dien diem hien tai
+
                 }
             /// O DAY CO THE UPDATE MAIL TREN NOI BO
             }

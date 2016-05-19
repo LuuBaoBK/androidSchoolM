@@ -104,11 +104,14 @@ public class Transcript_Show extends Fragment {
                 // TODO Auto-generated method stub
             }
         });
+
         listMonth.clear();
         listMonth.add("Choose a month");
         for(int i = 1 ; i <= 8; i++){
             listMonth.add("Tháng " + (i+8)%12);
         }
+        listMonth.add("Average of all month");
+
         monthAdapter = new SpinnerAdapter(getContext(), R.layout.items_children_pinner, listMonth);
         monthSpinner.setAdapter(monthAdapter);
         monthAdapter.notifyDataSetChanged();

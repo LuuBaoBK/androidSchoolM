@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MailContent;
+import com.example.longdinh.tabholder3.activities.MyApplication;
+import com.example.longdinh.tabholder3.activities.ReadMailAcitivity;
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.software.shell.fab.ActionButton;
@@ -42,14 +44,14 @@ public class Tab2Fragment extends Fragment {
     final int  EMAIL_COMPOSE_NEW = 101;
     String vitri = new String(-1 + "");
     String token;
+    MyApplication app ;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.tab1fragment, container, false);
-        SharedPreferences settings = getActivity().getSharedPreferences("toGetData", 0);
-        token = settings.getString("token", null);
+        app = (MyApplication) getActivity().getApplication();
 
         lvEmailItem = (ListView) v.findViewById(R.id.lvEmailItem);
         lvEmailItem.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -81,6 +83,13 @@ public class Tab2Fragment extends Fragment {
                         for (int i = (selected.size() - 1); i >= 0; i--) {
                             if (selected.valueAt(i)) {
                                 EmailItem selecteditem = (EmailItem) adapter.getItem(selected.keyAt(i));
+                                if(false){//neu nhu co mang
+                                    // goi ham update  thong tin mai
+                                }else{
+                                    app.addItem_SendDeleteMail(selecteditem.getId()+ "");
+                                    System.out.println("Them vao sendDelete mail ----" + selecteditem.getId());
+                                    Toast.makeText(getContext(), "Them vao delete send mail", Toast.LENGTH_SHORT).show();
+                                }
                                 adapter.remove(selecteditem);
                             }
                         }
@@ -115,14 +124,16 @@ public class Tab2Fragment extends Fragment {
         });
 
 //        createData();
-        emailItemList = new ArrayList<EmailItem>();
+        emailItemList = app.getData_SendMailList();
         adapter = new EmailItemAdapter(getContext(), R.layout.item_email, emailItemList);
         lvEmailItem.setAdapter(adapter);
         lvEmailItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 vitri = position + "";
-                new showMailDetail().execute(emailItemList.get(position).getId()+ "");
+                Intent intent = new Intent(getContext(), ReadMailAcitivity.class);
+                intent.putExtra("id", emailItemList.get(position).getId()+ "");
+                startActivityForResult(intent, 700);
             }
         });
         return v;
@@ -132,25 +143,13 @@ public class Tab2Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new getListMailInbox().execute("");
-        Toast.makeText(getContext(), "da toi day", Toast.LENGTH_SHORT).show();
+//        new getListMailInbox().execute("");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
-            if(requestCode == EMAIL_COMPOSE_NEW){
-                Toast.makeText(getContext(), "Message send", Toast.LENGTH_SHORT).show();
-//                MyApplication app = (MyApplication) this.getContext().getApplicationContext();
-//                app.addItem_SendMailList(item);
-//                adapter.notifyDataSetChanged();
-            }
-        }else {
-            if(data.getBooleanExtra("isSave", false)){
-                Toast.makeText(getContext(), "Saved as draft", Toast.LENGTH_SHORT).show();
-            }
-        };
+
     }
 
 //    private void createData(){
