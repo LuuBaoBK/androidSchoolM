@@ -5,16 +5,28 @@
     android:background="@android:color/holo_purple"
     android:orientation="vertical" >
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
-        <ListView
-            android:id="@+id/lvEmailItem"
+        android:orientation="vertical">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_weight="1">
+            <ListView
+                android:id="@+id/lvEmailItem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </ListView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+        <Button
+            android:id="@+id/btnLoadMore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Load More"/>
+    </LinearLayout>
+
 
     <com.software.shell.fab.ActionButton
         android:id="@+id/action_button"

@@ -38,6 +38,14 @@ public class NoticeBoardItem {
         this.notice = notice;
     }
 
+    public String geContent(){
+        if(notice.length() < 30){
+            return notice;
+        }else{
+            return notice.substring(0,30);
+        }
+    };
+
     public String getLevel() {
         return level;
     }

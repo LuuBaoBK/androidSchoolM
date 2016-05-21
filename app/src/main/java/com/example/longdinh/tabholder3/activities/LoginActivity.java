@@ -1,9 +1,11 @@
 package com.example.longdinh.tabholder3.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +15,6 @@ import com.example.longdinh.tabholder3.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.pusher.client.Pusher;
-import com.pusher.client.channel.Channel;
-import com.pusher.client.channel.SubscriptionEventListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,11 +37,11 @@ public class LoginActivity extends AppCompatActivity {
     String email;
     String password;
     List<NameValuePair> data = new ArrayList<>();
-    static final String WRONGPASS = "Id or Password is incorrect";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+    static final String WRONGPASS = "Id or Password is incorrect\n";
+    Boolean isSaved = false;
+    String dataInfo = null;
+
+
     private GoogleApiClient client;
 
     @Override
@@ -55,15 +54,14 @@ public class LoginActivity extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
 
-        Pusher pusher = new Pusher("APP_KEY");
-        pusher.connect();
-        Channel channel = pusher.subscribe("my-channel");
-        channel.bind("my-event", new SubscriptionEventListener() {
-            @Override
-            public void onEvent(String channelName, String eventName, final String data) {
-                System.out.println(data + "-------");
-            }
-        });
+        this.loading();
+        if(dataInfo != null){
+            Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
+            Idashboard.putExtra("userinfo_string",dataInfo);
+            startActivity(Idashboard);
+            Idashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+        }
     }
 
     public void login(View v) throws IOException {
@@ -81,6 +79,16 @@ public class LoginActivity extends AppCompatActivity {
             tvEmail.setError("Wrong email format (Ex: s_0000000@schoolm.com)");
         }
     }
+
+    public void loading(){
+        System.out.println("loading datainfor------");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        dataInfo = sp.getString("dataInfo", null);
+        System.out.println("data info----" + dataInfo);
+    }
+
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -134,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
                 httpURLConnection.setDoOutput(true);
 
                 OutputStreamWriter out = new OutputStreamWriter(httpURLConnection.getOutputStream());
-                out.write("data=" + email + "|" + password);
+                out.write("email=" + email + "&password=" + password);
                 out.close();
 
                 httpURLConnection.connect();
@@ -149,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
 
 //                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
 //                userinfo_string = jsonObject.getString("data");
+                System.out.println("1"+stringBuffer.toString());
                 return stringBuffer.toString();
 
             } catch (MalformedURLException e) {
@@ -168,12 +177,14 @@ public class LoginActivity extends AppCompatActivity {
                     return "e4";
                 }
             }
+//            System.out.println("GEt data from server...");
+//            return "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
         }
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+//            System.out.println("a" + result + "2");
             if (!result.equals(WRONGPASS)) {
-                System.out.println(result + "----");
                 Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
                 Idashboard.putExtra("userinfo_string",result);
                 startActivity(Idashboard);
