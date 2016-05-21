@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -61,6 +60,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
 
     private int lastExpandedPosition = -1;
+    private Pusher pusher = new Pusher(Constant.PUSHER_APP_KEY);
 
     //using for saving and loading data saved
     Boolean isSaved = false;
@@ -108,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        pusher.disconnect();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -123,13 +129,20 @@ public class MainActivity extends AppCompatActivity {
         ImageLoader.getInstance().init(config);
 
 
-        Pusher pusher = new Pusher("APP_KEY");
+
         pusher.connect();
         Channel channel = pusher.subscribe("my-channel");
         channel.bind("my-event", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
-                System.out.println(data + "-------");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notice();
+                    }
+                });
+                System.out.println("abchahaha");
+
             }
         });
 
@@ -144,9 +157,9 @@ public class MainActivity extends AppCompatActivity {
         app = (MyApplication)getApplicationContext();
 
 
-//        Intent login = getIntent();
-//        String data = login.getStringExtra("userinfo_string");
-        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
+        Intent login = getIntent();
+        String data = login.getStringExtra("userinfo_string");
+//        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
 //        String data = "\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"0\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"";
         //su dung rieng cho parent
 //        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"3\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
@@ -589,23 +602,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Pusher pusher = new Pusher(Constant.PUSHER_APP_KEY);
-        pusher.connect();
-        Channel channel = pusher.subscribe("my-channel");
-        channel.bind("my-event", new SubscriptionEventListener() {
-
-            @Override
-            public void onEvent(String channelName, String eventName, final String data) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notice();
-                    }
-                });
-                System.out.println("abchahaha");
-
-            }
-        });
+//        pusher.connect();
+//        Channel channel = pusher.subscribe("my-channel");
+//        channel.bind("my-event", new SubscriptionEventListener() {
+//
+//            @Override
+//            public void onEvent(String channelName, String eventName, final String data) {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        notice();
+//                    }
+//                });
+//                System.out.println("abchahaha");
+//
+//            }
+//        });
 
 
 
