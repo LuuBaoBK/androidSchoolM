@@ -1,7 +1,10 @@
 package com.example.longdinh.tabholder3.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -79,7 +82,27 @@ public class ReadDraftMailAcitivity extends Activity{
         @Override
         protected String doInBackground(String... params) {
             String id = params[0];
-            System.out.println("---------------da toi day 0");
+            {
+                // vay de dam bao tinh toan ven thi nhung mail nao co trong list draft thi deu co the doc dc
+                List<EmailItem> draftMailList = app.getData_DraftMailList();
+                for(int i = 0; i < draftMailList.size(); i++){
+                    EmailItem email = draftMailList.get(i);
+                    if(id.equals(email.getId()+ "")){
+                        System.out.println("dang doc mail luu draft -----");
+                        return email.toString();
+                    }
+                }
+
+                //GUI REQUEST LEN SERVER DE LAY DETAIL MAIL
+                if(isOnline()){
+                    String retur = "{\"id\":-1,\"content\":\"Noi dung khong quan trong chay dung la dc\",\"title\":\"Mail sent to server\",\"date_time\":\"Apr 29\",\"author\":\"t0001@schoolm.com\",\"receiver\":\"t_000002@schoolm.com\"}";
+                    return retur;
+                }
+            }
+
+
+
+
             String retur = new String("{ \"id\": 1,\"content\": \"Noi dung khong quan trong chay dung la dc\",\"title\": \"Mail sent to server\",\"date_time\": \"Apr 29\",\"author\": \"t0001@schoolm.com\"}");
             return retur;
         }
@@ -92,11 +115,12 @@ public class ReadDraftMailAcitivity extends Activity{
                 EmailItem email = draftMailList.get(i);
                 if(id.equals(draftMailList.get(i).getId()+ "")){
                     tvStand.setText(Character.toString(Character.toUpperCase(email.getSubject().charAt(0))));
-                tvSubject.setText(email.getSubject());
-                tvSender.setText(app.getId()+"@schoolm.com");
-                tvNguoiNhan.setText(email.getSender());
-                tvDate.setText(email.getDate());
-                tvContent.setText(email.getPreview());
+                    tvSubject.setText(email.getSubject());
+                    tvSender.setText(app.getId()+"@schoolm.com");
+                    tvNguoiNhan.setText(email.getSender());
+                    tvDate.setText(email.getDate());
+                    tvContent.setText(email.getContent());
+                    System.out.println("dang doc mail draft-----");
                     return;
                 }
             }
@@ -114,5 +138,13 @@ public class ReadDraftMailAcitivity extends Activity{
 //                e.printStackTrace();
 //            }
         }
+    }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

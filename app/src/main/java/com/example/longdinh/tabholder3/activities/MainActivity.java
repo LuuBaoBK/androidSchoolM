@@ -3,8 +3,11 @@ package com.example.longdinh.tabholder3.activities;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -20,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    DrawerLayout drawerLayout;
+    public DrawerLayout drawerLayout;
     RelativeLayout drawerPane;
     ListView lvNav;
     TextView tvUserId;
@@ -95,14 +99,14 @@ public class MainActivity extends AppCompatActivity {
     HashMap<String, List<NavItemChild>> listDataChild;
     List<NavItem> listNavItems;
     List<Fragment> listFragments;
-//    List<String> listMaChild;// using for user parent for getschedule
-//    List<String> listFullnameChild;// using for user parent show item navlist
     List<StudentItemSpinner> listChildren;
-    String id;
+    String id = "";
     String token;
     String role;
     MyApplication app;
     int numChildren = 0;
+    String dataInfo;
+    Boolean saveDataLogin = true;
 
 
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -135,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+        if(isOnline()){
+            Toast.makeText(this, "Co mang", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Vui long ket noi mang", Toast.LENGTH_SHORT).show();
+        }
+
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerPane = (RelativeLayout) findViewById(R.id.drawer_pane);
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -144,15 +156,15 @@ public class MainActivity extends AppCompatActivity {
         app = (MyApplication)getApplicationContext();
 
 
-//        Intent login = getIntent();
-//        String data = login.getStringExtra("userinfo_string");
-        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
-//        String data = "\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"0\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"";
+        Intent login = getIntent();
+        dataInfo = login.getStringExtra("userinfo_string");
+//        dataInfo = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
+//        String dataInfo = "\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"0\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"";
         //su dung rieng cho parent
-//        String data = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"3\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
-        System.out.println(data + "----");
+//        String dataInfo = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"3\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
+        System.out.println(dataInfo + "----");
         try {
-            JSONObject user = new JSONObject(data);
+            JSONObject user = new JSONObject(dataInfo);
             id = user.getString("id");
             token = user.getString("token");
 
@@ -286,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
                 R.string.drawer_opened, R.string.drawer_closed) {
 
@@ -305,6 +318,12 @@ public class MainActivity extends AppCompatActivity {
 
         };
 
+//        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+//        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//            getActivity().setDisplayShowTitleEnabled(false);
+//        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+//        getActivity().getActionBar().setHomeButtonEnabled(true);//co the khong can thiet
+
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         System.out.println("nearly come to end of create-----");
         loadingdata();
@@ -323,38 +342,37 @@ public class MainActivity extends AppCompatActivity {
         //create  data sharing
 
         System.out.println("creating data------");
-        InboxMailList.add(new EmailItem(0, "Thu moi hop 1", "Feb 28", "vanminh@hostmail.com", "Kinh thi moi quy phu huynh...", true));
-        InboxMailList.add(new EmailItem(1, "Thu moi hop 1", "Feb 27", "vanminh@hostmail.com", "Kinh  vam moi quy phu huynh...", true));
-        InboxMailList.add(new EmailItem(2, "Thu hoc phi 1", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi...", true));
-        InboxMailList.add(new EmailItem(3, "Thu hoc phi 1", "Jan 20", "giaovien_@van.com", "Thong bao nop hoc phi...", true));
+        InboxMailList.add(new EmailItem(0, "Thu moi hop 1", "Feb 28", "vanminh@hostmail.com","t_00001@schoolm.com",  "Kinh thi moi quy phu huynh...", true));
+        InboxMailList.add(new EmailItem(1, "Thu moi hop 1", "Feb 27", "vanminh@hostmail.com", "t_00002@schoolm.com","Kinh  vam moi quy phu huynh...", true));
+        InboxMailList.add(new EmailItem(2, "Thu hoc phi 1", "Jan 21", "giaovien_@van.com", "t_00003@schoolm.com","Thong bao nop hoc phi...", true));
+        InboxMailList.add(new EmailItem(3, "Thu hoc phi 1", "Jan 20", "giaovien_@van.com", "t_00004@schoolm.com","Thong bao nop hoc phi...", true));
         app.setData_InboxMailList(InboxMailList);
-
+        app.setInboxReadMail(InboxReadMail);
+        app.setInboxDeleteMail(InboxDeleteMail);
 
 
         SendMailList = new ArrayList<EmailItem>();
-        SendMailList.add(new EmailItem(4, "Thu moi hop 2", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        SendMailList.add(new EmailItem(5, "Thu moi hop 2", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        SendMailList.add(new EmailItem(6, "Thu hoc phi 2", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
-        SendMailList.add(new EmailItem(7, "Thu hoc phi 2", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
+        SendMailList.add(new EmailItem(4, "Thu moi hop 2", "Feb 28", "vanminh@hostmail.com","t_00001@schoolm.com", "Kinh moi quy phu huynh...", false));
+        SendMailList.add(new EmailItem(5, "Thu moi hop 2", "Feb 28", "vanminh@hostmail.com","t_00002@schoolm.com", "Kinh moi quy phu huynh...", false));
+        SendMailList.add(new EmailItem(6, "Thu hoc phi 2", "Jan 21", "giaovien_@van.com","t_0003@schoolm.com", "Thong bao nop hoc phi...", false));
+        SendMailList.add(new EmailItem(7, "Thu hoc phi 2", "Jan 21", "giaovien_@van.com","t_00004@schoolm.com", "Thong bao nop hoc phi...", false));
         app.setData_SendMailList(SendMailList);
+        app.setSendDeleteMail(SendDeleteMail);
 
         DraftMailList = new ArrayList<EmailItem>();
-        DraftMailList.add(new EmailItem(8, "Thu moi hop 3", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        DraftMailList.add(new EmailItem(9, "Thu hoc phi 3", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
-        DraftMailList.add(new EmailItem(10, "Hop hoi dong 3", "July 8", "hoidong@gmail.com", "Sap co thoi khoa bieu moi..."));
-        DraftMailList.add(new EmailItem(11, "Hop hoi dong 3", "July 1", "hoidong@gmail.com", "Sap co thoi khoa bieu moi..."));
+        DraftMailList.add(new EmailItem(8, "Thu moi hop 3", "Feb 28", "vanminh@hostmail.com","vanminh1@hostmail.com", "Kinh moi quy phu huynh...", false));
+        DraftMailList.add(new EmailItem(9, "Thu hoc phi 3", "Jan 21", "giaovien_@van.com","vanminh2@hostmail.com", "Thong bao nop hoc phi...", false));
+        DraftMailList.add(new EmailItem(10, "Hop hoi dong 3", "July 8", "hoidong@gmail.com","vanminh3@hostmail.com", "Sap co thoi khoa bieu moi...", false));
+        DraftMailList.add(new EmailItem(11, "Hop hoi dong 3", "July 1", "hoidong@gmail.com","vanminh4@hostmail.com", "Sap co thoi khoa bieu moi...", false));
         app.setData_DraftMailList(DraftMailList);
-
-
-
-
-
+        app.setDraftDeleteMail(DraftDeleteMail);
+        app.setDraftNewMail(DraftNewMail);
 
         OutboxMailList = new ArrayList<EmailItem>();
-        OutboxMailList.add(new EmailItem(9, "Thu moi hop 5", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        OutboxMailList.add(new EmailItem(12,"Thu hoc phi 5", "Jan 27", "giaovien_@van.com", "Thong bao nop hoc phi..."));
-        OutboxMailList.add(new EmailItem(13,"Thu moi hop 5", "Feb 22", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
-        OutboxMailList.add(new EmailItem(14,"Thu hoc phi 5", "Jan 21", "giaovien_@van.com", "Thong bao nop hoc phi..."));
+        OutboxMailList.add(new EmailItem(9, "Thu moi hop 5", "Feb 28", "vanminh@hostmail.com","vanminh5@hostmail.com", "Kinh moi quy phu huynh...",false));
+        OutboxMailList.add(new EmailItem(12,"Thu hoc phi 5", "Jan 27", "giaovien_@van.com","vanminh6@hostmail.com", "Thong bao nop hoc phi...",false));
+        OutboxMailList.add(new EmailItem(13,"Thu moi hop 5", "Feb 22", "vanminh@hostmail.com","vanminh7@hostmail.com", "Kinh moi quy phu huynh...",false));
+        OutboxMailList.add(new EmailItem(14,"Thu hoc phi 5", "Jan 21", "giaovien_@van.com","vanminh8@hostmail.com", "Thong bao nop hoc phi...",false));
 
         app.setData_OutboxMailList(OutboxMailList);
 
@@ -363,37 +381,47 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+
+
     public void loadingdata(){
         System.out.println("loading data------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        isSaved = sp.getBoolean("isSaved", false);
+        isSaved = sp.getBoolean(id+"isSaved", false);
         if(isSaved){
             /// using for inbox mail
-            int numInbox = sp.getInt("numInbox", 0);
+            int numInbox = sp.getInt(id+"numInbox", 0);
             for (int i = 0; i < numInbox; i++){
-                int id = sp.getInt("idInbox"+ i, 0);
-                String subject = sp.getString("subjectInbox" + i, "");
-                String date= sp.getString("dateInbox"+ i, "");
-                String sender= sp.getString("senderInbox"+ i, "");
-                String preview= sp.getString("previewInbox" + i, "");
-                System.out.println("mail---- " + i + ", " + id + ", " + subject + ", " + date + ", " + sender + ", " + preview);
-                InboxMailList.add(new EmailItem(id, subject, date, sender, preview));
+                int ID = sp.getInt(id+"idInbox"+ i, 0);
+                String subject = sp.getString(id + "subjectInbox" + i, "");
+                String date= sp.getString(id+"dateInbox"+ i, "");
+                String sender= sp.getString(id+"senderInbox"+ i, "");
+                String preview= sp.getString(id+"previewInbox" + i, "");
+                System.out.println("mail---- " + i + ", " + ID + ", " + subject + ", " + date + ", " + sender + ", " + preview);
+                InboxMailList.add(new EmailItem(ID, subject, date, sender, preview));
             }
             app.setData_InboxMailList(InboxMailList);
 
-            int numReadInbox = sp.getInt("numReadInbox", 0);
+            int numReadInbox = sp.getInt(id+"numReadInbox", 0);
             for (int i = 0; i < numReadInbox; i++){
-                int id = sp.getInt("idReadInbox" + i, 0);
-                System.out.println("mail read inbox---- " + i + ", " + id);
-                InboxReadMail.add(id + "");
+                int ID = sp.getInt(id+"idReadInbox" + i, 0);
+                System.out.println("mail read inbox---- " + i + ", " + ID);
+                InboxReadMail.add(ID + "");
             }
             app.setInboxReadMail(InboxReadMail);
 
-            int numDeleteInbox = sp.getInt("numDeleteInbox", 0);
+            int numDeleteInbox = sp.getInt(id+"numDeleteInbox", 0);
             for (int i = 0; i < numDeleteInbox; i++){
-                int id = sp.getInt("idDeleteInbox" + i, 0);
-                System.out.println("mail delete inbox---- " + i + ", " + id);
-                InboxDeleteMail.add(id + "");
+                int ID = sp.getInt(id+"idDeleteInbox" + i, 0);
+                System.out.println("mail delete inbox---- " + i + ", " + ID);
+                InboxDeleteMail.add(ID + "");
             }
             System.out.println("InboxDeleteMail is ---" + InboxDeleteMail);
 
@@ -402,15 +430,15 @@ public class MainActivity extends AppCompatActivity {
 
 
             /// using for outbox mail
-            int num = sp.getInt("numOutbox", 0);
+            int num = sp.getInt(id+"numOutbox", 0);
             for (int i = 0; i < num; i++){
-                int id = sp.getInt("idOutbox"+ i, 0);
-                String subject = sp.getString("subjectOutbox" + i, "");
-                String date= sp.getString("dateOutbox"+ i, "");
-                String sender= sp.getString("senderOutbox"+ i, "");
-                String preview= sp.getString("previewOutbox" + i, "");
-                System.out.println("mail---- " + i + ", " + id + ", " + subject + ", " + date + ", " + sender + ", " + preview);
-                OutboxMailList.add(new EmailItem(id, subject, date, sender, preview));
+                int ID = sp.getInt(id+"idOutbox"+ i, 0);
+                String subject = sp.getString(id+"subjectOutbox" + i, "");
+                String date= sp.getString(id+"dateOutbox"+ i, "");
+                String sender= sp.getString(id+"senderOutbox"+ i, "");
+                String preview= sp.getString(id+"previewOutbox" + i, "");
+                System.out.println("mail---- " + i + ", " + ID + ", " + subject + ", " + date + ", " + sender + ", " + preview);
+                OutboxMailList.add(new EmailItem(ID, subject, date, sender, preview));
             }
             app.setData_OutboxMailList(OutboxMailList);
 
@@ -418,55 +446,55 @@ public class MainActivity extends AppCompatActivity {
 
 
             //loading cho mail send
-            int numSend = sp.getInt("numSend", 0);
+            int numSend = sp.getInt(id+"numSend", 0);
             for (int i = 0; i < numSend; i++){
-                int id = sp.getInt("idSend"+ i, 0);
-                String subject = sp.getString("subjectSend" + i, "");
-                String date= sp.getString("dateSend"+ i, "");
-                String sender= sp.getString("senderSend"+ i, "");
-                String preview= sp.getString("previewSend" + i, "");
-                System.out.println("mail---- " + i + ", " + id + ", " + subject + ", " + date + ", " + sender + ", " + preview);
-                SendMailList.add(new EmailItem(id, subject, date, sender, preview));
+                int ID = sp.getInt(id+"idSend"+ i, 0);
+                String subject = sp.getString(id+"subjectSend" + i, "");
+                String date= sp.getString(id+"dateSend"+ i, "");
+                String sender= sp.getString(id+"senderSend"+ i, "");
+                String preview= sp.getString(id+"previewSend" + i, "");
+                System.out.println("mail---- " + i + ", " + ID + ", " + subject + ", " + date + ", " + sender + ", " + preview);
+                SendMailList.add(new EmailItem(ID, subject, date, sender, preview));
             }
             app.setData_SendMailList(SendMailList);
 
-            int numDeleteSend = sp.getInt("numDeleteSend", 0);
+            int numDeleteSend = sp.getInt(id+"numDeleteSend", 0);
             for (int i = 0; i < numDeleteSend; i++){
-                int id = sp.getInt("idDeleteSend" + i, 0);
-                System.out.println("mail delete Send---- " + i + ", " + id);
-                SendDeleteMail.add(id + "");
+                int ID = sp.getInt(id+"idDeleteSend" + i, 0);
+                System.out.println("mail delete Send---- " + i + ", " + ID);
+                SendDeleteMail.add(ID + "");
             }
-            System.out.println("InboxDeleteMail is ---" + SendDeleteMail);
+            System.out.println("SendDeleteMail is ---" + SendDeleteMail);
 
             app.setSendDeleteMail(SendDeleteMail);
 
 
             //loading cho mail draft
-            int numDraft = sp.getInt("numDraft", 0);
+            int numDraft = sp.getInt(id+"numDraft", 0);
             for (int i = 0; i < numDraft; i++){
-                int id = sp.getInt("idDraft"+ i, 0);
-                String subject = sp.getString("subjectDraft" + i, "");
-                String date= sp.getString("dateDraft"+ i, "");
-                String sender= sp.getString("senderDraft"+ i, "");
-                String preview= sp.getString("previewDraft" + i, "");
-                System.out.println("mail---- " + i + ", " + id + ", " + subject + ", " + date + ", " + sender + ", " + preview);
-                DraftMailList.add(new EmailItem(id, subject, date, sender, preview));
+                int ID = sp.getInt(id+"idDraft"+ i, 0);
+                String subject = sp.getString(id+"subjectDraft" + i, "");
+                String date= sp.getString(id+"dateDraft"+ i, "");
+                String sender= sp.getString(id+"senderDraft"+ i, "");
+                String preview= sp.getString(id+"previewDraft" + i, "");
+                System.out.println("mail---- " + i + ", " + ID + ", " + subject + ", " + date + ", " + sender + ", " + preview);
+                DraftMailList.add(new EmailItem(ID, subject, date, sender, preview));
             }
             app.setData_DraftMailList(DraftMailList);
 
-            int numNewDraft = sp.getInt("numNewDraft", 0);
+            int numNewDraft = sp.getInt(id+"numNewDraft", 0);
             for (int i = 0; i < numNewDraft; i++){
-                int id = sp.getInt("idNewDraft" + i, 0);
-                System.out.println("mail NewDraft---- " + i + ", " + id);
-                DraftNewMail.add(id + "");
+                int ID = sp.getInt(id+"idNewDraft" + i, 0);
+                System.out.println("mail NewDraft---- " + i + ", " + ID);
+                DraftNewMail.add(ID + "");
             }
             app.setDraftNewMail(DraftNewMail);
 
-            int numDeleteDraft = sp.getInt("numDeleteDraft", 0);
+            int numDeleteDraft = sp.getInt(id+"numDeleteDraft", 0);
             for (int i = 0; i < numDeleteDraft; i++){
-                int id = sp.getInt("idDeleteDraft" + i, 0);
+                int ID = sp.getInt(id+"idDeleteDraft" + i, 0);
                 System.out.println("mail delete Draft---- " + i + ", " + id);
-                DraftDeleteMail.add(id + "");
+                DraftDeleteMail.add(ID + "");
             }
             System.out.println("DraftDeleteMail is ---" + DraftDeleteMail);
 
@@ -481,29 +509,56 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+    public void savingDataLogIn(SharedPreferences.Editor editor){
+        editor.putString("dataInfo", dataInfo);
+        System.out.println("saving info" + dataInfo);
+
+
+    };
+
+
+    public void clearDataLogIn(SharedPreferences.Editor editor){
+        editor.putString("dataInfo", null);
+        System.out.println("clear info" + dataInfo);
+    };
+
     public void savingData(){
         System.out.println("begin saving data------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
+//        editor.putString("dataInfo", dataInfo);
+//        System.out.println("saving info" + dataInfo);
+
+        if(saveDataLogin){
+            savingDataLogIn(editor);
+            System.out.println("saving info" + dataInfo);
+        }
+        else{
+            clearDataLogIn(editor);
+            System.out.println("clean info" + dataInfo);
+        }
+
 
         //for saving data from inbox mail
-        editor.putBoolean("isSaved", false);
+        editor.putBoolean(id + "isSaved", false);
+
         int numInbox = InboxMailList.size();
-        editor.putInt("numInbox", numInbox);
+        editor.putInt(id+"numInbox", numInbox);
         for (int i = 0; i < numInbox; i++){
             System.out.println("numInboum mail saving----" + numInbox);
-            editor.putInt("idInbox" + i, InboxMailList.get(i).getId());
-            editor.putString("subjectInbox" + i, InboxMailList.get(i).getSubject());
-            editor.putString("dateInbox" + i, InboxMailList.get(i).getDate());
-            editor.putString("senderInbox" + i, InboxMailList.get(i).getSender());
-            editor.putString("previewInbox" + i, InboxMailList.get(i).getPreview());
+            editor.putInt(id+"idInbox" + i, InboxMailList.get(i).getId());
+            editor.putString(id+"subjectInbox" + i, InboxMailList.get(i).getSubject());
+            editor.putString(id+"dateInbox" + i, InboxMailList.get(i).getDate());
+            editor.putString(id+"senderInbox" + i, InboxMailList.get(i).getSender());
+            editor.putString(id+"previewInbox" + i, InboxMailList.get(i).getPreview());
         }
 
         int numReadInbox = InboxReadMail.size();
-        editor.putInt("numReadInbox", numReadInbox);
+        editor.putInt(id+"numReadInbox", numReadInbox);
         for (int i = 0; i < numReadInbox; i++) {
-            editor.putInt("idReadInbox" + i, Integer.parseInt(InboxReadMail.get(i)));
+            editor.putInt(id+"idReadInbox" + i, Integer.parseInt(InboxReadMail.get(i)));
             System.out.println("mail read inbox---- " + i + InboxReadMail.get(i));
         }
 
@@ -512,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("size  of delete inbox is---- " + numDeleteInbox);
         editor.putInt("numDeleteInbox", numDeleteInbox);
         for (int i = 0; i < numDeleteInbox; i++) {
-            editor.putInt("idDeleteInbox" + i, Integer.parseInt(InboxDeleteMail.get(i)));
+            editor.putInt(id+"idDeleteInbox" + i, Integer.parseInt(InboxDeleteMail.get(i)));
             System.out.println("mail Delete inbox---- " + i + InboxDeleteMail.get(i));
         }
 
@@ -521,61 +576,61 @@ public class MainActivity extends AppCompatActivity {
 
         //using for saving mail send
         int numSend = SendMailList.size();
-        editor.putInt("numSend", numSend);
+        editor.putInt(id+"numSend", numSend);
         for (int i = 0; i < numSend; i++){
-            System.out.println("num mail saving----" + numSend);
-            editor.putInt("idSend" + i, SendMailList.get(i).getId());
-            editor.putString("subjectSend" + i, SendMailList.get(i).getSubject());
-            editor.putString("dateSend" + i, SendMailList.get(i).getDate());
-            editor.putString("senderSend" + i, SendMailList.get(i).getSender());
-            editor.putString("previewSend" + i, SendMailList.get(i).getPreview());
+            System.out.println("num send mail saving----" + numSend);
+            editor.putInt(id+"idSend" + i, SendMailList.get(i).getId());
+            editor.putString(id+"subjectSend" + i, SendMailList.get(i).getSubject());
+            editor.putString(id+"dateSend" + i, SendMailList.get(i).getDate());
+            editor.putString(id+"senderSend" + i, SendMailList.get(i).getSender());
+            editor.putString(id+"previewSend" + i, SendMailList.get(i).getPreview());
         }
 
         int numDeleteSend = SendDeleteMail.size();
-        editor.putInt("numDeleteSend", numDeleteSend);
+        editor.putInt(id+"numDeleteSend", numDeleteSend);
         for (int i = 0; i < numDeleteSend; i++) {
-            editor.putInt("idDeleteSend" + i, Integer.parseInt(SendDeleteMail.get(i)));
+            editor.putInt(id+"idDeleteSend" + i, Integer.parseInt(SendDeleteMail.get(i)));
             System.out.println("mail read inbox---- " + i + SendDeleteMail.get(i));
         }
 
 
         //using for mail draft
         int numDraft = DraftMailList.size();
-        editor.putInt("numDraft", numDraft);
+        editor.putInt(id+"numDraft", numDraft);
         for (int i = 0; i < numDraft; i++){
-            System.out.println("num mail saving----" + numDraft);
-            editor.putInt("idDraft" + i, DraftMailList.get(i).getId());
-            editor.putString("subjectDraft" + i, DraftMailList.get(i).getSubject());
-            editor.putString("dateDraft" + i, DraftMailList.get(i).getDate());
-            editor.putString("senderDraft" + i, DraftMailList.get(i).getSender());
-            editor.putString("previewDraft" + i, DraftMailList.get(i).getPreview());
+            System.out.println("num save mail saving----" + numDraft);
+            editor.putInt(id+"idDraft" + i, DraftMailList.get(i).getId());
+            editor.putString(id+"subjectDraft" + i, DraftMailList.get(i).getSubject());
+            editor.putString(id+"dateDraft" + i, DraftMailList.get(i).getDate());
+            editor.putString(id+"senderDraft" + i, DraftMailList.get(i).getSender());
+            editor.putString(id+"previewDraft" + i, DraftMailList.get(i).getPreview());
         }
 
         int numDeleteDraft = DraftDeleteMail.size();
-        editor.putInt("numDeleteDraft", numDeleteDraft);
+        editor.putInt(id+"numDeleteDraft", numDeleteDraft);
         for (int i = 0; i < numDeleteDraft; i++) {
-            editor.putInt("idDeleteDraft" + i, Integer.parseInt(DraftDeleteMail.get(i)));
+            editor.putInt(id+"idDeleteDraft" + i, Integer.parseInt(DraftDeleteMail.get(i)));
             System.out.println("mail read inbox---- " + i + DraftDeleteMail.get(i));
         }
 
         int numNewDraft = DraftNewMail.size();
-        editor.putInt("numNewDraft", numNewDraft);
+        editor.putInt(id+"numNewDraft", numNewDraft);
         for (int i = 0; i < numNewDraft; i++) {
-            editor.putInt("idNewDraft" + i, Integer.parseInt(DraftNewMail.get(i)));
+            editor.putInt(id+"idNewDraft" + i, Integer.parseInt(DraftNewMail.get(i)));
             System.out.println("mail new draft---- " + i + DraftNewMail.get(i));
         }
         //end for draft
 
         // using for mail outbox
         int numOutbox = OutboxMailList.size();
-        editor.putInt("numOutbox", numOutbox);
+        editor.putInt(id+"numOutbox", numOutbox);
         for (int i = 0; i < numOutbox; i++){
-            System.out.println("num mail saving----" + numOutbox);
-            editor.putInt("idOutbox" + i, OutboxMailList.get(i).getId());
-            editor.putString("subjectOutbox" + i, OutboxMailList.get(i).getSubject());
-            editor.putString("dateOutbox" + i, OutboxMailList.get(i).getDate());
-            editor.putString("senderOutbox" + i, OutboxMailList.get(i).getSender());
-            editor.putString("previewOutbox" + i, OutboxMailList.get(i).getPreview());
+            System.out.println("num outbox mail saving----" + numOutbox);
+            editor.putInt(id+"idOutbox" + i, OutboxMailList.get(i).getId());
+            editor.putString(id+"subjectOutbox" + i, OutboxMailList.get(i).getSubject());
+            editor.putString(id+"dateOutbox" + i, OutboxMailList.get(i).getDate());
+            editor.putString(id+"senderOutbox" + i, OutboxMailList.get(i).getSender());
+            editor.putString(id+"previewOutbox" + i, OutboxMailList.get(i).getPreview());
         }
         //end for outbox
 
@@ -712,6 +767,15 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         if (actionBarDrawerToggle.onOptionsItemSelected(item))
             return true;
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                saveDataLogin = false;
+                System.out.println("log out app -----");
+
+
+                finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }

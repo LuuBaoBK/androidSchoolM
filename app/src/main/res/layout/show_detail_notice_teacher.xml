@@ -48,7 +48,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -82,7 +82,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -109,33 +109,22 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Notice Level:"
+                    android:text="Level:"
                     android:layout_weight="1.1"
                     android:textSize="16dp"
                     android:textStyle="bold" />
-                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/radio_level">
-                    <RadioButton android:id="@+id/radio_Straightway"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Straightway"
-                        android:onClick="onRadioButtonClicked"/>
-                    <RadioButton android:id="@+id/radio_Gradual"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gradual"
-                        android:onClick="onRadioButtonClicked"
-                        android:checked="true" />
-                    <RadioButton android:id="@+id/radio_Behindhand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Behindhand"
-                        android:onClick="onRadioButtonClicked"/>
-                </RadioGroup>
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="1"
+                    android:id="@+id/tvLevel"
+                    android:layout_weight="2.6"
+                    android:textSize="16dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:background="@drawable/fillentry"
+                    android:padding="3dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -152,7 +141,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Thời hạn:"
+                    android:text="Ngày viết:"
                     android:id="@+id/textView5"
                     android:layout_weight="1.1"
                     android:textSize="16dp"
@@ -164,26 +153,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2.6">
 
-                    <EditText
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:text="29-08-2015"
-                        android:id="@+id/etDeadline"
+                        android:id="@+id/tvDateWrote"
                         android:textSize="16dp"
                         android:fontFamily="sans-serif-condensed"
-                        android:inputType="date"
-                        android:editable="true"
                         android:background="@drawable/fillentry"
                         android:padding="3dp" />
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Notice for next class"
-                        android:id="@+id/checkbox_nextclass" />
                 </LinearLayout>
-
             </LinearLayout>
 
 
@@ -238,7 +218,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -250,19 +230,6 @@
                     android:padding="3dp"
                     android:minHeight="50dp" />
             </LinearLayout>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SAVE"
-                android:id="@+id/btnSave"
-                android:layout_gravity="center_horizontal"
-                android:background="#ffa000"
-                android:layout_margin="5dp" />
-
         </LinearLayout>
     </ScrollView>
-
-
-
 </LinearLayout>

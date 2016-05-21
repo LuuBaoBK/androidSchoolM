@@ -1,15 +1,18 @@
 package com.example.longdinh.tabholder3.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
+import com.example.longdinh.tabholder3.models.EmailItem;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,10 +42,10 @@ public class LoginActivity extends AppCompatActivity {
     String password;
     List<NameValuePair> data = new ArrayList<>();
     static final String WRONGPASS = "Id or Password is incorrect";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+    Boolean isSaved = false;
+    String dataInfo = null;
+
+
     private GoogleApiClient client;
 
     @Override
@@ -55,15 +58,14 @@ public class LoginActivity extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
 
-        Pusher pusher = new Pusher("APP_KEY");
-        pusher.connect();
-        Channel channel = pusher.subscribe("my-channel");
-        channel.bind("my-event", new SubscriptionEventListener() {
-            @Override
-            public void onEvent(String channelName, String eventName, final String data) {
-                System.out.println(data + "-------");
-            }
-        });
+        this.loading();
+        if(dataInfo != null){
+            Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
+            Idashboard.putExtra("userinfo_string",dataInfo);
+            startActivity(Idashboard);
+            Idashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+        }
     }
 
     public void login(View v) throws IOException {
@@ -81,6 +83,16 @@ public class LoginActivity extends AppCompatActivity {
             tvEmail.setError("Wrong email format (Ex: s_0000000@schoolm.com)");
         }
     }
+
+    public void loading(){
+        System.out.println("loading datainfor------");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        dataInfo = sp.getString("dataInfo", null);
+        System.out.println("data info----" + dataInfo);
+    }
+
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -124,50 +136,52 @@ public class LoginActivity extends AppCompatActivity {
     public class runLogin extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            BufferedReader bufferedReader = null;
-            String url_ = Constant.ROOT_API + "api/login";
-            try {
-                URL url = new URL(url_);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-
-                OutputStreamWriter out = new OutputStreamWriter(httpURLConnection.getOutputStream());
-                out.write("data=" + email + "|" + password);
-                out.close();
-
-                httpURLConnection.connect();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line = null;
-                StringBuffer stringBuffer = new StringBuffer();
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuffer.append(line + "\n");
-//                    System.out.println(line);
-                }
-
-//                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
-//                userinfo_string = jsonObject.getString("data");
-                return stringBuffer.toString();
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return "e1";
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "e2";
-            } finally {
-                if (httpURLConnection != null)
-                    httpURLConnection.disconnect();
-                try {
-                    if (bufferedReader != null)
-                        bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return "e4";
-                }
-            }
+//            HttpURLConnection httpURLConnection = null;
+//            BufferedReader bufferedReader = null;
+//            String url_ = Constant.ROOT_API + "api/login";
+//            try {
+//                URL url = new URL(url_);
+//                httpURLConnection = (HttpURLConnection) url.openConnection();
+//                httpURLConnection.setRequestMethod("POST");
+//                httpURLConnection.setDoOutput(true);
+//
+//                OutputStreamWriter out = new OutputStreamWriter(httpURLConnection.getOutputStream());
+//                out.write("data=" + email + "|" + password);
+//                out.close();
+//
+//                httpURLConnection.connect();
+//                InputStream inputStream = httpURLConnection.getInputStream();
+//                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//                String line = null;
+//                StringBuffer stringBuffer = new StringBuffer();
+//                while ((line = bufferedReader.readLine()) != null) {
+//                    stringBuffer.append(line + "\n");
+////                    System.out.println(line);
+//                }
+//
+////                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
+////                userinfo_string = jsonObject.getString("data");
+//                return stringBuffer.toString();
+//
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//                return "e1";
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                return "e2";
+//            } finally {
+//                if (httpURLConnection != null)
+//                    httpURLConnection.disconnect();
+//                try {
+//                    if (bufferedReader != null)
+//                        bufferedReader.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    return "e4";
+//                }
+//            }
+            System.out.println("GEt data from server...");
+            return "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
         }
         @Override
         protected void onPostExecute(String result) {

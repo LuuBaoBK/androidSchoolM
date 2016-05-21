@@ -90,7 +90,7 @@ public class MailContent  extends Activity implements TextWatcher{
 
         }else if(type.equals("EDIT")){
             etContent.setText(getData.getStringExtra("content"));
-            etSubject.setText("Forward:" + getData.getStringExtra("subject"));
+            etSubject.setText(getData.getStringExtra("subject"));
             etNguoiNhan.setText(getData.getStringExtra("sender"));
             idMail = getData.getStringExtra("idMail");
             isDraftMail = true;
@@ -105,7 +105,7 @@ public class MailContent  extends Activity implements TextWatcher{
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!etNguoiNhan.getText().toString().matches("(([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)(\\s*;\\s*|\\s*$))*"))
+                if(!etNguoiNhan.getText().toString().matches("(([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)(\\s*;\\s*|\\s*$))"))
                 {
                     Toast.makeText(MailContent.this, "Error Email Address", Toast.LENGTH_SHORT).show();
                     return;
@@ -138,7 +138,7 @@ public class MailContent  extends Activity implements TextWatcher{
                         }
                     }
 
-                    String currentDateandTime = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                    String currentDateandTime = new SimpleDateFormat("MMM dd").format(new Date());
                     EmailItem item = new EmailItem(min-1, etSubject.getText().toString(), currentDateandTime, etNguoiNhan.getText().toString(), etContent.getText().toString());
                     app.addItem_OutboxhMailList(item);
                     //save nhu mail draft
@@ -173,7 +173,7 @@ public class MailContent  extends Activity implements TextWatcher{
                 Toast.makeText(getApplicationContext(), "Noi dung mail ko doi", Toast.LENGTH_SHORT).show();
             }
             else{
-                String currentDateandTime = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                String currentDateandTime = new SimpleDateFormat("MMM dd").format(new Date());
                 if(isDraftMail){
                     //ghi de
                     Toast.makeText(getApplicationContext(), "Save as draft mail... ghide", Toast.LENGTH_SHORT).show();
@@ -242,13 +242,11 @@ public class MailContent  extends Activity implements TextWatcher{
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         previousString = s.toString();
-        System.out.println("before change--" + s);
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         currentString = s.toString();
-        System.out.println("on change --" + s);
     }
 
     @Override
@@ -256,7 +254,6 @@ public class MailContent  extends Activity implements TextWatcher{
 
         if(!previousString.equals(currentString)){
             ischanged = true;
-            System.out.println("is changed");
         }
     }
 

@@ -12,6 +12,7 @@ public class EmailItem {
     String subject;
     String date;
     String sender;
+    String receiver;
     String preview;
     Boolean isRead;
 
@@ -34,6 +35,24 @@ public class EmailItem {
         this.isRead = isRead;
     }
 
+    public EmailItem(int id, String subject, String date, String sender, String receiver, String preview, Boolean isRead) {
+        this.id = id;
+        this.subject = subject;
+        this.date = date;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.preview = preview;
+        this.isRead = isRead;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
     public Boolean getIsRead() {
         return isRead;
     }
@@ -43,8 +62,17 @@ public class EmailItem {
     }
 
     public String getPreview() {
-        return preview;
+        if(preview.length() < 30){
+            return preview;
+        }else{
+            return preview.substring(0,30);
+        }
     }
+
+
+    public String getContent(){
+        return preview;
+    };
 
     public void setPreview(String preview) {
         this.preview = preview;
@@ -81,4 +109,10 @@ public class EmailItem {
     public void setSender(String sender) {
         this.sender = sender;
     }
+
+
+    public String toString(){
+        return "{\"id\":"+id+",\"content\": \""+preview+"\",\"title\": \""+subject+"\",\"date_time\": \""+date+"\",\"author\": \""+sender+"\", \"receiver\":" + ((receiver==null)?("\"\""):("\""+receiver+"\""))+"}";
+//        { "id": 1,"content": "Noi dung khong quan trong chay dung la dc","title": "Mail sent to server","date_time": "Apr 29","author": "t0001@schoolm.com", "receiver":"t_000002@schoolm.com"}
+    };
 }

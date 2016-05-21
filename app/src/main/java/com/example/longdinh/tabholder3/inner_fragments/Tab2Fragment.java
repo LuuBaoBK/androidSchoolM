@@ -41,6 +41,7 @@ public class Tab2Fragment extends Fragment {
     List<EmailItem> emailItemList;
     ListView lvEmailItem;
     EmailItemAdapter adapter;
+
     final int  EMAIL_COMPOSE_NEW = 101;
     String vitri = new String(-1 + "");
     String token;
@@ -133,6 +134,7 @@ public class Tab2Fragment extends Fragment {
                 vitri = position + "";
                 Intent intent = new Intent(getContext(), ReadMailAcitivity.class);
                 intent.putExtra("id", emailItemList.get(position).getId()+ "");
+                intent.putExtra("typeMail","send");
                 startActivityForResult(intent, 700);
             }
         });
@@ -143,6 +145,7 @@ public class Tab2Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        adapter.notifyDataSetChanged();
 //        new getListMailInbox().execute("");
     }
 

@@ -2,7 +2,10 @@ package com.example.longdinh.tabholder3.activities;
 
 import android.app.Application;
 
+import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
+import com.example.longdinh.tabholder3.models.ItemClassDate;
+import com.example.longdinh.tabholder3.models.NoticeBoardItem;
 import com.example.longdinh.tabholder3.models.StudentItemSpinner;
 
 import java.util.ArrayList;
@@ -24,9 +27,19 @@ public class MyApplication extends Application {
     List<String>        DraftNewMail = new ArrayList<String>();
 
 
-    private List<EmailItem> TrashMailList;
-    private List<EmailItem> OutboxMailList;
 
+    private List<EmailItem> TrashMailList;
+
+
+    private List<NoticeBoardItem> NoticeListT2;
+    private List<NoticeBoardItem> NoticeListT3;
+    private List<NoticeBoardItem> NoticeListT4;
+    private List<NoticeBoardItem> NoticeListT5;
+    private List<NoticeBoardItem> NoticeListT6;
+    private List<NoticeBoardItem> NoticeListT7;
+
+
+    private List<EmailItem> OutboxMailList;
 
 
     public List<StudentItemSpinner> getListchildren() {
@@ -148,7 +161,7 @@ public class MyApplication extends Application {
 
     public void removeItem_SendDeleteMail(int position){this.SendDeleteMail.remove(position);};
 
-    public void addItem_SendDeleteMail(String item) {this.SendDeleteMail.add(0,item);};
+    public void addItem_SendDeleteMail(String item) {this.SendDeleteMail.add(0, item);};
 
 
 
@@ -161,7 +174,7 @@ public class MyApplication extends Application {
 
     public void removeItem_InboxDeleteMail(int position){this.InboxDeleteMail.remove(position);};
 
-    public void addItem_InboxDeleteMail(String item) {this.InboxDeleteMail.add(0,item);};
+    public void addItem_InboxDeleteMail(String item) {this.InboxDeleteMail.add(0, item);};
 
 
 
@@ -175,7 +188,7 @@ public class MyApplication extends Application {
     }
     public void removeItem_DraftDeleteMail(int position){this.DraftDeleteMail.remove(position);};
 
-    public void addItem_DraftDeleteMail(String item) {this.DraftDeleteMail.add(0,item);};
+    public void addItem_DraftDeleteMail(String item) {this.DraftDeleteMail.add(0, item);};
 
 
 
@@ -188,7 +201,7 @@ public class MyApplication extends Application {
     }
     public void removeItem_DraftNewMail(int position){this.DraftNewMail.remove(position);};
 
-    public void addItem_DraftNewMail(String item) {this.DraftNewMail.add(0,item);};
+    public void addItem_DraftNewMail(String item) {this.DraftNewMail.add(0, item);};
 
 
 
@@ -210,4 +223,67 @@ public class MyApplication extends Application {
     public void setToken(String token) {
         this.token = token;
     }
+
+
+    // vung xu li cho notice cua hoc sinh
+    public List<NoticeBoardItem> getData_NoticeListT2() {return NoticeListT2;}
+    public void setData_NoticeListT2(List<NoticeBoardItem> data) {this.NoticeListT2 = data;}
+    public void removeItem_NoticeListT2(int position){this.NoticeListT2.remove(position);};
+    public void addItem_NoticeListT2(NoticeBoardItem item) {this.NoticeListT2.add(0,item);};
+    public int getSize_NoticeListT2(){
+        if(NoticeListT2 != null ) return NoticeListT2.size();
+        else return -1;
+    };
+
+    public List<NoticeBoardItem> getData_NoticeListT3() {return NoticeListT3;}
+    public void setData_NoticeListT3(List<NoticeBoardItem> data) {this.NoticeListT3 = data;}
+    public void removeItem_NoticeListT3(int position){this.NoticeListT3.remove(position);};
+    public void addItem_NoticeListT3(NoticeBoardItem item) {this.NoticeListT3.add(0,item);};
+    public int getSize_NoticeListT3(){
+        if(NoticeListT3 != null ) return NoticeListT3.size();
+        else return -1;
+    };
+
+    public List<NoticeBoardItem> getData_NoticeListT4() {return NoticeListT4;}
+    public void setData_NoticeListT4(List<NoticeBoardItem> data) {this.NoticeListT4 = data;}
+    public void removeItem_NoticeListT4(int position){this.NoticeListT4.remove(position);};
+    public void addItem_NoticeListT4(NoticeBoardItem item) {this.NoticeListT4.add(0,item);};
+    public int getSize_NoticeListT4(){
+        if(NoticeListT4 != null ) return NoticeListT4.size();
+        else return -1;
+    };
+
+    public List<NoticeBoardItem> getData_NoticeListT5() {return NoticeListT5;}
+    public void setData_NoticeListT5(List<NoticeBoardItem> data) {this.NoticeListT5 = data;}
+    public void removeItem_NoticeListT5(int position){this.NoticeListT5.remove(position);};
+    public void addItem_NoticeListT5(NoticeBoardItem item) {this.NoticeListT5.add(0,item);};
+    public int getSize_NoticeListT5(){
+        if(NoticeListT5 != null ) return NoticeListT5.size();
+        else return -1;
+    };
+
+
+    public List<NoticeBoardItem> getData_NoticeListT6() {return NoticeListT6;}
+    public void setData_NoticeListT6(List<NoticeBoardItem> data) {this.NoticeListT6 = data;}
+    public void removeItem_NoticeListT6(int position){this.NoticeListT6.remove(position);};
+    public void addItem_NoticeListT6(NoticeBoardItem item) {this.NoticeListT6.add(0,item);};
+    public int getSize_NoticeListT6(){
+        if(NoticeListT6 != null ) return NoticeListT6.size();
+        else return -1;
+    };
+
+    public List<NoticeBoardItem> getData_NoticeListT7() {return NoticeListT7;}
+    public void setData_NoticeListT7(List<NoticeBoardItem> data) {this.NoticeListT7 = data;}
+    public void removeItem_NoticeListT7(int position){this.NoticeListT7.remove(position);};
+    public void addItem_NoticeListT7(NoticeBoardItem item) {this.NoticeListT7.add(0,item);};
+    public int getSize_NoticeListT7(){
+        if(NoticeListT7 != null ) return NoticeListT7.size();
+        else return -1;
+    };
+
+///end using for notice
+
+
+
+
 }

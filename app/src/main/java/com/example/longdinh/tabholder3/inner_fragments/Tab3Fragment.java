@@ -133,6 +133,7 @@ public class Tab3Fragment extends Fragment {
                 vitri = position + "";
                 Intent intent = new Intent(getContext(), ReadDraftMailAcitivity.class);
                 intent.putExtra("id", emailItemList.get(position).getId()+ "");
+                intent.putExtra("typeMail","draft");
                 startActivityForResult(intent, 710);
             }
         });
@@ -144,6 +145,7 @@ public class Tab3Fragment extends Fragment {
     public void onResume() {
         super.onResume();
 //        new getListMailInbox().execute("");
+        adapter.notifyDataSetChanged();
     }
 
     @Override

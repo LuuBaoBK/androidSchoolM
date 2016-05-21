@@ -64,7 +64,7 @@ public class Tab4Fragment extends Fragment{
 
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                mode.getMenuInflater().inflate(R.menu.menu_main, menu);
+                mode.getMenuInflater().inflate(R.menu.menu_empty, menu);
                 return true;
             }
 
@@ -112,6 +112,7 @@ public class Tab4Fragment extends Fragment{
                 vitri = position + "";
                 Intent intent = new Intent(getContext(), ReadMailAcitivity.class);
                 intent.putExtra("id", emailItemList.get(position).getId()+ "");
+                intent.putExtra("typeMail","trash");
                 startActivityForResult(intent, 700);
             }
         });
@@ -122,6 +123,7 @@ public class Tab4Fragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        adapter.notifyDataSetChanged();
 //        new getListMailInbox().execute("");
         Toast.makeText(getContext(), "da toi day", Toast.LENGTH_SHORT).show();
     }

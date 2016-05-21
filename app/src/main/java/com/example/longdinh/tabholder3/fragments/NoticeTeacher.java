@@ -18,6 +18,7 @@ import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.ShowDetailNotice;
 import com.example.longdinh.tabholder3.activities.CreateNoticeActivity;
+import com.example.longdinh.tabholder3.activities.ShowDetailNoticeTeacher;
 import com.example.longdinh.tabholder3.adapters.NoticeBoardAdapter;
 import com.example.longdinh.tabholder3.models.NoticeBoardItem;
 
@@ -68,7 +69,7 @@ public class NoticeTeacher extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                new showNoticeDetail().execute(noticeBoardItemList.get(position).getId() + "");
-                Intent intent = new Intent(getContext(), ShowDetailNotice.class);
+                Intent intent = new Intent(getContext(), ShowDetailNoticeTeacher.class);
                 intent.putExtra("nid", noticeBoardItemList.get(position).getId());
                 startActivityForResult(intent, 333);
             }

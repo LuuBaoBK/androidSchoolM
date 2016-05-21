@@ -138,6 +138,7 @@ public class Tab5Fragment extends Fragment{
                 }
                 Intent intent = new Intent(getContext(), ReadMailAcitivity.class);
                 intent.putExtra("id", emailItemList.get(position).getId()+ "");
+                intent.putExtra("typeMail","outbox");
                 startActivityForResult(intent, 700);
             }
         });
@@ -152,6 +153,7 @@ public class Tab5Fragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        adapter.notifyDataSetChanged();
 //        new getListMailInbox().execute("");
 //        Toast.makeText(getContext(), "da toi day", Toast.LENGTH_SHORT).show();
     }

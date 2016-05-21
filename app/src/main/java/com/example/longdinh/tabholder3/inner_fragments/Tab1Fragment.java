@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import com.example.longdinh.tabholder3.activities.MailContent;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.ReadMailAcitivity;
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
+import com.example.longdinh.tabholder3.fragments.MyClass;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.software.shell.fab.ActionButton;
 
@@ -56,14 +59,14 @@ public class Tab1Fragment extends Fragment {
         app = (MyApplication) getActivity().getApplication();
 
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refresh);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Toast.makeText(getContext(), "refresh screen", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                refreshLayout.setEnabled(true);
+//                Toast.makeText(getContext(), "refresh screen", Toast.LENGTH_SHORT).show();
+//                refreshLayout.setEnabled(false);
+//            }
+//        });
 
         lvEmailItem = (ListView) v.findViewById(R.id.lvEmailItem);
         lvEmailItem.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -98,10 +101,10 @@ public class Tab1Fragment extends Fragment {
 
 
                                 //check if co mang thi gui len con neu khong co thi add vao trong list
-                                if(false){//neu nhu co mang
+                                if (false) {//neu nhu co mang
                                     // goi ham update  thong tin mai
-                                }else{
-                                    app.addItem_InboxDeleteMail(selecteditem.getId()+ "");
+                                } else {
+                                    app.addItem_InboxDeleteMail(selecteditem.getId() + "");
                                     System.out.println("Them vao inboxDelete mail ----" + selecteditem.getId());
                                     Toast.makeText(getContext(), "Them vao inboxDelete mail", Toast.LENGTH_SHORT).show();
                                 }
@@ -121,6 +124,15 @@ public class Tab1Fragment extends Fragment {
             }
         });
 
+        Button btnLoadMore = (Button) v.findViewById(R.id.btnLoadMore);
+        btnLoadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Loading more", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
         ActionButton actionButton = (ActionButton) v.findViewById(R.id.action_button);
         actionButton.setImageResource(R.drawable.fab_plus_icon);
         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +147,9 @@ public class Tab1Fragment extends Fragment {
                 intent.putExtra("subject","");
                 startActivityForResult(intent, EMAIL_COMPOSE_NEW);
 
+
+
+
             }
         });
 
@@ -146,8 +161,7 @@ public class Tab1Fragment extends Fragment {
         lvEmailItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                vitri = position + "";
-//                new showMailDetail().execute(emailItemList.get(position).getId()+ "");
+
                 if(emailItemList.get(position).getIsRead()){
                     emailItemList.get(position).setIsRead(false);
                     app.addItem_InboxReadMail(emailItemList.get(position).getId() + "");
@@ -158,7 +172,24 @@ public class Tab1Fragment extends Fragment {
                 }
                 Intent intent = new Intent(getContext(), ReadMailAcitivity.class);
                 intent.putExtra("id", emailItemList.get(position).getId()+ "");
+                intent.putExtra("typeMail","inbox");
                 startActivityForResult(intent, 700);
+//                ReadDraftMailFragment nextFrag= new ReadDraftMailFragment();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("idEmail", emailItemList.get(position).getId()+ "");
+//                nextFrag.setArguments(bundle);
+
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+
+//                fragmentManager
+//                        .beginTransaction()
+////                        .replace(R.id.main_content, nextFrag)
+//                        .add(R.id.main_content, nextFrag)
+//                        .addToBackStack(null)
+//                        .commit();
+//                getActivity().setTitle("test new fragment");
+
             }
         });
         return v;
@@ -169,11 +200,19 @@ public class Tab1Fragment extends Fragment {
 
 
 
+
+
+
+
     @Override
     public void onResume() {
         super.onResume();
+        adapter.notifyDataSetChanged();
 //        new getListMailInbox().execute("");
 //        Toast.makeText(getContext(), "da toi day", Toast.LENGTH_SHORT).show();
+        //        getActivity().setDrawerIndicatorEnabled(true);
+//        ((HomeActivity) mActivity).setActionBarTitle(getString(R.string.app_name));
+
     }
 
     @Override
