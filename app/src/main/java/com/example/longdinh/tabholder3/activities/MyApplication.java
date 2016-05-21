@@ -2,10 +2,12 @@ package com.example.longdinh.tabholder3.activities;
 
 import android.app.Application;
 
+
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.example.longdinh.tabholder3.models.ItemClassDate;
+import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.models.NavItemChild;
 import com.example.longdinh.tabholder3.models.NoticeBoardItem;
 import com.example.longdinh.tabholder3.models.StudentItemSpinner;
@@ -27,11 +29,6 @@ public class MyApplication extends Application {
     private List<EmailItem> DraftMailList;
     List<String>        DraftDeleteMail = new ArrayList<String>();
     List<String>        DraftNewMail = new ArrayList<String>();
-
-
-    NavItemChild numMailinbox = null;
-    MyExpandableListAdapter listAdapter;
-
 
 
     private List<EmailItem> TrashMailList;
@@ -288,6 +285,9 @@ public class MyApplication extends Application {
     };
 
     //cac ham su dung hoc viec notify khico m1 message mo xuat hien
+    NavItemChild numMailinbox = null;
+    MyExpandableListAdapter listAdapter;
+
     public NavItemChild getNumMailinbox() {
         return numMailinbox;
     }
@@ -303,7 +303,6 @@ public class MyApplication extends Application {
     public void setListAdapter(MyExpandableListAdapter listAdapter) {
         this.listAdapter = listAdapter;
     }
-
 
     public void notifyChangeNumInbox(){
         this.listAdapter.notifyDataSetChanged();

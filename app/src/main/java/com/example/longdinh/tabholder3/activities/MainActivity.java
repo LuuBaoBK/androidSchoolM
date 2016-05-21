@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,6 +64,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
 
     private int lastExpandedPosition = -1;
+    private Pusher pusher = new Pusher(Constant.PUSHER_APP_KEY);
 
     //using for saving and loading data saved
     Boolean isSaved = false;
@@ -112,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        pusher.disconnect();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -127,13 +133,20 @@ public class MainActivity extends AppCompatActivity {
         ImageLoader.getInstance().init(config);
 
 
-        Pusher pusher = new Pusher("APP_KEY");
+
         pusher.connect();
         Channel channel = pusher.subscribe("my-channel");
         channel.bind("my-event", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
-                System.out.println(data + "-------");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notice();
+                    }
+                });
+                System.out.println("abchahaha");
+
             }
         });
 
@@ -232,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
         prepareListData();
         listAdapter = new MyExpandableListAdapter(this, listDataHeader, listDataChild);
         expListView.setAdapter(listAdapter);
+        app.setListAdapter(listAdapter);
 
         // load first fragment as default:
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -644,31 +658,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Pusher pusher = new Pusher(Constant.PUSHER_APP_KEY);
-        pusher.connect();
-        Channel channel = pusher.subscribe("my-channel");
-        channel.bind("my-event", new SubscriptionEventListener() {
-
-            @Override
-            public void onEvent(String channelName, String eventName, final String data) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notice();
-                    }
-                });
-                System.out.println("abchahaha");
-
-            }
-        });
+//        pusher.connect();
+//        Channel channel = pusher.subscribe("my-channel");
+//        channel.bind("my-event", new SubscriptionEventListener() {
+//
+//            @Override
+//            public void onEvent(String channelName, String eventName, final String data) {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        notice();
+//                    }
+//                });
+//                System.out.println("abchahaha");
+//
+//            }
+//        });
 
 
 
     }
 
     public void notice(){
-        NotificationManager notificationManager = (NotificationManager)
-                getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         Intent intent = new Intent(this, LoginActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
         Notification n  = new Notification.Builder(this)
@@ -681,7 +693,6 @@ public class MainActivity extends AppCompatActivity {
 //                .addAction(R.drawable.notification_template_icon_bg, "More", pIntent)
 //                .addAction(R.drawable.notification_template_icon_bg, "And more", pIntent)
                 .build();
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, n);
         System.out.println("noticed");
@@ -730,11 +741,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Adding child data
         mailList = new ArrayList<NavItemChild>();
-        mailList.add(new NavItemChild("Inbox", R.drawable.icon_inbox));
+        NavItemChild inboxitem =new NavItemChild("Inbox", R.drawable.icon_inbox);
+        mailList.add(inboxitem);
         mailList.add(new NavItemChild("Sent",  R.drawable.icon_send));
         mailList.add(new NavItemChild("Drafts", R.drawable.icon_draft));
         mailList.add(new NavItemChild("Trash",R.drawable.icon_trash));
         mailList.add(new NavItemChild("Outbox",R.drawable.icon_outbox));
+        app.setNumMailinbox(inboxitem);
+
+
         listDataChild.put(listDataHeader.get(offsetNavList).getTitle(), mailList); // Header, Child data
 
 

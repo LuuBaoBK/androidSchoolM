@@ -12,13 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.models.EmailItem;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.pusher.client.Pusher;
-import com.pusher.client.channel.Channel;
-import com.pusher.client.channel.SubscriptionEventListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     String email;
     String password;
     List<NameValuePair> data = new ArrayList<>();
-    static final String WRONGPASS = "Id or Password is incorrect";
+    static final String WRONGPASS = "Id or Password is incorrect\n";
     Boolean isSaved = false;
     String dataInfo = null;
 
@@ -136,58 +132,59 @@ public class LoginActivity extends AppCompatActivity {
     public class runLogin extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-//            HttpURLConnection httpURLConnection = null;
-//            BufferedReader bufferedReader = null;
-//            String url_ = Constant.ROOT_API + "api/login";
-//            try {
-//                URL url = new URL(url_);
-//                httpURLConnection = (HttpURLConnection) url.openConnection();
-//                httpURLConnection.setRequestMethod("POST");
-//                httpURLConnection.setDoOutput(true);
-//
-//                OutputStreamWriter out = new OutputStreamWriter(httpURLConnection.getOutputStream());
-//                out.write("data=" + email + "|" + password);
-//                out.close();
-//
-//                httpURLConnection.connect();
-//                InputStream inputStream = httpURLConnection.getInputStream();
-//                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//                String line = null;
-//                StringBuffer stringBuffer = new StringBuffer();
-//                while ((line = bufferedReader.readLine()) != null) {
-//                    stringBuffer.append(line + "\n");
-////                    System.out.println(line);
-//                }
-//
-////                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
-////                userinfo_string = jsonObject.getString("data");
-//                return stringBuffer.toString();
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//                return "e1";
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return "e2";
-//            } finally {
-//                if (httpURLConnection != null)
-//                    httpURLConnection.disconnect();
-//                try {
-//                    if (bufferedReader != null)
-//                        bufferedReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    return "e4";
-//                }
-//            }
-            System.out.println("GEt data from server...");
-            return "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
+            HttpURLConnection httpURLConnection = null;
+            BufferedReader bufferedReader = null;
+            String url_ = Constant.ROOT_API + "api/login";
+            try {
+                URL url = new URL(url_);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+
+                OutputStreamWriter out = new OutputStreamWriter(httpURLConnection.getOutputStream());
+                out.write("email=" + email + "&password=" + password);
+                out.close();
+
+                httpURLConnection.connect();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String line = null;
+                StringBuffer stringBuffer = new StringBuffer();
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(line + "\n");
+//                    System.out.println(line);
+                }
+
+//                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
+//                userinfo_string = jsonObject.getString("data");
+                System.out.println("1"+stringBuffer.toString());
+                return stringBuffer.toString();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return "e1";
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "e2";
+            } finally {
+                if (httpURLConnection != null)
+                    httpURLConnection.disconnect();
+                try {
+                    if (bufferedReader != null)
+                        bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "e4";
+                }
+            }
+//            System.out.println("GEt data from server...");
+//            return "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
         }
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+//            System.out.println("a" + result + "2");
             if (!result.equals(WRONGPASS)) {
-                System.out.println(result + "----");
                 Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
                 Idashboard.putExtra("userinfo_string",result);
                 startActivity(Idashboard);

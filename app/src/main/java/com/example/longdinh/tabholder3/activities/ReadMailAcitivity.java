@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +37,7 @@ public class ReadMailAcitivity extends Activity{
     Boolean isTrashMail = false;
     MyApplication app;
     String typeMail;
-    final int SIZE_INBOXMAIL_DETAIL = 2;
+    final int SIZE_INBOXMAIL_DETAIL = 5;
 
 
     @Override
@@ -134,7 +133,7 @@ public class ReadMailAcitivity extends Activity{
                 }
             }else if(typeMail.equals("send")){// xu li co giong voi truong hop mai inbox ahy khong
                 List<EmailItem> sendMailList = app.getData_SendMailList();
-                int sizeCheck =  isOnline()?2:sendMailList.size();
+                int sizeCheck =  isOnline()? SIZE_INBOXMAIL_DETAIL :sendMailList.size();
                 for(int i = 0; i < sizeCheck; i++){
                     EmailItem email = sendMailList.get(i);
                     if(id.equals(email.getId()+ "")){

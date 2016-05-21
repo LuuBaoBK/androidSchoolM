@@ -1,8 +1,6 @@
 package com.example.longdinh.tabholder3.models;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import android.text.Html;
 
 /**
  * Created by long dinh on 08/04/2016.
@@ -46,7 +44,7 @@ public class EmailItem {
     }
 
     public String getReceiver() {
-        return receiver;
+        return Html.fromHtml(receiver).toString();
     }
 
     public void setReceiver(String receiver) {
@@ -62,6 +60,7 @@ public class EmailItem {
     }
 
     public String getPreview() {
+        preview = Html.fromHtml(preview).toString();
         if(preview.length() < 30){
             return preview;
         }else{

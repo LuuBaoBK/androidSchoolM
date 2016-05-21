@@ -3,8 +3,10 @@ package com.example.longdinh.tabholder3.inner_fragments;
 /**
  * Created by long dinh on 12/04/2016.
  */
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,7 +27,7 @@ import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MailContent;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.ReadDraftMailAcitivity;
-import com.example.longdinh.tabholder3.activities.ReadMailAcitivity;
+import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.software.shell.fab.ActionButton;
@@ -34,7 +36,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Tab3Fragment extends Fragment {
@@ -137,6 +138,10 @@ public class Tab3Fragment extends Fragment {
                 startActivityForResult(intent, 710);
             }
         });
+
+        if(isOnline()){
+            new getListMailInbox().execute("");
+        }
         return v;
     }
 
@@ -234,65 +239,50 @@ public class Tab3Fragment extends Fragment {
     public class getListMailInbox extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-//            HttpURLConnection httpURLConnection = null;
-//            BufferedReader bufferedReader = null;
-//            String url_ = Constant.ROOT_API + "api/get_schedule";
-//            //chinh sua lai link
-//            try {
-//                URL url = new URL(url_);
-//                httpURLConnection = (HttpURLConnection) url.openConnection();
-//                httpURLConnection.setRequestMethod("GET");
-//                httpURLConnection.setRequestProperty(Constant.X_AUTH, token);
-//
-//
-//                httpURLConnection.connect();
-//                InputStream inputStream = httpURLConnection.getInputStream();
-//                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//                String line = null;
-//                StringBuffer stringBuffer = new StringBuffer();
-//                while ((line = bufferedReader.readLine()) != null) {
-//                    stringBuffer.append(line + "\n");
-//                }
-            String retur = new String();
-            retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
+
+            RequestManager requestManager = new RequestManager();
+            String retur = requestManager.getInboxMail("api/post/mailbox/get_draft", app.getToken(), 5);
+            System.out.println(retur + "--" + app.getToken());
+//            retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
 
             return retur;
-
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//                return "e1";
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return "e2";
-//            } finally {
-//                if (httpURLConnection != null)
-//                    httpURLConnection.disconnect();
-//                try {
-//                    if (bufferedReader != null)
-//                        bufferedReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    return "e4";
-//                }
-//            }
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             try {
-                JSONArray inbox = new JSONArray(result);
+                JSONObject data = new JSONObject(result);
+                JSONArray inbox = data.getJSONArray("list_inbox");
+
                 emailItemList.clear();
                 for(int i = 0; i < inbox.length(); i++){
                     JSONObject email = inbox.getJSONObject(i);
-                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
+//                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
+//                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
+                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), "", email.getString("content"), false));
+
                 }
+//                int numMail = data.getInt("new_mail");
+//                app.getNumMailinbox().setNum(numMail);
+//                app.notifyChangeNumInbox();
+
                 adapter.notifyDataSetChanged();
+//                lvEmailItem.setSelection(8);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
 
