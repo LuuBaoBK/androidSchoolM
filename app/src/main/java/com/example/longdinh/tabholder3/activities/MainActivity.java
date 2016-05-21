@@ -738,6 +738,8 @@ public class MainActivity extends AppCompatActivity {
         listDataChild.put(listDataHeader.get(offsetNavList).getTitle(), mailList); // Header, Child data
 
 
+
+
         List<EmailItem>        TrashMailList = new ArrayList<EmailItem>();
         TrashMailList.add(new EmailItem(8, "Thu moi hop 4", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
         TrashMailList.add(new EmailItem(10,"Thu moi hop 4", "Feb 28", "vanminh@hostmail.com", "Kinh moi quy phu huynh..."));
