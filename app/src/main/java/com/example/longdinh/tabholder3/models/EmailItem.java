@@ -114,4 +114,8 @@ public class EmailItem {
         return "{\"id\":"+id+",\"content\": \""+preview+"\",\"title\": \""+subject+"\",\"date_time\": \""+date+"\",\"author\": \""+sender+"\", \"receiver\":" + ((receiver==null)?("\"\""):("\""+receiver+"\""))+"}";
 //        { "id": 1,"content": "Noi dung khong quan trong chay dung la dc","title": "Mail sent to server","date_time": "Apr 29","author": "t0001@schoolm.com", "receiver":"t_000002@schoolm.com"}
     };
+
+    public String toData(){
+        return "id:"+id+"&content="+preview+"&title="+subject+"&date_time="+date+"&author="+sender+"&receiver="+receiver;
+    }
 }

@@ -186,17 +186,13 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <ScrollView
+                <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    >
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:minHeight="100dp"
-                        android:id="@+id/listviewClass">
-                    </ListView>
-                </ScrollView>
+                    android:layout_height="match_parent"
+                    android:minHeight="100dp"
+                    android:id="@+id/listviewClass"
+                    android:drawSelectorOnTop="false">
+                </ListView>
 
             </LinearLayout>
             <LinearLayout

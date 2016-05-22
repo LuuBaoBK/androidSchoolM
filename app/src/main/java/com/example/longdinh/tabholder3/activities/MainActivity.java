@@ -25,6 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
+import com.example.longdinh.tabholder3.SyncMail.SyncDraftMail;
+import com.example.longdinh.tabholder3.SyncMail.SyncOutboxMail;
+import com.example.longdinh.tabholder3.SyncMail.SyncReadOrDeleteMail;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.fragments.MyClass;
 import com.example.longdinh.tabholder3.fragments.MyProfile;
@@ -279,21 +282,15 @@ public class MainActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 expListView.expandGroup(groupPosition);
                 expListView.setSelectedChild(groupPosition, childPosition, true);
-                System.out.println("--------item nav--------print:" + groupPosition + childPosition);
-
-
                 List<NavItemChild> mailList = listDataChild.get(listDataHeader.get(offsetNavList).getTitle());
                 String title = new String();
                 title = "MailBox-" + mailList.get(childPosition).getTitle();
-
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
                         .replace(R.id.main_content, listFragments.get(offsetNavList + childPosition))
                         .commit();
                 setTitle(title);
-
-
                 drawerLayout.closeDrawer(drawerPane);
                 return false;
             }
@@ -341,6 +338,12 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         System.out.println("nearly come to end of create-----");
         loadingdata();
+        if(isOnline()){// sau kho d loadding dat thi minh bat dau tien hanh dong bo
+            SyncDraftMail syncDraftMail = new SyncDraftMail(app, new RequestManager(), null, null);
+            SyncOutboxMail syncOutboxMail = new SyncOutboxMail(app, new RequestManager(), syncDraftMail, null);
+            SyncReadOrDeleteMail syncReadOrDeleteMail = new SyncReadOrDeleteMail(app, new RequestManager(), syncOutboxMail);
+            syncReadOrDeleteMail.execute();
+        }
         System.out.println("the end of creating-----");
 
 

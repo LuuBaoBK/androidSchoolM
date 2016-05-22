@@ -1,8 +1,14 @@
 package com.example.longdinh.tabholder3.fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.Constant;
+import com.example.longdinh.tabholder3.activities.MainActivity;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,6 +37,7 @@ public class MyProfile extends Fragment{
     View v;
     private MyApplication app;
     private String role;
+    String dataInfo;
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,18 +57,34 @@ public class MyProfile extends Fragment{
         }
         ((TextView)v.findViewById(R.id.tvName)).setText(app.getFullName());
         ((TextView)v.findViewById(R.id.tvEmail)).setText(app.getId() + "@schoolm.com");
-        new getInfo().execute("");
+
+        if(isOnline()){
+            new getInfo().execute("");
+        }else{
+            this.loading();
+            if(dataInfo != null){
+                // gia xu trong truong hop nay data luu day du thi
+                showResult(dataInfo);
+            }
+        }
         return v;
     }
+
+    public void loading(){
+        System.out.println("loading datainfo in profile------");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        dataInfo = sp.getString("dataInfo", null);
+        System.out.println("data info----" + dataInfo);
+    }
+
+
 
     public class getInfo extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-
             String data;
             String url = "api/user_info";
             RequestManager requestManager = new RequestManager();
-
             data = requestManager.methodGet(url,app.getToken());
             System.out.println(data + "----get data");
 //            if(role.equals("0")){
@@ -77,65 +101,76 @@ public class MyProfile extends Fragment{
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-
-                CircleImageView ivAvatar = (CircleImageView) v.findViewById(R.id.ivAvatar);
-                String avatar = jsonObject.getString("avatar");
-                if(!avatar.equals("empty")){
-                    avatar = Constant.ROOT_API + avatar;
-                    System.out.println(avatar);
-                    ImageLoader.getInstance().displayImage(avatar,ivAvatar, new ImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        }
-
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        }
-
-                        @Override
-                        public void onLoadingCancelled(String imageUri, View view) {
-                        }
-                    });
-                }
-
-
-                if(role.equals("0")){
-                    ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
-                    ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
-                }else if(app.getRole().equals("1")){
-                    ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
-                    ((TextView) v.findViewById(R.id.tvHomePhone)).setText(jsonObject.getString("homephone"));
-                    ((TextView) v.findViewById(R.id.tvGender)).setText(jsonObject.getString("gender"));
-                    ((TextView) v.findViewById(R.id.tvGroup)).setText(jsonObject.getString("group"));
-                    ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
-
-                }else if(app.getRole().equals("3")){
-                    ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
-                    ((TextView) v.findViewById(R.id.tvHomePhone)).setText(jsonObject.getString("homephone"));
-                    ((TextView) v.findViewById(R.id.tvJob)).setText(jsonObject.getString("job"));
-                    ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
-
-                }else{
-                    ((TextView) v.findViewById(R.id.tvDateOfBirth)).setText(jsonObject.getString("birthday"));
-                    ((TextView) v.findViewById(R.id.tvGender)).setText(jsonObject.getString("gender"));
-                    ((TextView) v.findViewById(R.id.tvParent)).setText(jsonObject.getString("parent"));
-                    ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
-                    ((TextView) v.findViewById(R.id.tvHomePhone)).setText(jsonObject.getString("homephone"));
-                    ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+            showResult(result);
             return;
 
         }
+    }
+
+    public void showResult(String result ){
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+
+            CircleImageView ivAvatar = (CircleImageView) v.findViewById(R.id.ivAvatar);
+            String avatar = jsonObject.getString("avatar");
+            if(!avatar.equals("empty")){
+                avatar = Constant.ROOT_API + avatar;
+                System.out.println(avatar);
+                ImageLoader.getInstance().displayImage(avatar,ivAvatar, new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+                    }
+                });
+            }
+
+
+            if(role.equals("0")){
+                ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
+                ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
+            }else if(app.getRole().equals("1")){
+                ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
+                ((TextView) v.findViewById(R.id.tvHomePhone)).setText(jsonObject.getString("homephone"));
+                ((TextView) v.findViewById(R.id.tvGender)).setText(jsonObject.getString("gender"));
+                ((TextView) v.findViewById(R.id.tvGroup)).setText(jsonObject.getString("group"));
+                ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
+
+            }else if(app.getRole().equals("3")){
+                ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
+                ((TextView) v.findViewById(R.id.tvHomePhone)).setText(jsonObject.getString("homephone"));
+                ((TextView) v.findViewById(R.id.tvJob)).setText(jsonObject.getString("job"));
+                ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
+
+            }else{
+                ((TextView) v.findViewById(R.id.tvDateOfBirth)).setText(jsonObject.getString("birthday"));
+                ((TextView) v.findViewById(R.id.tvGender)).setText(jsonObject.getString("gender"));
+                ((TextView) v.findViewById(R.id.tvParent)).setText(jsonObject.getString("parent"));
+                ((TextView) v.findViewById(R.id.tvMobilePhone)).setText(jsonObject.getString("mobilephone"));
+                ((TextView) v.findViewById(R.id.tvHomePhone)).setText(jsonObject.getString("homephone"));
+                ((TextView) v.findViewById(R.id.tvAddress)).setText(jsonObject.getString("address"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    };
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

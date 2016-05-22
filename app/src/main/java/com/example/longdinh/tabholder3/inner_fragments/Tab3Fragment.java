@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class Tab3Fragment extends Fragment {
     String vitri = new String(-1 + "");
     String token;
     MyApplication app ;
+    SwipeRefreshLayout refreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -53,6 +55,20 @@ public class Tab3Fragment extends Fragment {
 
         View v = inflater.inflate(R.layout.tab1fragment, container, false);
         app = (MyApplication) getActivity().getApplication();
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setEnabled(true);
+                if(isOnline()){
+                    new getListMailInbox().execute("");
+                }else{
+                    Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
+                }
+                refreshLayout.setEnabled(false);
+            }
+        });
+
 
         lvEmailItem = (ListView) v.findViewById(R.id.lvEmailItem);
         lvEmailItem.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -139,9 +155,9 @@ public class Tab3Fragment extends Fragment {
             }
         });
 
-        if(isOnline()){
-            new getListMailInbox().execute("");
-        }
+//        if(isOnline()){
+//            new getListMailInbox().execute("");
+//        }
         return v;
     }
 
@@ -159,58 +175,16 @@ public class Tab3Fragment extends Fragment {
 
     }
 
-//    private void createData(){
-//        emailItemList = new ArrayList<EmailItem>();
-//        MyApplication app = (MyApplication) this.getContext().getApplicationContext();
-//        emailItemList = app.getData_InboxMailList();
-//    };
-
     public class showMailDetail extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
             String id = params[0];
-//            HttpURLConnection httpURLConnection = null;
-//            BufferedReader bufferedReader = null;
-//            String url_ = Constant.ROOT_API + "api/get_schedule";
-//            //chinh sua lai link
-//            try {
-//                URL url = new URL(url_);
-//                httpURLConnection = (HttpURLConnection) url.openConnection();
-//                httpURLConnection.setRequestMethod("GET");
-//                httpURLConnection.setRequestProperty(Constant.X_AUTH, token);
-//
-//
-//                httpURLConnection.connect();
-//                InputStream inputStream = httpURLConnection.getInputStream();
-//                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//                String line = null;
-//                StringBuffer stringBuffer = new StringBuffer();
-//                while ((line = bufferedReader.readLine()) != null) {
-//                    stringBuffer.append(line + "\n");
-//                }
 //
             System.out.println("---------------da toi day 0");
             String retur = new String("{ \"id\": 1,\"content\": \"Noi dung khong quan trong chay dung la dc\",\"title\": \"Mail sent to server\",\"date_time\": \"Apr 29\",\"author\": \"t0001@schoolm.com\"}");
 //                return stringBuffer.toString();
             return retur;
 
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//                return "e1";
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return "e2";
-//            } finally {
-//                if (httpURLConnection != null)
-//                    httpURLConnection.disconnect();
-//                try {
-//                    if (bufferedReader != null)
-//                        bufferedReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    return "e4";
-//                }
-//            }
         }
 
         @Override
@@ -241,7 +215,7 @@ public class Tab3Fragment extends Fragment {
         protected String doInBackground(String... params) {
 
             RequestManager requestManager = new RequestManager();
-            String retur = requestManager.getInboxMail("api/post/mailbox/get_draft", app.getToken(), 5);
+            String retur = requestManager.getInboxMail("api/post/mailbox/get_draft", app.getToken(), app.getSize_DraftMailList()+5);
             System.out.println(retur + "--" + app.getToken());
 //            retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
 

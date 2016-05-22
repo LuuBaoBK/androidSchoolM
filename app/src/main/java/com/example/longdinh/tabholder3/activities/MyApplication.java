@@ -22,13 +22,16 @@ public class MyApplication extends Application {
     private List<EmailItem> InboxMailList;
     List<String>        InboxReadMail = new ArrayList<String>();
     List<String>        InboxDeleteMail = new ArrayList<String>();
+    EmailItemAdapter InboxAdapter;
 
     private List<EmailItem> SendMailList;
     List<String>        SendDeleteMail = new ArrayList<String>();
+    EmailItemAdapter SendAdapter;
 
     private List<EmailItem> DraftMailList;
     List<String>        DraftDeleteMail = new ArrayList<String>();
     List<String>        DraftNewMail = new ArrayList<String>();
+    EmailItemAdapter DraftAdapter;
 
 
     private List<EmailItem> TrashMailList;
@@ -43,6 +46,7 @@ public class MyApplication extends Application {
 
 
     private List<EmailItem> OutboxMailList;
+    EmailItemAdapter OutboxAdapter;
 
 
     public List<StudentItemSpinner> getListchildren() {
@@ -307,6 +311,42 @@ public class MyApplication extends Application {
     public void notifyChangeNumInbox(){
         this.listAdapter.notifyDataSetChanged();
     };
+
+    public void setInboxAdapter(EmailItemAdapter inboxAdapter) {
+        InboxAdapter = inboxAdapter;
+    }
+
+    public void setSendAdapter(EmailItemAdapter sendAdapter) {
+        SendAdapter = sendAdapter;
+    }
+
+    public void setDraftAdapter(EmailItemAdapter draftAdapter) {
+        DraftAdapter = draftAdapter;
+    }
+
+    public void setOutboxAdapter(EmailItemAdapter outboxAdapter) {
+        OutboxAdapter = outboxAdapter;
+    }
+
+    public void notifyChangeInbox(){
+        InboxAdapter.notifyDataSetChanged();
+    }
+
+
+    public void notifyChangeOutbox(){
+        OutboxAdapter.notifyDataSetChanged();
+    }
+
+
+    public void notifyChangeDraft(){
+        DraftAdapter.notifyDataSetChanged();
+    }
+
+
+    public void notifyChangeSend(){
+        SendAdapter.notifyDataSetChanged();
+    }
+
 
 
     ///end using for notice

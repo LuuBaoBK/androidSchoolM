@@ -71,7 +71,7 @@ public class ShowDetailNoticeTeacher extends Activity{
             super.onPostExecute(result);
             try {
                 JSONObject notice = new JSONObject(result);
-
+                System.out.println("notice teacher: " + result);
                 tvSubject.setText(notice.getString("subject"));
                 tvTitle.setText(notice.getString("title"));
                 tvLevel.setText(notice.getString("level"));

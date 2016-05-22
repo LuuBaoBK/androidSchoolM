@@ -1,5 +1,6 @@
 package com.example.longdinh.tabholder3.inner_fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -8,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
+import com.example.longdinh.tabholder3.SyncMail.SyncOutboxMail;
 import com.example.longdinh.tabholder3.activities.MailContent;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.ReadMailAcitivity;
@@ -45,7 +48,8 @@ public class Tab5Fragment extends Fragment{
     final int  EMAIL_COMPOSE_NEW = 101;
     MyApplication app ;
     String vitri = new String(-1 + "");
-    String token;
+    SwipeRefreshLayout refreshLayout;
+    ProgressDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -53,6 +57,25 @@ public class Tab5Fragment extends Fragment{
 
         View v = inflater.inflate(R.layout.tab1fragment, container, false);
         app = (MyApplication) getActivity().getApplication();
+
+        dialog = new ProgressDialog(getActivity());
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.setMessage("Syncing. Please wait...");
+
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setEnabled(true);
+                if(isOnline()){
+                    new SyncOutboxMail(app, new RequestManager(), null,dialog).execute();
+                }else{
+                    Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
+                }
+                refreshLayout.setEnabled(false);
+            }
+        });
 
         lvEmailItem = (ListView) v.findViewById(R.id.lvEmailItem);
         lvEmailItem.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -144,9 +167,6 @@ public class Tab5Fragment extends Fragment{
             }
         });
 
-//        if(isOnline()){
-//            new getListMailInbox().execute("");
-//        }
         return v;
     }
 
@@ -168,124 +188,6 @@ public class Tab5Fragment extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
         //do nothing
     }
-
-//    private void createData(){
-//        emailItemList = new ArrayList<EmailItem>();
-//        MyApplication app = (MyApplication) this.getContext().getApplicationContext();
-//        emailItemList = app.getData_InboxMailList();
-//    };
-
-    public class showMailDetail extends AsyncTask<String, String , String> {
-        @Override
-        protected String doInBackground(String... params) {
-            String id = params[0];
-//            HttpURLConnection httpURLConnection = null;
-//            BufferedReader bufferedReader = null;
-//            String url_ = Constant.ROOT_API + "api/get_schedule";
-//            //chinh sua lai link
-//            try {
-//                URL url = new URL(url_);
-//                httpURLConnection = (HttpURLConnection) url.openConnection();
-//                httpURLConnection.setRequestMethod("GET");
-//                httpURLConnection.setRequestProperty(Constant.X_AUTH, token);
-//
-//
-//                httpURLConnection.connect();
-//                InputStream inputStream = httpURLConnection.getInputStream();
-//                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//                String line = null;
-//                StringBuffer stringBuffer = new StringBuffer();
-//                while ((line = bufferedReader.readLine()) != null) {
-//                    stringBuffer.append(line + "\n");
-//                }
-//
-            System.out.println("---------------da toi day 0");
-            String retur = new String("{ \"id\": 1,\"content\": \"Noi dung khong quan trong chay dung la dc\",\"title\": \"Mail sent to server\",\"date_time\": \"Apr 29\",\"author\": \"t0001@schoolm.com\"}");
-//                return stringBuffer.toString();
-            return retur;
-
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//                return "e1";
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return "e2";
-//            } finally {
-//                if (httpURLConnection != null)
-//                    httpURLConnection.disconnect();
-//                try {
-//                    if (bufferedReader != null)
-//                        bufferedReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    return "e4";
-//                }
-//            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            try {
-                JSONObject email = new JSONObject(result);
-
-                Intent intent = new Intent(getContext(), MailContent.class);
-                intent.putExtra("type", "COMPOSE");
-                intent.putExtra("id", email.getInt("id"));
-                intent.putExtra("date", email.getString("date_time"));
-                intent.putExtra("preview", email.getString("content"));
-                intent.putExtra("sender", email.getString("author"));
-                intent.putExtra("subject", email.getString("title"));
-                startActivityForResult(intent, EMAIL_COMPOSE_NEW);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-
-    public class getListMailInbox extends AsyncTask<String, String , String> {
-        @Override
-        protected String doInBackground(String... params) {
-
-            RequestManager requestManager = new RequestManager();
-            String retur = requestManager.getInboxMail("api/post/mailbox/get_inbox", app.getToken(), 5);
-            System.out.println(retur + "--" + app.getToken());
-//            retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
-
-            return retur;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            try {
-                JSONObject data = new JSONObject(result);
-                JSONArray inbox = data.getJSONArray("list_inbox");
-
-                emailItemList.clear();
-                for(int i = 0; i < inbox.length(); i++){
-                    JSONObject email = inbox.getJSONObject(i);
-//                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
-//                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
-                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("receiver"), email.getString("content"), email.getBoolean("isRead")));
-
-                }
-                int numMail = data.getInt("new_mail");
-                app.getNumMailinbox().setNum(numMail);
-                app.notifyChangeNumInbox();
-
-                adapter.notifyDataSetChanged();
-//                lvEmailItem.setSelection(8);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 
 
     public boolean isOnline() {

@@ -58,14 +58,19 @@ public class Tab1Fragment extends Fragment {
         app = (MyApplication) getActivity().getApplication();
 
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refresh);
-//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                refreshLayout.setEnabled(true);
-//                Toast.makeText(getContext(), "refresh screen", Toast.LENGTH_SHORT).show();
-//                refreshLayout.setEnabled(false);
-//            }
-//        });
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setEnabled(true);
+                if(isOnline()){
+                    new getListMailInbox().execute("");
+                }else{
+                    Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
+                }
+                refreshLayout.setEnabled(false);
+            }
+        });
+
 
         lvEmailItem = (ListView) v.findViewById(R.id.lvEmailItem);
         lvEmailItem.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -100,8 +105,8 @@ public class Tab1Fragment extends Fragment {
 
 
                                 //check if co mang thi gui len con neu khong co thi add vao trong list
-                                if (false) {//neu nhu co mang
-                                    // goi ham update  thong tin mai
+                                if (isOnline()) {
+
                                 } else {
                                     app.addItem_InboxDeleteMail(selecteditem.getId() + "");
                                     System.out.println("Them vao inboxDelete mail ----" + selecteditem.getId());
@@ -145,10 +150,6 @@ public class Tab1Fragment extends Fragment {
                 intent.putExtra("sender", "");
                 intent.putExtra("subject","");
                 startActivityForResult(intent, EMAIL_COMPOSE_NEW);
-
-
-
-
             }
         });
 
@@ -173,38 +174,14 @@ public class Tab1Fragment extends Fragment {
                 intent.putExtra("id", emailItemList.get(position).getId()+ "");
                 intent.putExtra("typeMail","inbox");
                 startActivityForResult(intent, 700);
-//                ReadDraftMailFragment nextFrag= new ReadDraftMailFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("idEmail", emailItemList.get(position).getId()+ "");
-//                nextFrag.setArguments(bundle);
-
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
-
-//                fragmentManager
-//                        .beginTransaction()
-////                        .replace(R.id.main_content, nextFrag)
-//                        .add(R.id.main_content, nextFrag)
-//                        .addToBackStack(null)
-//                        .commit();
-//                getActivity().setTitle("test new fragment");
-
             }
         });
 
-        if(isOnline()){
-            new getListMailInbox().execute("");
-        }
+//        if(isOnline()){
+//            new getListMailInbox().execute("");
+//        }
         return v;
     }
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -224,58 +201,14 @@ public class Tab1Fragment extends Fragment {
         //do nothing
     }
 
-//    private void createData(){
-//        emailItemList = new ArrayList<EmailItem>();
-//        MyApplication app = (MyApplication) this.getContext().getApplicationContext();
-//        emailItemList = app.getData_InboxMailList();
-//    };
-
     public class showMailDetail extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
             String id = params[0];
-//            HttpURLConnection httpURLConnection = null;
-//            BufferedReader bufferedReader = null;
-//            String url_ = Constant.ROOT_API + "api/get_schedule";
-//            //chinh sua lai link
-//            try {
-//                URL url = new URL(url_);
-//                httpURLConnection = (HttpURLConnection) url.openConnection();
-//                httpURLConnection.setRequestMethod("GET");
-//                httpURLConnection.setRequestProperty(Constant.X_AUTH, token);
-//
-//
-//                httpURLConnection.connect();
-//                InputStream inputStream = httpURLConnection.getInputStream();
-//                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//                String line = null;
-//                StringBuffer stringBuffer = new StringBuffer();
-//                while ((line = bufferedReader.readLine()) != null) {
-//                    stringBuffer.append(line + "\n");
-//                }
-//
             System.out.println("---------------da toi day 0");
                 String retur = new String("{ \"id\": 1,\"content\": \"Noi dung khong quan trong chay dung la dc\",\"title\": \"Mail sent to server\",\"date_time\": \"Apr 29\",\"author\": \"t0001@schoolm.com\"}");
-//                return stringBuffer.toString();
                 return retur;
 
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//                return "e1";
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return "e2";
-//            } finally {
-//                if (httpURLConnection != null)
-//                    httpURLConnection.disconnect();
-//                try {
-//                    if (bufferedReader != null)
-//                        bufferedReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    return "e4";
-//                }
-//            }
         }
 
         @Override
@@ -304,9 +237,8 @@ public class Tab1Fragment extends Fragment {
     public class getListMailInbox extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-
             RequestManager requestManager = new RequestManager();
-            String retur = requestManager.getInboxMail("api/post/mailbox/get_inbox", app.getToken(), 5);
+            String retur = requestManager.getInboxMail("api/post/mailbox/get_inbox", app.getToken(), app.getSize_InboxMailList() +5);
             System.out.println(retur + "--" + app.getToken());
 //            retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
 
