@@ -4,7 +4,6 @@ package com.example.longdinh.tabholder3.adapters;
  * Created by long dinh on 21/04/2016.
  */
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +72,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
         tvTitle.setText(childItem.getTitle());
         navIcon.setImageResource(childItem.getResIcon());
-        tvNum.setText((childItem.getNum() == 0)?"":(childItem.getNum()+""));
+        tvNum.setText((childItem.getNum() <= 0)?"":(childItem.getNum()+""));
 
         return convertView;
     }
