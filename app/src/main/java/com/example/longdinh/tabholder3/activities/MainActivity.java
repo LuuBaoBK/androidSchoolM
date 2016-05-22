@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int lastExpandedPosition = -1;
     private Pusher pusher = new Pusher(Constant.PUSHER_APP_KEY);
+    private int num_new_mail = 0;
 
     //using for saving and loading data saved
     Boolean isSaved = false;
@@ -187,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             app.setId(id);
             app.setToken(token);
             app.setFullName(user.getString("fullname"));
+            num_new_mail = user.getInt("num_new_mail");
 
             tvFullname.setText(user.getString("fullname"));
             tvUserId.setText(id);
@@ -745,6 +747,7 @@ public class MainActivity extends AppCompatActivity {
         // Adding child data
         mailList = new ArrayList<NavItemChild>();
         NavItemChild inboxitem =new NavItemChild("Inbox", R.drawable.icon_inbox);
+        inboxitem.setNum(num_new_mail);
         mailList.add(inboxitem);
         mailList.add(new NavItemChild("Sent",  R.drawable.icon_send));
         mailList.add(new NavItemChild("Drafts", R.drawable.icon_draft));

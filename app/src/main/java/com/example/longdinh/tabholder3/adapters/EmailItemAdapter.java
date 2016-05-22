@@ -2,21 +2,15 @@ package com.example.longdinh.tabholder3.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.models.EmailItem;
-import com.example.longdinh.tabholder3.models.NavItem;
 
 import java.util.List;
 

@@ -101,6 +101,7 @@ public class Tab1Fragment extends Fragment {
                     case R.id.itDelete:
                         SparseBooleanArray selected = adapter.getSelectedIds();
 
+                        String listDelete = "";
                         for (int i = (selected.size() - 1); i >= 0; i--) {
                             if (selected.valueAt(i)) {
                                 EmailItem selecteditem = (EmailItem) adapter.getItem(selected.keyAt(i));
@@ -108,7 +109,7 @@ public class Tab1Fragment extends Fragment {
 
                                 //check if co mang thi gui len con neu khong co thi add vao trong list
                                 if (isOnline()) {
-
+                                    listDelete += selecteditem.getId() + ",";
                                 } else {
                                     app.addItem_InboxDeleteMail(selecteditem.getId() + "");
                                     System.out.println("Them vao inboxDelete mail ----" + selecteditem.getId());
@@ -117,6 +118,10 @@ public class Tab1Fragment extends Fragment {
                                 adapter.remove(selecteditem);
                             }
                         }
+                        if (isOnline()) {
+                            new updateDelete().execute(listDelete);
+                        }
+
                         mode.finish();
                         return true;
                     default:
@@ -234,6 +239,32 @@ public class Tab1Fragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public class updateDelete extends AsyncTask<String, String , String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String data = "delete="+params[0];
+            System.out.println(data);
+            System.out.println("-dang doc mail detail----");
+            RequestManager requestManager = new RequestManager();
+            requestManager.postDataToServer("api/post/mailbox/update_log",app.getToken(),data);
+
+
+
+            return null;//truong hop khong co trong mail ma cung khong the online
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
         }
     }
 

@@ -59,13 +59,14 @@ public class Tab3Fragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshLayout.setEnabled(true);
+                refreshLayout.setEnabled(false);
                 if(isOnline()){
                     new getListMailInbox().execute("0");
                 }else{
                     Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
                 }
-                refreshLayout.setEnabled(false);
+                refreshLayout.setRefreshing(false);
+                refreshLayout.setEnabled(true);
             }
         });
 
