@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.adapters.ClassReceiveAdapter;
 import com.example.longdinh.tabholder3.models.ItemClassDate;
-import com.example.longdinh.tabholder3.models.NoticeTeacherItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,13 +36,17 @@ public class ShowDetailNoticeTeacher extends Activity{
     ClassReceiveAdapter adapter;
     TextView tvContent;
     String nid;
+    MyApplication app;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_detail_notice_teacher);
-
+        app = (MyApplication)getApplicationContext();
         Intent intent = getIntent();
         nid = intent.getStringExtra("nid");
+        System.out.println(nid + "--- nid");
+        System.out.println("ind int --- " + Integer.parseInt(nid));
+
 
         tvSubject = (TextView) findViewById(R.id.tvSubject);
                 tvTitle = (TextView) findViewById(R.id.tvTitle);
@@ -82,10 +85,14 @@ public class ShowDetailNoticeTeacher extends Activity{
     public class showNoticeDetail extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-            String nid = params[0];
             RequestManager requestManager = new RequestManager();
+
+
             // nhu vay doi voi teacher thi khi doc 1 notice thi se gui len server roi lay data ve khong co o local
-            String data = "{\"subject\":\"Ngữ Văn\",\"title\":\"Thông báo học bù\",\"level\":\"1\",\"datewrote\":\"11/08/2016\",\"listclass\":[{\"classname\":\"9A1\",\"date\":\"13/08/2016\"},{\"classname\":\"9A2\",\"date\":\"13/08/2016\"},{\"classname\":\"9A3\",\"date\":\"13/08/2016\"}],\"content\":\"việc học bù diễn ra bình thường như thông báo đã gửi cho từng lớp\"}";
+//            String data = "{\"subject\":\"Ngữ Văn\",\"title\":\"Thông báo học bù\",\"level\":\"1\",\"datewrote\":\"11/08/2016\",\"listclass\":[{\"classname\":\"9A1\",\"date\":\"13/08/2016\"},{\"classname\":\"9A2\",\"date\":\"14/08/2016\"},{\"classname\":\"9A3\",\"date\":\"15/08/2016\"},{\"classname\":\"9A4\",\"date\":\"16/08/2016\"},{\"classname\":\"9A5\",\"date\":\"17/08/2016\"},{\"classname\":\"9A6\",\"date\":\"18/08/2016\"}],\"content\":\"việc học bù diễn ra bình thường như thông báo đã gửi cho từng lớp\"}";
+
+            System.out.println("ind int --- " + Integer.parseInt(nid));
+            String data = requestManager.getInboxMail("api/post/teacher/te_read_notice", app.getToken(), Integer.parseInt(nid) );
             return data;
         }
 
