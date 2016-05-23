@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -61,13 +62,14 @@ public class Tab2Fragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshLayout.setEnabled(true);
+                refreshLayout.setEnabled(false);
                 if(isOnline()){
-                    new getListMailInbox().execute("");
+                    new getListMailInbox().execute("0");
                 }else{
                     Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
                 }
-                refreshLayout.setEnabled(false);
+                refreshLayout.setRefreshing(false);
+                refreshLayout.setEnabled(true);
             }
         });
 
@@ -124,6 +126,18 @@ public class Tab2Fragment extends Fragment {
             }
         });
 
+        Button btnLoadMore = (Button) v.findViewById(R.id.btnLoadMore);
+        btnLoadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isOnline()){
+                    String size = app.getSize_InboxMailList()+"";
+                    new getListMailInbox().execute(size);
+                }
+                Toast.makeText(getContext(), "Loading more", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         ActionButton actionButton = (ActionButton) v.findViewById(R.id.action_button);
         actionButton.setImageResource(R.drawable.fab_plus_icon);
         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +169,10 @@ public class Tab2Fragment extends Fragment {
                 startActivityForResult(intent, 700);
             }
         });
+
+        if(isOnline()){
+            new getListMailInbox().execute("0");
+        }
 
         return v;
     }
@@ -216,9 +234,10 @@ public class Tab2Fragment extends Fragment {
     public class getListMailInbox extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-
+            int size = Integer.parseInt(params[0]);
+            size = size + 5;
             RequestManager requestManager = new RequestManager();
-            String retur = requestManager.getInboxMail("api/post/mailbox/get_sent", app.getToken(), app.getSize_SendMailList() + 5);
+            String retur = requestManager.getInboxMail("api/post/mailbox/get_sent", app.getToken(), size);
             System.out.println(retur + "--" + app.getToken());
 //            retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
 

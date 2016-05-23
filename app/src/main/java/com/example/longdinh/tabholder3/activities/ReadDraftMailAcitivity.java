@@ -14,9 +14,6 @@ import android.widget.TextView;
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.models.EmailItem;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 /**

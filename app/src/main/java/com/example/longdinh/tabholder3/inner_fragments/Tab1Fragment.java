@@ -61,13 +61,15 @@ public class Tab1Fragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshLayout.setEnabled(true);
+                refreshLayout.setEnabled(false);
+
                 if(isOnline()){
-                    new getListMailInbox().execute("");
+                    new getListMailInbox().execute("0");
                 }else{
                     Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
                 }
-                refreshLayout.setEnabled(false);
+                refreshLayout.setRefreshing(false);
+                refreshLayout.setEnabled(true);
             }
         });
 
@@ -99,6 +101,7 @@ public class Tab1Fragment extends Fragment {
                     case R.id.itDelete:
                         SparseBooleanArray selected = adapter.getSelectedIds();
 
+                        String listDelete = "";
                         for (int i = (selected.size() - 1); i >= 0; i--) {
                             if (selected.valueAt(i)) {
                                 EmailItem selecteditem = (EmailItem) adapter.getItem(selected.keyAt(i));
@@ -106,7 +109,7 @@ public class Tab1Fragment extends Fragment {
 
                                 //check if co mang thi gui len con neu khong co thi add vao trong list
                                 if (isOnline()) {
-
+                                    listDelete += selecteditem.getId() + ",";
                                 } else {
                                     app.addItem_InboxDeleteMail(selecteditem.getId() + "");
                                     System.out.println("Them vao inboxDelete mail ----" + selecteditem.getId());
@@ -115,6 +118,10 @@ public class Tab1Fragment extends Fragment {
                                 adapter.remove(selecteditem);
                             }
                         }
+                        if (isOnline()) {
+                            new updateDelete().execute(listDelete);
+                        }
+
                         mode.finish();
                         return true;
                     default:
@@ -132,8 +139,11 @@ public class Tab1Fragment extends Fragment {
         btnLoadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isOnline()){
+                    String size = app.getSize_InboxMailList()+"";
+                    new getListMailInbox().execute(size);
+                }
                 Toast.makeText(getContext(), "Loading more", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -177,9 +187,9 @@ public class Tab1Fragment extends Fragment {
             }
         });
 
-//        if(isOnline()){
-//            new getListMailInbox().execute("");
-//        }
+        if(isOnline()){
+            new getListMailInbox().execute("0");
+        }
         return v;
     }
 
@@ -232,13 +242,41 @@ public class Tab1Fragment extends Fragment {
         }
     }
 
+    public class updateDelete extends AsyncTask<String, String , String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String data = "delete="+params[0];
+            System.out.println(data);
+            System.out.println("-dang doc mail detail----");
+            RequestManager requestManager = new RequestManager();
+            requestManager.postDataToServer("api/post/mailbox/update_log",app.getToken(),data);
+
+
+
+            return null;//truong hop khong co trong mail ma cung khong the online
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+        }
+    }
+
 
 
     public class getListMailInbox extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
+            int size = Integer.parseInt(params[0]);
+            size = size + 5;
             RequestManager requestManager = new RequestManager();
-            String retur = requestManager.getInboxMail("api/post/mailbox/get_inbox", app.getToken(), app.getSize_InboxMailList() +5);
+            String retur = requestManager.getInboxMail("api/post/mailbox/get_inbox", app.getToken(), size);
             System.out.println(retur + "--" + app.getToken());
 //            retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,10 +30,6 @@ import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.software.shell.fab.ActionButton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -63,7 +58,7 @@ public class Tab5Fragment extends Fragment{
         dialog.setCancelable(false);
         dialog.setMessage("Syncing. Please wait...");
 
-
+        refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
