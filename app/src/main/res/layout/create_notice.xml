@@ -174,7 +174,8 @@
                         android:inputType="date"
                         android:editable="true"
                         android:background="@drawable/fillentry"
-                        android:padding="3dp" />
+                        android:padding="3dp"
+                        android:enabled="true" />
 
 
                     <CheckBox
@@ -209,7 +210,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    >
+                    android:layout_marginTop="5dp">
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

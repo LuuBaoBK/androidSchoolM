@@ -145,6 +145,8 @@ public class LoginActivity extends AppCompatActivity {
                 out.write("email=" + email + "&password=" + password);
                 out.close();
 
+
+
                 httpURLConnection.connect();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -157,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
 
 //                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
 //                userinfo_string = jsonObject.getString("data");
-                System.out.println("1"+stringBuffer.toString());
+
                 return stringBuffer.toString();
 
             } catch (MalformedURLException e) {

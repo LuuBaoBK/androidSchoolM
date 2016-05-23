@@ -323,8 +323,6 @@ public class RequestManager {
             URL url = new URL(url_);
             httpURLConnection = (HttpURLConnection) url.openConnection();
 
-
-
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setRequestProperty(Constant.X_AUTH, token);
             httpURLConnection.setDoOutput(true);
@@ -342,8 +340,6 @@ public class RequestManager {
                 stringBuffer.append(line + "\n");
             }
 
-//                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
-//                userinfo_string = jsonObject.getString("data");
             return stringBuffer.toString();
 
         } catch (MalformedURLException e) {
@@ -392,9 +388,7 @@ public class RequestManager {
                 stringBuffer.append(line + "\n");
             }
 
-//                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
-//                userinfo_string = jsonObject.getString("data");
-            System.out.println(stringBuffer.toString() + " return_data");
+            System.out.println(stringBuffer.toString() + " ---return_data");
             return stringBuffer.toString();
 
         } catch (MalformedURLException e) {
@@ -415,4 +409,8 @@ public class RequestManager {
             }
         }
     }
+
+
+
+
 }

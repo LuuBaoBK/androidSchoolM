@@ -30,7 +30,6 @@ import com.example.longdinh.tabholder3.SyncMail.SyncOutboxMail;
 import com.example.longdinh.tabholder3.SyncMail.SyncReadOrDeleteMail;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.fragments.MyClass;
-import com.example.longdinh.tabholder3.fragments.MyMail;
 import com.example.longdinh.tabholder3.fragments.MyProfile;
 import com.example.longdinh.tabholder3.fragments.NoticeBoardParent;
 import com.example.longdinh.tabholder3.fragments.NoticeBoardStudent;
@@ -39,6 +38,7 @@ import com.example.longdinh.tabholder3.fragments.Schedule_Parent;
 import com.example.longdinh.tabholder3.fragments.Schedule_Person;
 import com.example.longdinh.tabholder3.fragments.Transcript_Show;
 import com.example.longdinh.tabholder3.fragments.Transcript_Show_Student;
+import com.example.longdinh.tabholder3.inner_fragments.Tab1Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab2Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab3Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab4Fragment;
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
             listFragments.add(new NoticeBoardStudent());
         }
 
-        listFragments.add(new MyMail());
+        listFragments.add(new Tab1Fragment());
         listFragments.add(new Tab2Fragment());
         listFragments.add(new Tab3Fragment());
         listFragments.add(new Tab4Fragment());
