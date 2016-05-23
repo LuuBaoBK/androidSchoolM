@@ -43,7 +43,7 @@ public class ClassReceiveAdapter extends ArrayAdapter {
             holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.item_class_date, null);
             holder.classname = (TextView) convertView.findViewById(R.id.tvClassName);
-            holder.date = (TextView) convertView.findViewById(R.id.tvClassName);
+            holder.date = (TextView) convertView.findViewById(R.id.tvDateReceive);
             convertView.setTag(holder);
         }else{
             holder =(ViewHolder) convertView.getTag();

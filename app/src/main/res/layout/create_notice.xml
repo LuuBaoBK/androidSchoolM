@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="NEW NOTICE"
+        android:text="CREATE NEW NOTICE"
         android:id="@+id/tvTitle"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
@@ -17,7 +17,8 @@
         android:textStyle="bold"
         android:textColor="#ffffff"
         android:background="#ffa000"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:editable="true" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -113,7 +114,7 @@
                     android:layout_weight="1.1"
                     android:textSize="16dp"
                     android:textStyle="bold" />
-                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                <RadioGroup
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -122,18 +123,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Straightway"
-                        android:onClick="onRadioButtonClicked"/>
+                        />
                     <RadioButton android:id="@+id/radio_Gradual"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Gradual"
-                        android:onClick="onRadioButtonClicked"
                         android:checked="true" />
                     <RadioButton android:id="@+id/radio_Behindhand"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Behindhand"
-                        android:onClick="onRadioButtonClicked"/>
+                        android:text="Behindhand"/>
                 </RadioGroup>
 
             </LinearLayout>
@@ -207,17 +206,16 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <ScrollView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     >
                     <ListView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:minHeight="100dp"
+                        android:layout_height="wrap_content"
                         android:id="@+id/listviewClass">
                     </ListView>
-                </ScrollView>
+                </LinearLayout>
 
             </LinearLayout>
             <LinearLayout

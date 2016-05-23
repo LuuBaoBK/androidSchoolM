@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,7 +52,28 @@ public class ShowDetailNoticeTeacher extends Activity{
         listviewClass = (ListView) findViewById(R.id.listviewClass);
                 tvContent = (TextView) findViewById(R.id.tvContent);
         adapter = new ClassReceiveAdapter(getApplicationContext(), R.layout.item_class_date, listClassDate);
+
+        listviewClass.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
+
         listviewClass.setAdapter(adapter);
+
+        new showNoticeDetail().execute("");
     }
 
 
@@ -81,6 +104,7 @@ public class ShowDetailNoticeTeacher extends Activity{
                     JSONObject oneclass = listclass.getJSONObject(i);
                     ItemClassDate itemClassDate = new ItemClassDate(oneclass.getString("classname"), oneclass.getString("date"));
                     listClassDate.add(itemClassDate);
+                    System.out.println("classlist --" + itemClassDate.getClassname());
                 }
                 tvContent.setText(Html.fromHtml(notice.getString("content")));
                 adapter.notifyDataSetChanged();

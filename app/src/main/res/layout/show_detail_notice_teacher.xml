@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Ngữ Văn"
-                    android:id="@+id/etSubject"
+                    android:id="@+id/tvSubject"
                     android:layout_weight="2.6"
                     android:textSize="16dp"
                     android:fontFamily="sans-serif-condensed"
@@ -171,7 +171,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:paddingLeft="25dp"
                 android:paddingRight="25dp"
@@ -185,14 +185,16 @@
                     android:text="Người nhận:"
                     android:textSize="16dp"
                     android:textStyle="bold" />
-
-                <ListView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:minHeight="100dp"
-                    android:id="@+id/listviewClass"
-                    android:drawSelectorOnTop="false">
-                </ListView>
+                    android:layout_height="150dp"
+                    >
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/listviewClass">
+                    </ListView>
+                </LinearLayout>
 
             </LinearLayout>
             <LinearLayout
@@ -218,7 +220,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/etContent"
+                    android:id="@+id/tvContent"
                     android:layout_weight="2.6"
                     android:textSize="16dp"
                     android:fontFamily="sans-serif-condensed"

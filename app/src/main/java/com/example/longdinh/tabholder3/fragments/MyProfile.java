@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
@@ -37,14 +38,21 @@ public class MyProfile extends Fragment{
     View v;
     private MyApplication app;
     private String role;
-    String dataInfo;
+    String profile;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        app = (MyApplication) getActivity().getApplication();
+        this.loading();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
         System.out.println("1 chay profile-----");
-        app = (MyApplication) getActivity().getApplication();
         role = app.getRole();
         if(role.equals("0")){
             v = inflater.inflate(R.layout.fragmennt_admininfo, container, false);
@@ -58,23 +66,23 @@ public class MyProfile extends Fragment{
         ((TextView)v.findViewById(R.id.tvName)).setText(app.getFullName());
         ((TextView)v.findViewById(R.id.tvEmail)).setText(app.getId() + "@schoolm.com");
 
+        if(profile != null){//trong moi truong hop de co hien thi thong tin local
+            showResult(profile);
+        }
+
         if(isOnline()){
             new getInfo().execute("");
-        }else{
-            this.loading();
-            if(dataInfo != null){
-                // gia xu trong truong hop nay data luu day du thi
-                showResult(dataInfo);
-            }
         }
+
         return v;
     }
 
     public void loading(){
-        System.out.println("loading datainfo in profile------");
+        System.out.println("loading profile------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        dataInfo = sp.getString("dataInfo", null);
-        System.out.println("data info----" + dataInfo);
+        profile = sp.getString("profile", null);
+        app.setProfile(profile);
+        System.out.println("profile---" + profile);
     }
 
 
@@ -101,7 +109,12 @@ public class MyProfile extends Fragment{
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            showResult(result);
+            if(result != null) {
+                app.setProfile(result);
+                profile = result;
+                showResult(result);
+            }
+
             return;
 
         }

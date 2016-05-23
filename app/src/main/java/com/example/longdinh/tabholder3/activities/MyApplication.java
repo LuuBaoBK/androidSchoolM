@@ -350,8 +350,14 @@ public class MyApplication extends Application {
 
 
     ///end using for notice
+    ///LUU THONG TIN VER PROFILE CHO NGUOI DUNG
+    private String profile = "";
 
+    public String getProfile() {
+        return profile;
+    }
 
-
-
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
 }

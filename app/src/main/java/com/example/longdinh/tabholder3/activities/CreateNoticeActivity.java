@@ -1,17 +1,22 @@
 package com.example.longdinh.tabholder3.activities;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -23,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -35,12 +41,18 @@ public class CreateNoticeActivity extends Activity {
     EditText etTitle;
     RadioGroup radio_level;
     CheckBox checkbox_nextclass;
-    EditText etDeadline;
-    ListView listviewClass;
+    EditText etCalendar;
+    ListView lvClass;
     EditText etContent;
     Button btnSave;
-    List<String> listClass = new ArrayList<>();
+    List<String> listClassName = new ArrayList<>();
+    List<String> listClassId = new ArrayList<>();
     ArrayAdapter<String> adapter;
+    int mYear;
+    int mMonth;
+    int mDay;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +61,9 @@ public class CreateNoticeActivity extends Activity {
         etSubject = (EditText) findViewById(R.id.etSubject);
         etTitle = (EditText) findViewById(R.id.etTitle);
         radio_level = (RadioGroup) findViewById(R.id.radio_level);
-        etDeadline= (EditText) findViewById(R.id.etDeadline);
+        etCalendar= (EditText) findViewById(R.id.etDeadline);
         checkbox_nextclass= (CheckBox) findViewById(R.id.checkbox_nextclass);
-        listviewClass = (ListView) findViewById(R.id.listviewClass);
+        lvClass = (ListView) findViewById(R.id.listviewClass);
         etContent= (EditText) findViewById(R.id.etContent);
 
         btnSave= (Button) findViewById(R.id.btnSave);
@@ -62,21 +74,70 @@ public class CreateNoticeActivity extends Activity {
         dialog.setMessage("Loading. Please wait...");
 
 
-        listviewClass.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        lvClass.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        lvClass.setItemsCanFocus(false);
+        lvClass.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
+
+
+
+
        adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listClass);
+                android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, listClassName);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //send du lieu len server
                 System.out.println("Notice sending....------");
-                Intent intent = new Intent(getApplicationContext(), NoticeTeacher.class);
-                setResult(RESULT_CANCELED, intent);
-                finish();
+                new JsonTask().execute("");
+
             }
         });
 
+        etCalendar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                //To show current date in the datepicker
+                Calendar mcurrentDate=Calendar.getInstance();
+                mYear = mcurrentDate.get(Calendar.YEAR);
+                mMonth=mcurrentDate.get(Calendar.MONTH);
+                mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker=new DatePickerDialog(CreateNoticeActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                        etCalendar.setText(selectedday + "-" + (selectedmonth+1) + "-" + selectedyear);
+                    }
+                },mYear, mMonth, mDay);
+        mDatePicker.getDatePicker().setCalendarViewShown(false);
+        mDatePicker.setTitle("Select date");
+        mDatePicker.show();  }
+});
+        lvClass.setAdapter(adapter);
+
+
+        new getClass().execute();
     }
 
 
@@ -84,7 +145,7 @@ public class CreateNoticeActivity extends Activity {
     public class getClass extends AsyncTask<String, String , String> {
         @Override
         protected String doInBackground(String... params) {
-            String data = "{\"listclass\":[\"6A1\",\"7A1\",\"6A2\",\"6A3\",\"8A1\"]}";
+            String data = "{\"listclass\":[{\"idclass\":\"16_6A1\",\"classname\":\"6A1\"},{\"idclass\":\"16_6A2\",\"classname\":\"6A2\"},{\"idclass\":\"16_6A3\",\"classname\":\"6A3\"},{\"idclass\":\"16_7A1\",\"classname\":\"7A1\"},{\"idclass\":\"16_8A1\",\"classname\":\"8A1\"}]}";
             return data;
         }
 
@@ -93,9 +154,12 @@ public class CreateNoticeActivity extends Activity {
             super.onPostExecute(result);
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                JSONArray listclass = jsonObject.getJSONArray("listclass");
-                for(int i = 0 ; i< listclass.length(); i++){
-                    listClass.add(listclass.getString(i));
+                JSONArray listclassjson = jsonObject.getJSONArray("listclass");
+                for(int i = 0 ; i< listclassjson.length(); i++){
+                    JSONObject one = listclassjson.getJSONObject(i);
+                    listClassName.add(one.getString("classname"));
+                    listClassId.add(one.getString("idclass"));
+                    System.out.println(listclassjson.getString(i));
                 }
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
@@ -115,9 +179,38 @@ public class CreateNoticeActivity extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             dialog.show();
+
+            int selectedId = radio_level.getCheckedRadioButtonId();
+
+            // find the radiobutton by returned id
+            RadioButton radioLevelButton = (RadioButton) findViewById(selectedId);
+            int level = 1;
+
+            if(radioLevelButton.getText().toString().equals("Straightway")){
+                level = 0;
+            }else if(radioLevelButton.getText().toString().equals("Gradual")){
+                level = 1;
+            }else{
+                level = 2;
+            }
+
+
+            String selected = "";
+            int cntChoice = lvClass.getCount();
+            SparseBooleanArray sparseBooleanArray = lvClass.getCheckedItemPositions();
+            for(int i = 0; i < cntChoice; i++){
+                if(sparseBooleanArray.get(i)) {
+                    selected += listClassId.get(i).toString() + ", ";
+                }
+            }
+
             System.out.println(etSubject.getText()  + ", " + etTitle.getText()  + ", "
                     + radio_level.getCheckedRadioButtonId() + ", "
-                    + etDeadline.getText()  +", " + listviewClass.getSelectedItemPosition() + etContent.getText());
+                    + etCalendar.getText()  +", " + selected + etContent.getText()
+                    + "," + radioLevelButton.getText().toString() + "= "+level+", " + checkbox_nextclass.isChecked());
+
+
+
         }
 
         @Override
@@ -129,7 +222,11 @@ public class CreateNoticeActivity extends Activity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+//            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(getApplicationContext(), NoticeTeacher.class);
+//            setResult(RESULT_CANCELED, intent);
+//            finish();
         }
     }
 

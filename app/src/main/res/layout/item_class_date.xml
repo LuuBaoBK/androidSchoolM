@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="5dp"
-    android:background="#cecece">
+    android:background="@drawable/fillentry">
 
     <TextView
         android:layout_width="0dp"
@@ -13,7 +13,10 @@
         android:text="9A2"
         android:id="@+id/tvClassName"
         android:layout_weight="1"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        android:paddingLeft="50dp" />
 
     <TextView
         android:layout_width="0dp"
@@ -22,5 +25,8 @@
         android:text="11/11/2013"
         android:id="@+id/tvDateReceive"
         android:layout_weight="1"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        android:paddingRight="50dp" />
 </LinearLayout>

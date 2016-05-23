@@ -30,6 +30,7 @@ import com.example.longdinh.tabholder3.SyncMail.SyncOutboxMail;
 import com.example.longdinh.tabholder3.SyncMail.SyncReadOrDeleteMail;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.fragments.MyClass;
+import com.example.longdinh.tabholder3.fragments.MyMail;
 import com.example.longdinh.tabholder3.fragments.MyProfile;
 import com.example.longdinh.tabholder3.fragments.NoticeBoardParent;
 import com.example.longdinh.tabholder3.fragments.NoticeBoardStudent;
@@ -173,9 +174,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         Intent login = getIntent();
-        dataInfo = login.getStringExtra("userinfo_string");
+//        dataInfo = login.getStringExtra("userinfo_string");
 //        dataInfo = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
-//        String dataInfo = "\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"0\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"";
+        dataInfo = "{\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"1\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"}";
         //su dung rieng cho parent
 //        String dataInfo = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"3\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
         System.out.println(dataInfo + "----");
@@ -239,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
             listFragments.add(new NoticeBoardStudent());
         }
 
-        listFragments.add(new Tab1Fragment());
+        listFragments.add(new MyMail());
         listFragments.add(new Tab2Fragment());
         listFragments.add(new Tab3Fragment());
         listFragments.add(new Tab4Fragment());
@@ -529,6 +530,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void savingDataLogIn(SharedPreferences.Editor editor){
         editor.putString("dataInfo", dataInfo);
+        editor.putString("profile",app.getProfile());
         System.out.println("saving info" + dataInfo);
 
 
@@ -537,6 +539,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearDataLogIn(SharedPreferences.Editor editor){
         editor.putString("dataInfo", null);
+        editor.putString("profile", null);
         System.out.println("clear info" + dataInfo);
     };
 

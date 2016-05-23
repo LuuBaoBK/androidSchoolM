@@ -99,21 +99,21 @@ public class NoticeTeacher extends Fragment {
 
         @Override
         protected List<NoticeBoardItem> doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            BufferedReader bufferedReader = null;
-
+//            HttpURLConnection httpURLConnection = null;
+//            BufferedReader bufferedReader = null;
+//
             try {
-                URL url = new URL(params[0]);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.connect();
-
-                InputStream inputStream = httpURLConnection.getInputStream();
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line = null;
-                StringBuffer stringBuffer = new StringBuffer();
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuffer.append(line + "\n");
-                }
+//                URL url = new URL(params[0]);
+//                httpURLConnection = (HttpURLConnection) url.openConnection();
+//                httpURLConnection.connect();
+//
+//                InputStream inputStream = httpURLConnection.getInputStream();
+//                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//                String line = null;
+//                StringBuffer stringBuffer = new StringBuffer();
+//                while ((line = bufferedReader.readLine()) != null) {
+//                    stringBuffer.append(line + "\n");
+//                }
 
                 String data = "{\"listnotice\":[{\"nid\":\"99\",\"subject\":\"Ngữ Văn\",\"notice\":\"Dạy bù môn ngữ văn sẽ tổ chức bình thường như dự kiến\",\"level\":\"1\",\"deadline\":\"10/08/2013\"},{\"nid\":\"12\",\"subject\":\"GDCD\",\"notice\":\"thong bao hoc bu\",\"level\":\"2\",\"deadline\":\"10/08/2013\"},{\"nid\":\"11\",\"subject\":\"Toán\",\"notice\":\"thong bao hoc bu\",\"level\":\"3\",\"deadline\":\"10/08/2013\"},{\"nid\":\"02\",\"subject\":\"Sinh học\",\"notice\":\"thong bao hoc bu\",\"level\":\"1\",\"deadline\":\"10/08/2013\"}]}";
                 JSONObject jsonObject = new JSONObject(data);
@@ -132,21 +132,21 @@ public class NoticeTeacher extends Fragment {
                 }
 
                 return noticeBoardItemList;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
-                if (httpURLConnection != null)
-                    httpURLConnection.disconnect();
-                try {
-                    if (bufferedReader != null)
-                        bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                if (httpURLConnection != null)
+//                    httpURLConnection.disconnect();
+//                try {
+//                    if (bufferedReader != null)
+//                        bufferedReader.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
             return null;
         }
