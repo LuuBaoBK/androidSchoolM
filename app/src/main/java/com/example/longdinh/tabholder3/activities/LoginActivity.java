@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                 StringBuffer stringBuffer = new StringBuffer();
                 while ((line = bufferedReader.readLine()) != null) {
                     stringBuffer.append(line + "\n");
-//                    System.out.println(line);
+                    System.out.println(line);
                 }
 
 //                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
@@ -187,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
             if (!result.equals(WRONGPASS)) {
                 Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
                 Idashboard.putExtra("userinfo_string",result);
+                System.out.println(result + "data sent----");
                 startActivity(Idashboard);
                 Idashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
