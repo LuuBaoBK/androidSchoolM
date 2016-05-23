@@ -15,9 +15,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.activities.MyApplication;
-import com.example.longdinh.tabholder3.activities.ShowDetailNotice;
 import com.example.longdinh.tabholder3.activities.CreateNoticeActivity;
+import com.example.longdinh.tabholder3.activities.MyApplication;
+import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.activities.ShowDetailNoticeTeacher;
 import com.example.longdinh.tabholder3.adapters.NoticeBoardAdapter;
 import com.example.longdinh.tabholder3.models.NoticeBoardItem;
@@ -26,13 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,8 +46,7 @@ public class NoticeTeacher extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.notice_teacher, container, false);
-
-
+        app = (MyApplication) getActivity().getApplication();
         listView = (ListView) v.findViewById(R.id.lvNotice);
         dialog = new ProgressDialog(getActivity());
         dialog.setIndeterminate(true);
@@ -84,7 +76,7 @@ public class NoticeTeacher extends Fragment {
             }
         });
 
-        new JsonTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesData.txt");
+        new JsonTask().execute("");
 
         return v;
     }
@@ -115,7 +107,13 @@ public class NoticeTeacher extends Fragment {
 //                    stringBuffer.append(line + "\n");
 //                }
 
-                String data = "{\"listnotice\":[{\"nid\":\"99\",\"subject\":\"Ngữ Văn\",\"notice\":\"Dạy bù môn ngữ văn sẽ tổ chức bình thường như dự kiến\",\"level\":\"1\",\"deadline\":\"10/08/2013\"},{\"nid\":\"12\",\"subject\":\"GDCD\",\"notice\":\"thong bao hoc bu\",\"level\":\"2\",\"deadline\":\"10/08/2013\"},{\"nid\":\"11\",\"subject\":\"Toán\",\"notice\":\"thong bao hoc bu\",\"level\":\"3\",\"deadline\":\"10/08/2013\"},{\"nid\":\"02\",\"subject\":\"Sinh học\",\"notice\":\"thong bao hoc bu\",\"level\":\"1\",\"deadline\":\"10/08/2013\"}]}";
+
+                RequestManager requestManager = new RequestManager();
+                System.out.println(app.getToken() + "--- my token");
+                String data = requestManager.postDataToServer("api/post/teacher/get_te_noticeboard", app.getToken(),"data=123");
+
+//                String data = "{\"listnotice\":[{\"nid\":\"99\",\"subject\":\"Ngữ Văn\",\"notice\":\"Dạy bù môn ngữ văn sẽ tổ chức bình thường như dự kiến\",\"level\":\"1\",\"deadline\":\"10/08/2013\"},{\"nid\":\"12\",\"subject\":\"GDCD\",\"notice\":\"thong bao hoc bu\",\"level\":\"2\",\"deadline\":\"10/08/2013\"},{\"nid\":\"11\",\"subject\":\"Toán\",\"notice\":\"thong bao hoc bu\",\"level\":\"3\",\"deadline\":\"10/08/2013\"},{\"nid\":\"02\",\"subject\":\"Sinh học\",\"notice\":\"thong bao hoc bu\",\"level\":\"1\",\"deadline\":\"10/08/2013\"}]}";
+                System.out.println(data+"-notice teacher");
                 JSONObject jsonObject = new JSONObject(data);
                 JSONArray jsonArray = jsonObject.getJSONArray("listnotice");
 

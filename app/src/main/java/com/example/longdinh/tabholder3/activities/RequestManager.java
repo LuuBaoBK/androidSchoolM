@@ -394,6 +394,7 @@ public class RequestManager {
 
 //                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
 //                userinfo_string = jsonObject.getString("data");
+            System.out.println(stringBuffer.toString() + " return_data");
             return stringBuffer.toString();
 
         } catch (MalformedURLException e) {

@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
 
-        this.loading();
+//        this.loading();
         if(dataInfo != null){
             Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
             Idashboard.putExtra("userinfo_string",dataInfo);

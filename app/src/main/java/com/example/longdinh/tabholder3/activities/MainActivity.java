@@ -39,7 +39,6 @@ import com.example.longdinh.tabholder3.fragments.Schedule_Parent;
 import com.example.longdinh.tabholder3.fragments.Schedule_Person;
 import com.example.longdinh.tabholder3.fragments.Transcript_Show;
 import com.example.longdinh.tabholder3.fragments.Transcript_Show_Student;
-import com.example.longdinh.tabholder3.inner_fragments.Tab1Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab2Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab3Fragment;
 import com.example.longdinh.tabholder3.inner_fragments.Tab4Fragment;
@@ -175,9 +174,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         Intent login = getIntent();
-//        dataInfo = login.getStringExtra("userinfo_string");
+        dataInfo = login.getStringExtra("userinfo_string");
 //        dataInfo = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
-        dataInfo = "{\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"1\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"}";
+//        dataInfo = "{\"id\":\"a_0000000\",\"email\":\"a_0000000@schoolm.com\",\"role\":\"1\",\"fullname\":\"V\\u0103n H\\u1ea1 \\u0110\\u1ea1t\",\"token\":\"e4f5afc50773ae5b06b0b84c3c9d74cb341c9869\"}";
         //su dung rieng cho parent
 //        String dataInfo = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"3\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}]}";
         System.out.println(dataInfo + "----");
@@ -218,13 +217,16 @@ public class MainActivity extends AppCompatActivity {
                 offsetNavList = 4;
             }
 
+
+            System.out.println(role+" role");
+
         } catch (JSONException e) {
             e.printStackTrace();
             finish();
         }
-
+//        System.out.println("---" + dataInfo);
         listFragments = new ArrayList<Fragment>();
-
+//        System.out.println("---" + dataInfo);
         listFragments.add(new MyProfile());
         if(role.equals("0")){
             //do nothing

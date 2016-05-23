@@ -1,7 +1,6 @@
 package com.example.longdinh.tabholder3.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
@@ -14,12 +13,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.Constant;
-import com.example.longdinh.tabholder3.activities.MainActivity;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -43,14 +40,15 @@ public class MyProfile extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = (MyApplication) getActivity().getApplication();
-        this.loading();
+//        this.loading();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+        app = (MyApplication) getActivity().getApplication();
 
         System.out.println("1 chay profile-----");
         role = app.getRole();
@@ -66,9 +64,9 @@ public class MyProfile extends Fragment{
         ((TextView)v.findViewById(R.id.tvName)).setText(app.getFullName());
         ((TextView)v.findViewById(R.id.tvEmail)).setText(app.getId() + "@schoolm.com");
 
-        if(profile != null){//trong moi truong hop de co hien thi thong tin local
-            showResult(profile);
-        }
+//        if(profile != null){//trong moi truong hop de co hien thi thong tin local
+//            showResult(profile);
+//        }
 
         if(isOnline()){
             new getInfo().execute("");
@@ -110,8 +108,8 @@ public class MyProfile extends Fragment{
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if(result != null) {
-                app.setProfile(result);
-                profile = result;
+//                app.setProfile(result);
+//                profile = result;
                 showResult(result);
             }
 
