@@ -150,7 +150,6 @@ public class CreateNoticeActivity extends Activity {
                 String data = "subject="+etSubject.getText()  + "&title=" + etTitle.getText()   + "&date="
                         + etCalendar.getText()  +"&content=" + etContent.getText()
                         + "&level=" +level+"&nextday=" + checkbox_nextclass.isChecked() + "&listclass="+selected;
-                System.out.println(data + "print data---");
 
                 if(isOnline())
                     new JsonTask().execute(data);
@@ -160,16 +159,16 @@ public class CreateNoticeActivity extends Activity {
             }
         });
 
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//        etCalendar.setText(sdf.format(new Date()));
         etCalendar.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                //To show current date in the datepicker
                 Calendar mcurrentDate=Calendar.getInstance();
                 mYear = mcurrentDate.get(Calendar.YEAR);
                 mMonth=mcurrentDate.get(Calendar.MONTH);
                 mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                etCalendar.setText(mDay+"-" +(mMonth + 1) + "-" + mYear);// co the bi loi tai cho nay
 
                 DatePickerDialog mDatePicker=new DatePickerDialog(CreateNoticeActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
@@ -208,7 +207,6 @@ public class CreateNoticeActivity extends Activity {
                     JSONObject one = listclassjson.getJSONObject(i);
                     listClassName.add(one.getString("classname"));
                     listClassId.add(one.getString("idclass"));
-                    System.out.println(listclassjson.getString(i));
                 }
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {

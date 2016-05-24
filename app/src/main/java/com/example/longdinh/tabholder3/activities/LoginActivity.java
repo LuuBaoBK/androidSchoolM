@@ -81,10 +81,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loading(){
-        System.out.println("loading datainfor------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         dataInfo = sp.getString("DATA_INFO", null);
-        System.out.println("data info----" + dataInfo);
     }
 
 
@@ -149,7 +147,6 @@ public class LoginActivity extends AppCompatActivity {
                 StringBuffer stringBuffer = new StringBuffer();
                 while ((line = bufferedReader.readLine()) != null) {
                     stringBuffer.append(line + "\n");
-                    System.out.println(line);
                 }
 
 //                JSONObject jsonObject = new JSONObject(stringBuffer.toString());
@@ -182,18 +179,15 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            System.out.println("a" + result + "2");
             if (!result.equals(WRONGPASS)) {
                 Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
                 Idashboard.putExtra("userinfo_string",result);
-                System.out.println(result + "data sent----");
                 startActivity(Idashboard);
                 Idashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 finish();
             } else {
                 tvEmail.setError(WRONGPASS);
                 tvPassword.setError(WRONGPASS);
-                System.out.println(result);
                 return;
             }
         }

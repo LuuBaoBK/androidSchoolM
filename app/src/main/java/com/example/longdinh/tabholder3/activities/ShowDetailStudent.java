@@ -98,22 +98,6 @@ public class ShowDetailStudent extends Activity {
                 tvMobilePhone.setText(student.getString("phone"));
                 tvAddress.setText( student.getString("address"));
 
-                System.out.println("student---" + student.getString("name"));
-                System.out.println("student---" + student.getString("email"));
-                System.out.println("student---" + student.getString("birthday"));
-                System.out.println("student---" + student.getString("gender"));
-                System.out.println("student---" + student.getString("parent"));
-                System.out.println("student---" + student.getString("phone"));
-                System.out.println("student---" + student.getString("address"));
-                System.out.println("student---" + tvName);
-                System.out.println("student---" + tvEmail);
-                System.out.println("student---" + tvDateOfBirth);
-                System.out.println("student---" + tvGender);
-                System.out.println("student---" + tvParent);
-                System.out.println("student---" + tvMobilePhone);
-                System.out.println("student---" + tvAddress);
-
-
 
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -386,15 +386,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void loadingdata(){
-        System.out.println("loading data------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         isSaved = sp.getBoolean(id+"IS_SAVED", false);
         if(isSaved){
             //LOADING MAIL INBOX
             int numInbox = sp.getInt(id+"NUM_INBOX", 0);
-
-            System.out.println("loading mail inbox+:----" + numInbox);
-
 
             for (int i = 0; i < numInbox; i++){
                 String jsonString = sp.getString(id+"INBOX"+i, null);
@@ -516,7 +512,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         }else{
-            System.out.println("loadding from creating------");
             creatingData();
         }
     };
@@ -788,6 +783,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logout:
                 saveDataLogin = false;
+                Intent Login = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(Login);
                 finish();
         }
 
