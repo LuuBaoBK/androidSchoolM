@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,7 +22,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.SyncMail.SyncDraftMail;
 import com.example.longdinh.tabholder3.SyncMail.SyncOutboxMail;
 import com.example.longdinh.tabholder3.activities.MailContent;
 import com.example.longdinh.tabholder3.activities.MyApplication;
@@ -65,15 +63,15 @@ public class Tab5Fragment extends Fragment{
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshLayout.setEnabled(true);
-                if(true){
+                refreshLayout.setEnabled(false);
+                if(isOnline()){
                     Toast.makeText(getContext(), "Syncing Outbox, Please waiting....", Toast.LENGTH_SHORT).show();
                     new SyncOutboxMail(app, new RequestManager(), null,dialog).execute();
                 }else{
                     Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
                 }
                 refreshLayout.setRefreshing(false);
-                refreshLayout.setEnabled(false);
+                refreshLayout.setEnabled(true);
             }
         });
 

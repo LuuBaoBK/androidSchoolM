@@ -69,7 +69,7 @@ public class MyProfile extends Fragment{
             showResult(profile);
         }
 
-        if(true){
+        if(isOnline()){
             new getInfo().execute("");
         }
 
@@ -97,7 +97,7 @@ public class MyProfile extends Fragment{
 //            if(role.equals("0")){
 ////                data = "{\"mobilephone\":\"0124929961\",\"address\":\"18 Nguyễn Trãi, P2, Q5, TP.HCM\"}";
 //            }else if(app.getRole().equals("1")){
-                data = "{\"birthday\":\"08/08/1991\",\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"gender\":\"Nữ\",\"group\":\"Toán\",\"address\":\"18 Nguyễn Bỉnh Khiêm, P2, Q5, TP.HCM\"}";
+//                data = "{\"birthday\":\"08/08/1991\",\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"gender\":\"Nữ\",\"group\":\"Toán\",\"address\":\"18 Nguyễn Bỉnh Khiêm, P2, Q5, TP.HCM\"}";
 //            }else if(app.getRole().equals("3")){
 //                data = "{\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"job\":\"Công Nhân\",\"address\":\"18 Trường Chinh, P2, Q5, TP.HCM\"}";
 //            }else{

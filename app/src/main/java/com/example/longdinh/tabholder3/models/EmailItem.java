@@ -65,11 +65,11 @@ public class EmailItem {
         try {
             JSONObject  email  = new JSONObject(data);
             this.id = email.getInt("id");
-            this.subject = email.getString("subject");
-            this.date = email.getString("date");
-            this.sender = email.getString("sender");
+            this.subject = email.getString("title");
+            this.date = email.getString("date_time");
+            this.sender = email.getString("author");
             this.receiver = email.getString("receiver");
-            this.preview = email.getString("preview");
+            this.preview = email.getString("content");
             this.isRead = email.getBoolean("isRead");
             this.isSync = email.getBoolean("isSync");
         } catch (JSONException e) {

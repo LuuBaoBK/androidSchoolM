@@ -41,7 +41,13 @@ public class SyncOutboxMail extends AsyncTask<Void, Void , String> {
 //        return null;
         while(outBoxMailList.size() > 0){//update for each mail when all mail is updated
 //            mgr.postDataToServer("api/post/mailbox/update/outbox_mail", app.getToken(), outBoxMailList.get(0).toData());
-            System.out.println("remove ooutbox + " + outBoxMailList.get(0).toString());
+            EmailItem item = outBoxMailList.get(0);
+            RequestManager requestManager = new RequestManager();
+
+            String data ="title=" + item.getSubject() + "&receiver=" + item.getReceiver() + "&content=" + item.getContent();
+
+            requestManager.postDataToServer("api/post/mailbox/send_mail", app.getToken(), data);
+            System.out.println("remove outbox + " + outBoxMailList.get(0).toString());
             outBoxMailList.remove(0);
         }
         return null;//truong hop khong co trong mail ma cung khong the online

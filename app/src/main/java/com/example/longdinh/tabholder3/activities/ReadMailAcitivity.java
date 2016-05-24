@@ -128,7 +128,7 @@ public class ReadMailAcitivity extends Activity{
                         else{
                             app.getInboxReadMail().add(email.getId()+"");
                         }
-                        return email.toString();
+                        return email.toJsonString();
                     }
                 }
                 if(isOnline()){
@@ -145,7 +145,7 @@ public class ReadMailAcitivity extends Activity{
                     EmailItem email = outboxMailList.get(i);
                     if(id.equals(email.getId()+ "")){
                         System.out.println("read mail outbox local -----");
-                        return email.toString();
+                        return email.toJsonString();
                     }
                 }
             }else if(typeMail.equals("send")){// xu li co giong voi truong hop mai inbox ahy khong
@@ -155,7 +155,7 @@ public class ReadMailAcitivity extends Activity{
                     EmailItem email = sendMailList.get(i);
                     if(id.equals(email.getId()+ "")){
                         System.out.println("read mail send local -----");
-                        return email.toString();
+                        return email.toJsonString();
                     }
                 }
 

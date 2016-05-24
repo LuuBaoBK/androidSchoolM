@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
@@ -32,11 +30,13 @@ public class ShowDetailStudent extends Activity {
     TextView tvMobilePhone;
     TextView tvAddress;
     CircleImageView ivAvatar;
+    MyApplication app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragmennt_studentinfo);
+        app = (MyApplication) getApplication();
 
         ivAvatar = (CircleImageView) findViewById(R.id.ivAvatar);
         tvName = (TextView) findViewById(R.id.tvName);
@@ -50,6 +50,7 @@ public class ShowDetailStudent extends Activity {
 
         Intent getData = getIntent();
         String ma = getData.getStringExtra("mahs");
+        System.out.println("get Ma"  + ma);
         new showStudentDetail().execute(ma);
     }
 
@@ -59,8 +60,10 @@ public class ShowDetailStudent extends Activity {
         @Override
         protected String doInBackground(String... params) {
             String mahs = params[0];
-            String retur = "{\"avatar\":\"http://jsonparsing.parseapp.com/jsonData/images/avengers.jpg\",\"email\":\"s_0000001@schoolm.com\",\"name\":\"Trần Quách Tĩnh\",\"birthday\":\"01/09/1997\",\"gender\":\"Nam\",\"parent\":\"Trần Thiên Hoàng\",\"phone\":\"099292997\",\"address\":\"Trung Thành Tây, Mỹ Quang, Q.3\"}";
-            return retur;
+            RequestManager requestManager = new RequestManager();
+            String data = requestManager.getData("api/post/teacher/get_stu_detail", app.getToken(), "id="+mahs);
+//            String retur = "{\"avatar\":\"http://jsonparsing.parseapp.com/jsonData/images/avengers.jpg\",\"email\":\"s_0000001@schoolm.com\",\"name\":\"Trần Quách Tĩnh\",\"birthday\":\"01/09/1997\",\"gender\":\"Nam\",\"parent\":\"Trần Thiên Hoàng\",\"phone\":\"099292997\",\"address\":\"Trung Thành Tây, Mỹ Quang, Q.3\"}";
+            return data;
         }
 
         @Override
@@ -69,7 +72,7 @@ public class ShowDetailStudent extends Activity {
             try {
                 JSONObject student = new JSONObject(result);
 
-                ImageLoader.getInstance().displayImage(student.getString("avatar"), ivAvatar, new ImageLoadingListener() {
+                ImageLoader.getInstance().displayImage(Constant.ROOT_API+student.getString("avatar"), ivAvatar, new ImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String imageUri, View view) {
                     }

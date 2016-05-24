@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.longdinh.tabholder3.R;
+import com.example.longdinh.tabholder3.activities.MyApplication;
+import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.activities.ShowDetailStudent;
 import com.example.longdinh.tabholder3.adapters.StudentClassAdapter;
 import com.example.longdinh.tabholder3.models.StudentClass;
@@ -23,19 +25,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyClass extends Fragment {
     private ListView listview;
     List<StudentClass> studentClassList = new ArrayList<>();
+    private MyApplication app;
+    StudentClassAdapter   adapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -43,6 +41,8 @@ public class MyClass extends Fragment {
 
 
         View v = inflater.inflate(R.layout.list_student_class, container, false);
+        app = (MyApplication) getActivity().getApplication();
+
         listview = (ListView) v.findViewById(R.id.lvStudentClass);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -52,6 +52,8 @@ public class MyClass extends Fragment {
                 startActivityForResult(intent, 500);
             }
         });
+         adapter = new StudentClassAdapter(getContext(), R.layout.item_student, studentClassList);
+        listview.setAdapter(adapter);
 
 //        new JsonTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesData.txt");
 
@@ -67,11 +69,11 @@ public class MyClass extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new JsonTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesData.txt");
+        new JsonTask().execute("");
 
     }
 
-    public class JsonTask extends AsyncTask<String, String , List<StudentClass>> {
+    public class JsonTask extends AsyncTask<String, String , String> {
 
         @Override
         protected void onPreExecute() {
@@ -79,64 +81,43 @@ public class MyClass extends Fragment {
         }
 
         @Override
-        protected List<StudentClass> doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            BufferedReader bufferedReader = null;
+        protected String doInBackground(String... params) {
 
+            RequestManager requestManager = new RequestManager();
+
+            String data = requestManager.getInboxMail("api/post/teacher/get_stulist", app.getToken(), 1);
+            return data;
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
             try {
-                URL url = new URL(params[0]);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.connect();
-
-
-                InputStream inputStream = httpURLConnection.getInputStream();
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line = null;
-                StringBuffer stringBuffer = new StringBuffer();
-                while ((line = bufferedReader.readLine()) != null) {
-                    stringBuffer.append(line + "\n");
-                }
-
-                String data = "{\"liststudents\":[\t{\t\"avatar\":\"http://jsonparsing.parseapp.com/jsonData/images/avengers.jpg\",\t\"name\":\"Trần Hữu Cầu\"\t,\"ma\":\"s_0000001\",\t\"sdt\":\"0120968899\" \t},\t{\t\"avatar\":\"http://jsonparsing.parseapp.com/jsonData/images/interstellar.jpg\",\t\"name\":\"Trần Hữu Cát\"\t,\"ma\":\"s_0000002\",\t\"sdt\":\"012096887799\"\t}]}";
-                JSONObject jsonObject = new JSONObject(data);
+//
+                System.out.println("result---" + result);
+                JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("liststudents");
                 studentClassList.clear();
 
                 for(int i = 0 ; i < jsonArray.length(); i++){
                     JSONObject finalObject = jsonArray.getJSONObject(i);
-                     StudentClass student =  new StudentClass();
+                    StudentClass student =  new StudentClass();
                     student.setImage(finalObject.getString("avatar"));
                     student.setMaHs(finalObject.getString("ma"));
                     student.setName(finalObject.getString("name"));
-                    student.setSdt(finalObject.getString("sdt"));
+//                    student.setSdt(finalObject.getString("sdt"));
                     studentClassList.add(student);
                 }
-                return studentClassList;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
-                if (httpURLConnection != null)
-                    httpURLConnection.disconnect();
-                try {
-                    if (bufferedReader != null)
-                        bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
             }
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<StudentClass> result) {
-            super.onPostExecute(result);
-            StudentClassAdapter   adapter = new StudentClassAdapter(getContext(), R.layout.item_student, result);
-            listview.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
     }
 }

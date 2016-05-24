@@ -86,7 +86,7 @@ public class ReadDraftMailAcitivity extends Activity{
                     EmailItem email = draftMailList.get(i);
                     if(id.equals(email.getId()+ "")){
                         System.out.println("dang doc mail luu draft -----");
-                        return email.toString();
+                        return email.toJsonString();
                     }
                 }
 

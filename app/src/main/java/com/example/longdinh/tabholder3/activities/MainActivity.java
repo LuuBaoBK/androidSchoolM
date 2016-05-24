@@ -25,9 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.SyncMail.SyncDraftMail;
-import com.example.longdinh.tabholder3.SyncMail.SyncOutboxMail;
-import com.example.longdinh.tabholder3.SyncMail.SyncReadOrDeleteMail;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.fragments.MyClass;
 import com.example.longdinh.tabholder3.fragments.MyProfile;
@@ -339,10 +336,11 @@ public class MainActivity extends AppCompatActivity {
 
         //AFTER FINISH CREATE DATA AND SCREENS THEN UPDATE OR SYNC DATA LOCAL
         if(isOnline()){
-            SyncDraftMail syncDraftMail = new SyncDraftMail(app, new RequestManager(), null, null);
-            SyncOutboxMail syncOutboxMail = new SyncOutboxMail(app, new RequestManager(), syncDraftMail, null);
-            SyncReadOrDeleteMail syncReadOrDeleteMail = new SyncReadOrDeleteMail(app, new RequestManager(), syncOutboxMail);
-            syncReadOrDeleteMail.execute();
+//            SyncDraftMail syncDraftMail = new SyncDraftMail(app, new RequestManager(), null, null);
+//            SyncOutboxMail syncOutboxMail = new SyncOutboxMail(app, new RequestManager(), null, null);
+//            SyncReadOrDeleteMail syncReadOrDeleteMail = new SyncReadOrDeleteMail(app, new RequestManager(), syncOutboxMail);
+//            syncReadOrDeleteMail.execute();
+//            syncOutboxMail.execute();
         }
 
         listAdapter.notifyDataSetChanged();
@@ -390,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
     public void loadingdata(){
         System.out.println("loading data------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        isSaved = sp.getBoolean(id+"IS_SAVED", true);
+        isSaved = sp.getBoolean(id+"IS_SAVED", false);
         if(isSaved){
             //LOADING MAIL INBOX
             int numInbox = sp.getInt(id+"NUM_INBOX", 0);
@@ -542,12 +540,14 @@ public class MainActivity extends AppCompatActivity {
         editor.clear();
 
         //SAVING FOR DATA LOGIN
-        if(saveDataLogin)
+        if(saveDataLogin){
             savingDataLogIn(editor);
-        else
-            clearDataLogIn(editor);
+        }
+        else{
+            System.out.println("clear");
+        }
 
-        editor.putBoolean(id + "IS_SAVED", false);
+        editor.putBoolean(id + "IS_SAVED", true);
         //INBOX MAIL
         int numInbox = InboxMailList.size();
         numInbox = numInbox>5?5:numInbox;
