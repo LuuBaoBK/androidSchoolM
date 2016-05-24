@@ -26,7 +26,6 @@
         android:layout_width="40dip"
         android:layout_gravity="center"
         android:layout_marginLeft="4dp"
-        android:text="C"
         android:textSize="30dp"
         android:background="@drawable/cirle_background"
         android:gravity="center"

@@ -34,7 +34,7 @@ public class NoticeT5 extends Fragment {
 
     ListView listView;
     ProgressDialog dialog;
-    List<NoticeBoardItem> noticeBoardItemList;
+    List<NoticeBoardItem> noticeBoardItemList = new ArrayList<>();
     NoticeBoardAdapter adapter;
     String mahs;
     MyApplication app;
@@ -46,13 +46,13 @@ public class NoticeT5 extends Fragment {
         View v = inflater.inflate(R.layout.notice_day, container, false);
 
         app = (MyApplication) getActivity().getApplication();
+        app.setData_NoticeListT5(noticeBoardItemList);
         mahs = app.getCurrentchild();
         listView = (ListView) v.findViewById(R.id.lvNotice);
         dialog = new ProgressDialog(getActivity());
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
         dialog.setMessage("Loading. Please wait...");
-        noticeBoardItemList = new ArrayList<>();
         adapter = new NoticeBoardAdapter(getContext(), R.layout.item_noticeboard, noticeBoardItemList);
 
         listView.setAdapter(adapter);
@@ -63,6 +63,7 @@ public class NoticeT5 extends Fragment {
 //                new showNoticeDetail().execute(noticeBoardItemList.get(position).getId() + "");
                 Intent intent = new Intent(getContext(),ShowDetailNotice.class);
                 intent.putExtra("nid", noticeBoardItemList.get(position).getId());
+                intent.putExtra("date", "5");
                 startActivityForResult(intent, 333);
             }
         });

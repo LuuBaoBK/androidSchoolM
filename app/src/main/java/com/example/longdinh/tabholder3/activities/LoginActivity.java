@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
 
-//        this.loading();
+        this.loading();
         if(dataInfo != null){
             Intent Idashboard = new Intent(getApplicationContext(), MainActivity.class);
             Idashboard.putExtra("userinfo_string",dataInfo);
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
     public void loading(){
         System.out.println("loading datainfor------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        dataInfo = sp.getString("dataInfo", null);
+        dataInfo = sp.getString("DATA_INFO", null);
         System.out.println("data info----" + dataInfo);
     }
 
@@ -112,9 +112,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "Main Page", // TODO: Define a title for the content shown.
@@ -144,8 +141,6 @@ public class LoginActivity extends AppCompatActivity {
                 OutputStreamWriter out = new OutputStreamWriter(httpURLConnection.getOutputStream());
                 out.write("email=" + email + "&password=" + password);
                 out.close();
-
-
 
                 httpURLConnection.connect();
                 InputStream inputStream = httpURLConnection.getInputStream();
@@ -180,7 +175,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 //            System.out.println("GEt data from server...");
-//            return "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"1\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\"}";
+//
+//                    dataInfo = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"1\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"num_new_mail\":4}";
+//            return dataInfo;
         }
         @Override
         protected void onPostExecute(String result) {

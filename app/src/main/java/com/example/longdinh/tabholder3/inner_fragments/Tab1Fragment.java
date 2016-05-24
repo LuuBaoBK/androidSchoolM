@@ -198,11 +198,6 @@ public class Tab1Fragment extends Fragment {
     public void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged();
-//        new getListMailInbox().execute("");
-//        Toast.makeText(getContext(), "da toi day", Toast.LENGTH_SHORT).show();
-        //        getActivity().setDrawerIndicatorEnabled(true);
-//        ((HomeActivity) mActivity).setActionBarTitle(getString(R.string.app_name));
-
     }
 
     @Override
@@ -278,7 +273,6 @@ public class Tab1Fragment extends Fragment {
             RequestManager requestManager = new RequestManager();
             String retur = requestManager.getInboxMail("api/post/mailbox/get_inbox", app.getToken(), size);
             System.out.println(retur + "--" + app.getToken());
-//            retur = "[    { \"id\": 1,      \"content\": \"Xay dung khu hoc tap moi...\",      \"title\": \"Hop hoi Dong\",      \"date_time\": \"Apr 29\",      \"author\": \"t0001@schoolm.com\"    },    {      \"id\": 2,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Ke Hoach Moi\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    },\t{      \"id\": 3,      \"content\": \"Lay y kien xay dung phuon...\",      \"title\": \"Hang phim Thong tan...\",      \"date_time\": \"Jun 29\",      \"author\": \"a00003@schoolm.com\"    }  ]";
 
                 return retur;
         }
@@ -293,17 +287,13 @@ public class Tab1Fragment extends Fragment {
                 emailItemList.clear();
                 for(int i = 0; i < inbox.length(); i++){
                     JSONObject email = inbox.getJSONObject(i);
-//                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
-//                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
-                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("receiver"), email.getString("content"), email.getBoolean("isRead")));
-
+                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("receiver"), email.getString("content"), email.getBoolean("isRead"), true));
                 }
                 int numMail = data.getInt("new_mail");
                 app.getNumMailinbox().setNum(numMail);
+                app.getNavInbox().setNum(numMail);
                 app.notifyChangeNumInbox();
-
                 adapter.notifyDataSetChanged();
-//                lvEmailItem.setSelection(8);
 
             } catch (JSONException e) {
                 e.printStackTrace();

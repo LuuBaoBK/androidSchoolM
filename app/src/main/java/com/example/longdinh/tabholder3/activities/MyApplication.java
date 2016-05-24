@@ -8,6 +8,7 @@ import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
 import com.example.longdinh.tabholder3.models.ItemClassDate;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
+import com.example.longdinh.tabholder3.models.NavItem;
 import com.example.longdinh.tabholder3.models.NavItemChild;
 import com.example.longdinh.tabholder3.models.NoticeBoardItem;
 import com.example.longdinh.tabholder3.models.StudentItemSpinner;
@@ -33,16 +34,14 @@ public class MyApplication extends Application {
     List<String>        DraftNewMail = new ArrayList<String>();
     EmailItemAdapter DraftAdapter;
 
-
     private List<EmailItem> TrashMailList;
 
-
-    private List<NoticeBoardItem> NoticeListT2;
-    private List<NoticeBoardItem> NoticeListT3;
-    private List<NoticeBoardItem> NoticeListT4;
-    private List<NoticeBoardItem> NoticeListT5;
-    private List<NoticeBoardItem> NoticeListT6;
-    private List<NoticeBoardItem> NoticeListT7;
+    private List<NoticeBoardItem> NoticeListT2  = new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT3 = new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT4 = new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT5 = new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT6= new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT7= new ArrayList<>();
 
 
     private List<EmailItem> OutboxMailList;
@@ -71,6 +70,7 @@ public class MyApplication extends Application {
     public void setRole(String role) {
         this.role = role;
     }
+
     public String getCurrentchild() {
         return currentchild;
     }
@@ -78,9 +78,6 @@ public class MyApplication extends Application {
     public void setCurrentchild(String currentchild) {
         this.currentchild = currentchild;
     }
-
-
-
 
     public String getFullName() {
         return fullName;
@@ -90,8 +87,7 @@ public class MyApplication extends Application {
         this.fullName = fullName;
     }
 
-
-
+    //METHOD FOR SEND MAIL
     public List<EmailItem> getData_SendMailList() {return SendMailList;}
     public void setData_SendMailList(List<EmailItem> data) {this.SendMailList = data;}
     public void removeItem_SendMailList(int position){this.SendMailList.remove(position);};
@@ -100,104 +96,67 @@ public class MyApplication extends Application {
         if(SendMailList != null ) return SendMailList.size();
         else return -1;
     };
+    public List<String> getSendDeleteMail() {
+        return SendDeleteMail;
+    }
+    public void setSendDeleteMail(List<String> SendDeleteMail) {
+        this.SendDeleteMail = SendDeleteMail;
+    }
+    public void removeItem_SendDeleteMail(int position){this.SendDeleteMail.remove(position);};
+    public void addItem_SendDeleteMail(String item) {this.SendDeleteMail.add(0, item);};
 
-
+    //METHOD FOR DRAFT MAIL
     public List<EmailItem> getData_DraftMailList() {return DraftMailList;}
     public void setData_DraftMailList(List<EmailItem> data) {this.DraftMailList = data;}
     public void removeItem_DraftMailList(int position){this.DraftMailList.remove(position);};
-    public void addItem_DraftMailList(EmailItem item) {this.DraftMailList.add(0,item);};
+    public void addItem_DraftMailList(EmailItem item) {this.DraftMailList.add(0, item);};
     public int getSize_DraftMailList(){
         if(DraftMailList != null ) return DraftMailList.size();
         else return -1;
     };
 
+    //METHOD FOR TRASH MAIL
     public List<EmailItem> getData_TrashMailList() {return TrashMailList;}
     public void setData_TrashMailList(List<EmailItem> data) {this.TrashMailList = data;}
     public void removeItem_TrashMailList(int position){this.TrashMailList.remove(position);};
-    public void addItem_TrashMailList(EmailItem item) {this.TrashMailList.add(0,item);};
+    public void addItem_TrashMailList(EmailItem item) {this.TrashMailList.add(0, item);};
     public int getSize_TrashMailList(){
         if(TrashMailList != null ) return TrashMailList.size();
         else return -1;
     };
 
-
+    //METHOD FOR OUTBOX MAIL
     public List<EmailItem> getData_OutboxMailList() {return OutboxMailList;}
     public void setData_OutboxMailList(List<EmailItem> data) {this.OutboxMailList = data;}
     public void removeItem_OutboxMailList(int position){this.OutboxMailList.remove(position);};
-    public void addItem_OutboxhMailList(EmailItem item) {this.OutboxMailList.add(0,item);};
-    public int getSize_OutboxMailList(){
-        if(OutboxMailList != null ) return OutboxMailList.size();
-        else return -1;
-    };
+    public void addItem_OutboxhMailList(EmailItem item) {this.OutboxMailList.add(0, item);};
+    public int getSize_OutboxMailList(){if(OutboxMailList != null ) return OutboxMailList.size();else return -1;};
+    public List<String> getInboxReadMail() {return InboxReadMail;}
+    public void setInboxReadMail(List<String> inboxReadMail) {InboxReadMail = inboxReadMail;}
+    public void removeItem_InboxReadMail(int position){this.InboxReadMail.remove(position);};
+    public void addItem_InboxReadMail(String item) {this.InboxReadMail.add(0,item);};
 
-
-
-    // xu li cho inbox mail
-
+    //METHOD FOR INBOX MAIL
     public List<EmailItem> getData_InboxMailList() {return InboxMailList;}
     public void setData_InboxMailList(List<EmailItem> data) {this.InboxMailList = data;}
     public void removeItem_InboxMailList(int position){this.InboxMailList.remove(position);};
-    public void addItem_InboxMailList(EmailItem item) {this.InboxMailList.add(0,item);};
-    public int getSize_InboxMailList(){
-        if(InboxMailList != null ) return InboxMailList.size();
-        else return -1;
-    };
-
-
-    public List<String> getInboxReadMail() {
-        return InboxReadMail;
-    }
-
-    public void setInboxReadMail(List<String> inboxReadMail) {
-        InboxReadMail = inboxReadMail;
-    }
-    public void removeItem_InboxReadMail(int position){this.InboxReadMail.remove(position);};
-
-    public void addItem_InboxReadMail(String item) {this.InboxReadMail.add(0,item);};
-
-
-
-
-    public List<String> getSendDeleteMail() {
-        return SendDeleteMail;
-    }
-
-    public void setSendDeleteMail(List<String> SendDeleteMail) {
-        this.SendDeleteMail = SendDeleteMail;
-    }
-
-    public void removeItem_SendDeleteMail(int position){this.SendDeleteMail.remove(position);};
-
-    public void addItem_SendDeleteMail(String item) {this.SendDeleteMail.add(0, item);};
-
-
+    public void addItem_InboxMailList(EmailItem item) {this.InboxMailList.add(0, item);};
+    public int getSize_InboxMailList(){if(InboxMailList != null ) return InboxMailList.size();else return -1;};
 
     public List<String> getInboxDeleteMail() {
         return InboxDeleteMail;
     }
-    public void setInboxDeleteMail(List<String> inboxDeleteMail) {
-        InboxDeleteMail = inboxDeleteMail;
-    }
-
+    public void setInboxDeleteMail(List<String> inboxDeleteMail) {InboxDeleteMail = inboxDeleteMail;}
     public void removeItem_InboxDeleteMail(int position){this.InboxDeleteMail.remove(position);};
-
     public void addItem_InboxDeleteMail(String item) {this.InboxDeleteMail.add(0, item);};
-
-
-
-
     public List<String> getDraftDeleteMail() {
         return DraftDeleteMail;
     }
 
-    public void setDraftDeleteMail(List<String> draftDeleteMail) {
-        DraftDeleteMail = draftDeleteMail;
-    }
+    public void setDraftDeleteMail(List<String> draftDeleteMail) {DraftDeleteMail = draftDeleteMail;}
     public void removeItem_DraftDeleteMail(int position){this.DraftDeleteMail.remove(position);};
 
     public void addItem_DraftDeleteMail(String item) {this.DraftDeleteMail.add(0, item);};
-
-
 
     public List<String> getDraftNewMail() {
         return DraftNewMail;
@@ -206,6 +165,7 @@ public class MyApplication extends Application {
     public void setDraftNewMail(List<String> draftNewMail) {
         DraftNewMail = draftNewMail;
     }
+
     public void removeItem_DraftNewMail(int position){this.DraftNewMail.remove(position);};
 
     public void addItem_DraftNewMail(String item) {this.DraftNewMail.add(0, item);};
@@ -288,9 +248,10 @@ public class MyApplication extends Application {
         else return -1;
     };
 
-    //cac ham su dung hoc viec notify khico m1 message mo xuat hien
+    //USING WHEN HAS NEW MAIL
     NavItemChild numMailinbox = null;
     MyExpandableListAdapter listAdapter;
+    NavItem NavInbox = null;
 
     public NavItemChild getNumMailinbox() {
         return numMailinbox;
@@ -300,6 +261,14 @@ public class MyApplication extends Application {
         this.numMailinbox = numMailinbox;
     }
 
+    public NavItem getNavInbox() {
+        return NavInbox;
+    }
+
+    public void setNavInbox(NavItem NavInbox) {
+        this.NavInbox = NavInbox;
+    }
+
     public MyExpandableListAdapter getListAdapter() {
         return listAdapter;
     }
@@ -307,6 +276,7 @@ public class MyApplication extends Application {
     public void setListAdapter(MyExpandableListAdapter listAdapter) {
         this.listAdapter = listAdapter;
     }
+
 
     public void notifyChangeNumInbox(){
         this.listAdapter.notifyDataSetChanged();
@@ -346,8 +316,6 @@ public class MyApplication extends Application {
     public void notifyChangeSend(){
         SendAdapter.notifyDataSetChanged();
     }
-
-
 
     ///end using for notice
     ///LUU THONG TIN VER PROFILE CHO NGUOI DUNG

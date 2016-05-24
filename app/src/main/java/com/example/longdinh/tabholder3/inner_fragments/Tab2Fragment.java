@@ -254,7 +254,7 @@ public class Tab2Fragment extends Fragment {
                 emailItemList.clear();
                 for(int i = 0; i < inbox.length(); i++){
                     JSONObject email = inbox.getJSONObject(i);
-                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("receiver"), email.getString("content"), false));
+                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("receiver"), email.getString("content"), false, true));
                 }
                 adapter.notifyDataSetChanged();
 

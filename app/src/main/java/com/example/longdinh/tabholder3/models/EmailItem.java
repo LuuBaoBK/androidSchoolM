@@ -2,6 +2,9 @@ package com.example.longdinh.tabholder3.models;
 
 import android.text.Html;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by long dinh on 08/04/2016.
  */
@@ -13,27 +16,41 @@ public class EmailItem {
     String receiver;
     String preview;
     Boolean isRead;
+    Boolean isSync;
 
 
-    public EmailItem(int id , String subject, String date, String sender, String preview) {
-        this.id = id;
-        this.subject = subject;
-        this.date = date;
-        this.sender = sender;
-        this.preview = preview;
-        this.isRead = false;
-    }
+//    public EmailItem(int id , String subject, String date, String sender, String preview) {
+//        this.id = id;
+//        this.subject = subject;
+//        this.date = date;
+//        this.sender = sender;
+//        this.preview = preview;
+//        this.isRead = false;
+//        this.isSync = true;
+//    }
+//
+//    public EmailItem(int id, String subject, String date, String sender, String preview, Boolean isRead) {
+//        this.id = id;
+//        this.subject = subject;
+//        this.date = date;
+//        this.sender = sender;
+//        this.preview = preview;
+//        this.isRead = isRead;
+//        this.isSync = true;
+//    }
+//
+//    public EmailItem(int id, String subject, String date, String sender, String receiver, String preview, Boolean isRead) {
+//        this.id = id;
+//        this.subject = subject;
+//        this.date = date;
+//        this.sender = sender;
+//        this.receiver = receiver;
+//        this.preview = preview;
+//        this.isRead = isRead;
+//    }
 
-    public EmailItem(int id, String subject, String date, String sender, String preview, Boolean isRead) {
-        this.id = id;
-        this.subject = subject;
-        this.date = date;
-        this.sender = sender;
-        this.preview = preview;
-        this.isRead = isRead;
-    }
 
-    public EmailItem(int id, String subject, String date, String sender, String receiver, String preview, Boolean isRead) {
+    public EmailItem(int id, String subject, String date, String sender, String receiver, String preview, Boolean isRead, Boolean isSync) {
         this.id = id;
         this.subject = subject;
         this.date = date;
@@ -41,7 +58,25 @@ public class EmailItem {
         this.receiver = receiver;
         this.preview = preview;
         this.isRead = isRead;
+        this.isSync = isSync;
     }
+
+    public EmailItem (String data){
+        try {
+            JSONObject  email  = new JSONObject(data);
+            this.id = email.getInt("id");
+            this.subject = email.getString("subject");
+            this.date = email.getString("date");
+            this.sender = email.getString("sender");
+            this.receiver = email.getString("receiver");
+            this.preview = email.getString("preview");
+            this.isRead = email.getBoolean("isRead");
+            this.isSync = email.getBoolean("isSync");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public String getReceiver() {
         return Html.fromHtml(receiver).toString();
@@ -110,12 +145,20 @@ public class EmailItem {
     }
 
 
-    public String toString(){
-        return "{\"id\":"+id+",\"content\": \""+preview+"\",\"title\": \""+subject+"\",\"date_time\": \""+date+"\",\"author\": \""+sender+"\", \"receiver\":" + ((receiver==null)?("\"\""):("\""+receiver+"\""))+"}";
-//        { "id": 1,"content": "Noi dung khong quan trong chay dung la dc","title": "Mail sent to server","date_time": "Apr 29","author": "t0001@schoolm.com", "receiver":"t_000002@schoolm.com"}
+    public Boolean getIsSync() {
+        return isSync;
+    }
+
+    public void setIsSync(Boolean isSync) {
+        this.isSync = isSync;
+    }
+
+    public String toJsonString(){// nhu vay cai nay dung trnng truong hop minh muon luu data xuong local
+        return "{\"id\":"+id+",\"content\":\""+preview+"\",\"title\":\""+subject+"\",\"date_time\":\""+date+"\",\"author\":\""+sender+"\",\"receiver\":\""+receiver+"\",\"isRead\":"+isRead+",\"isSync\":"+isSync+"}";
+//      {"id":1,"content":"Noi dung khong quan trong chay dung la dc","title":"Mail sent to server","date_time":"Apr 29","author":"t0001@schoolm.com","receiver":"t_000002@schoolm.com","isRead":false,"isSync":true}
     };
 
-    public String toData(){
+    public String toData(){// chi dung cho truong hop gui data len server
         return "id:"+id+"&content="+preview+"&title="+subject+"&date_time="+date+"&author="+sender+"&receiver="+receiver;
     }
 }

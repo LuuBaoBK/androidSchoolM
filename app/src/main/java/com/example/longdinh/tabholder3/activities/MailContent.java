@@ -1,7 +1,10 @@
 package com.example.longdinh.tabholder3.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -115,7 +118,7 @@ public class MailContent  extends Activity implements TextWatcher{
 
                 }
 
-                if(true){//neu co mang thi gui len luon roi cho ket qua tra ve
+                if(isOnline()){//neu co mang thi gui len luon roi cho ket qua tra ve
                     //
                     if(isDraftMail){
 
@@ -137,7 +140,7 @@ public class MailContent  extends Activity implements TextWatcher{
                     }
 
                     String currentDateandTime = new SimpleDateFormat("MMM dd").format(new Date());
-                    EmailItem item = new EmailItem(min-1, etSubject.getText().toString(), currentDateandTime, etNguoiNhan.getText().toString(), etContent.getText().toString());
+                    EmailItem item = new EmailItem(min-1, etSubject.getText().toString(), currentDateandTime, app.getId()+"@schoolm.com", etNguoiNhan.getText().toString(), etContent.getText().toString(),false, false );
                     app.addItem_OutboxhMailList(item);
                     //save nhu mail draft
                     System.out.println("them vao trong outbox moi ");
@@ -171,67 +174,45 @@ public class MailContent  extends Activity implements TextWatcher{
                 Toast.makeText(getApplicationContext(), "Noi dung mail ko doi", Toast.LENGTH_SHORT).show();
             }
             else{
-
-
                 String currentDateandTime = new SimpleDateFormat("MMM dd").format(new Date());
                 if(isDraftMail){
-                    //ghi de
                     Toast.makeText(getApplicationContext(), "Save as draft mail... ghide", Toast.LENGTH_SHORT).show();
-
-//                    app.addItem_DraftDeleteMail(idMail);
                     List<EmailItem> draftMailList = app.getData_DraftMailList();
-
-
                     for(int i = 0; i < draftMailList.size(); i++){
                         EmailItem email = draftMailList.get(i);
                         if(idMail.equals(draftMailList.get(i).getId()+ "")){
-                            if(true){//neu co mang thi gui len luon roi cho ket qua tra ve
-
+                            if(isOnline()){//neu co mang thi gui len luon roi cho ket qua tra ve
                                 String data ="title=" + etSubject.getText().toString()
                                         + "&receiver=" + etNguoiNhan.getText().toString()
                                         + "&content=" + etContent.getText().toString()
                                         + "&id=" + idMail;
-//                                    System.out.println(data);
                                 new sentDraft().execute(data);
                                 System.out.println(data+"mail mail draft");
-
-
-
-                            }else{//neu khong co mang thi cho luu vo ben outbox
-
+                            }else{
+                                app.addItem_DraftNewMail(idMail);
                             }
+
                             // co hay khong cung deu update thong tin cho mail nhap hien tai
-                            email.setSubject(etSubject.getText().toString());
+                            String subject = etSubject.getText().toString();
+                            subject = subject.equals("")?"No title":subject;
+
+                            email.setSubject(subject);
                             email.setPreview(etContent.getText().toString());
                             email.setDate(currentDateandTime);
+                            // va thi trong ds ve new draft cung phai luu lai trang thai cua mahi moi lam moi
 
-
-
-                            System.out.println("draft mail list- xoa mail " + idMail);
                             Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
-                else{
-                    //luu mail rac
-
-                    //mail draft se luu bang so am theo chieu nguoc lai bat dau tu -1
-//                    app.addItem_DraftDeleteMail(idMail);
-
-
-                    System.out.println("draft mail list- xoa mail " + idMail);
+                else{//luu mail rac
                     Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
-                    if(true){//neu co mang
-
+                    if(isOnline()){//neu co mang
                         String data ="title=" + etSubject.getText().toString()
                                 + "&receiver=" + etNguoiNhan.getText().toString()
                                 + "&content=" + etContent.getText().toString()
                                 + "&id=-1";
-//                        System.out.println(data);
-//                        String data = "title=abc";
-
                         new sentDraft().execute(data);
-                        System.out.println(data+"mail mail draft");
                     }else{
                         List<EmailItem> draftMailList = app.getData_DraftMailList();
                         int min = 0;
@@ -241,8 +222,10 @@ public class MailContent  extends Activity implements TextWatcher{
                                 min = email.getId();
                             }
                         }
+                        String subject = etSubject.getText().toString();
+                        subject = subject.equals("")?"No title":subject;
                         app.addItem_DraftNewMail((min-1)+"");
-                        EmailItem item = new EmailItem(min-1, etSubject.getText().toString(), currentDateandTime, etNguoiNhan.getText().toString(), etContent.getText().toString());
+                        EmailItem item = new EmailItem(min-1, subject, currentDateandTime, app.getId()+"@schoolm.com", etNguoiNhan.getText().toString(), etContent.getText().toString(), false, false);
                         app.addItem_DraftMailList(item);
 
                     }
@@ -273,7 +256,6 @@ public class MailContent  extends Activity implements TextWatcher{
 
     @Override
     public void afterTextChanged(Editable s) {
-
         if(!previousString.equals(currentString)){
             ischanged = true;
         }
@@ -281,14 +263,7 @@ public class MailContent  extends Activity implements TextWatcher{
 
 
 
-
-
-
     public class sentDraft extends AsyncTask<String, String , String> {
-
-
-
-
         @Override
         protected String doInBackground(String... params) {
 
@@ -374,4 +349,13 @@ public class MailContent  extends Activity implements TextWatcher{
             finish();
         }
     }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
 }

@@ -236,7 +236,7 @@ public class Tab3Fragment extends Fragment {
                     JSONObject email = inbox.getJSONObject(i);
 //                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
 //                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), email.getString("content")));
-                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), "", email.getString("content"), false));
+                    emailItemList.add(new EmailItem(email.getInt("id"), email.getString("title"), email.getString("date_time"), email.getString("author"), "", email.getString("content"), false, true));
 
                 }
 //                int numMail = data.getInt("new_mail");

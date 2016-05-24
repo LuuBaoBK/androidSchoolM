@@ -7,11 +7,18 @@ public class NavItem {
 
     private String title;
     private int resIcon;
+    private int num;
 
     public NavItem(String title, int resIcon) {
-        super();
         this.title = title;
         this.resIcon = resIcon;
+        this.num = 0;
+    }
+
+    public NavItem(String title, int resIcon, int num) {
+        this.title = title;
+        this.resIcon = resIcon;
+        this.num = num;
     }
 
     public String getTitle() {
@@ -30,5 +37,12 @@ public class NavItem {
         this.resIcon = resIcon;
     }
 
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
 }
 

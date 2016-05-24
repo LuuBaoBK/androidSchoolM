@@ -112,25 +112,15 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.item_nav_list, null);
-
-//            List<NavItem> listChild = _listDataChild.get(_listDataHeader.get(groupPosition).getTitle());
-
-//            if (listChild.size() == 0) {
-//                convertView = infalInflater.inflate(R.layout.blank_layout, null);
-//
-//            } else {
-//                convertView = infalInflater.inflate(R.layout.group_indicator_cell,null);
-//            }
-
         }
 
         TextView tvTitle  = (TextView) convertView.findViewById(R.id.title);
         ImageView navIcon =  (ImageView) convertView.findViewById(R.id.nav_icon);
+        TextView tvNum =  (TextView) convertView.findViewById(R.id.tvNum);
 
         tvTitle.setText(navItem.getTitle());
         navIcon.setImageResource(navItem.getResIcon());
-
-
+        tvNum.setText((navItem.getNum() <= 0) ? "" : (navItem.getNum() + ""));
 
         return convertView;
     }

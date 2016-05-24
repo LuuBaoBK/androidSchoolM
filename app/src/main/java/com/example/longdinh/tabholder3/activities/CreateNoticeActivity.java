@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -25,13 +26,16 @@ import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.fragments.NoticeTeacher;
+import com.example.longdinh.tabholder3.models.EmailItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +59,7 @@ public class CreateNoticeActivity extends Activity {
     int mYear;
     int mMonth;
     int mDay;
+    int  warning = 2;
 
 
     @Override
@@ -252,6 +257,20 @@ public class CreateNoticeActivity extends Activity {
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if(warning != 0) {
+                warning --;
+                Toast.makeText(CreateNoticeActivity.this, "Warning: If you try to go back, the current notice will lose!!", Toast.LENGTH_LONG).show();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 

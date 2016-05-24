@@ -1,11 +1,15 @@
 package com.example.longdinh.tabholder3.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.CreateNoticeActivity;
@@ -40,6 +45,7 @@ public class NoticeTeacher extends Fragment {
     NoticeBoardAdapter adapter;
     String mahs;
     MyApplication app;
+    SwipeRefreshLayout refreshLayout;
 
 
     @Nullable
@@ -54,6 +60,23 @@ public class NoticeTeacher extends Fragment {
         dialog.setMessage("Loading. Please wait...");
         noticeBoardItemList = new ArrayList<>();
         adapter = new NoticeBoardAdapter(getContext(), R.layout.item_noticeboard, noticeBoardItemList);
+
+
+        refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setEnabled(false);
+
+                if(isOnline()){
+                    new JsonTask().execute("0");
+                }else{
+                    Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
+                }
+                refreshLayout.setRefreshing(false);
+                refreshLayout.setEnabled(true);
+            }
+        });
 
         listView.setAdapter(adapter);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
@@ -131,6 +154,11 @@ public class NoticeTeacher extends Fragment {
         }
     }
 
-
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 }

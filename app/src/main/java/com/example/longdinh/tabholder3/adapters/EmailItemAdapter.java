@@ -2,6 +2,7 @@ package com.example.longdinh.tabholder3.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -46,7 +47,8 @@ public class EmailItemAdapter extends ArrayAdapter<EmailItem> {
         TextView tvDate =  (TextView) v.findViewById(R.id.tvDate);
 
         EmailItem navItem = listNavItems.get(position);
-        tvStand.setText(Character.toString(Character.toUpperCase(navItem.getSubject().charAt(0))));
+        if(!navItem.getSubject().equals(""))
+            tvStand.setText(Character.toString(Character.toUpperCase(navItem.getSubject().charAt(0))));
         tvSubject.setText(navItem.getSubject());
         tvPreview.setText(navItem.getPreview());
         tvSender.setText(navItem.getSender());
@@ -55,6 +57,12 @@ public class EmailItemAdapter extends ArrayAdapter<EmailItem> {
             tvSubject.setTypeface(null, Typeface.BOLD);
         else
             tvSubject.setTypeface(null, Typeface.NORMAL);
+
+        if(!navItem.getIsSync()){
+            tvSubject.setTextColor(Color.RED);
+        }else{
+            tvSubject.setTextColor(Color.parseColor("#212121"));
+        }
 
 
         return v;

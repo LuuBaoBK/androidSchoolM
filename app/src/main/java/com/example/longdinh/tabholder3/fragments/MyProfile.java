@@ -40,7 +40,8 @@ public class MyProfile extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        this.loading();
+        app = (MyApplication) getActivity().getApplication();
+        this.loading();
     }
 
     @Override
@@ -48,7 +49,7 @@ public class MyProfile extends Fragment{
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        app = (MyApplication) getActivity().getApplication();
+
 
         System.out.println("1 chay profile-----");
         role = app.getRole();
@@ -64,11 +65,11 @@ public class MyProfile extends Fragment{
         ((TextView)v.findViewById(R.id.tvName)).setText(app.getFullName());
         ((TextView)v.findViewById(R.id.tvEmail)).setText(app.getId() + "@schoolm.com");
 
-//        if(profile != null){//trong moi truong hop de co hien thi thong tin local
-//            showResult(profile);
-//        }
+        if(profile != null){//trong moi truong hop de co hien thi thong tin local
+            showResult(profile);
+        }
 
-        if(isOnline()){
+        if(true){
             new getInfo().execute("");
         }
 
@@ -78,7 +79,7 @@ public class MyProfile extends Fragment{
     public void loading(){
         System.out.println("loading profile------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        profile = sp.getString("profile", null);
+        profile = sp.getString("PROFILE", null);
         app.setProfile(profile);
         System.out.println("profile---" + profile);
     }
@@ -96,7 +97,7 @@ public class MyProfile extends Fragment{
 //            if(role.equals("0")){
 ////                data = "{\"mobilephone\":\"0124929961\",\"address\":\"18 Nguyễn Trãi, P2, Q5, TP.HCM\"}";
 //            }else if(app.getRole().equals("1")){
-//                data = "{\"birthday\":\"08/08/1991\",\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"gender\":\"Nữ\",\"group\":\"Toán\",\"address\":\"18 Nguyễn Bỉnh Khiêm, P2, Q5, TP.HCM\"}";
+                data = "{\"birthday\":\"08/08/1991\",\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"gender\":\"Nữ\",\"group\":\"Toán\",\"address\":\"18 Nguyễn Bỉnh Khiêm, P2, Q5, TP.HCM\"}";
 //            }else if(app.getRole().equals("3")){
 //                data = "{\"mobilephone\":\"0124929961\",\"homephone\":\"0883837\",\"job\":\"Công Nhân\",\"address\":\"18 Trường Chinh, P2, Q5, TP.HCM\"}";
 //            }else{
@@ -108,8 +109,8 @@ public class MyProfile extends Fragment{
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             if(result != null) {
-//                app.setProfile(result);
-//                profile = result;
+                app.setProfile(result);
+                profile = result;
                 showResult(result);
             }
 
