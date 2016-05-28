@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#111111">
     <TextView
         android:id="@+id/tvDateUpdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ngay update: 20-11-2015"
-        android:layout_margin="10dp" />
+        android:text="Ngày update:"
+        android:layout_margin="10dp"
+        android:textColor="#fff9f9" />
     <Spinner
         android:id="@+id/listchild"
         android:layout_width="200dp"

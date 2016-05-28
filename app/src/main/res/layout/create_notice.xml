@@ -53,7 +53,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Ngữ Văn"
                     android:id="@+id/etSubject"
                     android:layout_weight="2.6"
                     android:textSize="16dp"
@@ -87,7 +86,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Thông báo học bù"
                     android:id="@+id/etTitle"
                     android:layout_weight="2.6"
                     android:textSize="16dp"
@@ -175,7 +173,8 @@
                         android:editable="true"
                         android:background="@drawable/fillentry"
                         android:padding="3dp"
-                        android:enabled="true" />
+                        android:focusable="false"
+                        />
 
 
                     <CheckBox

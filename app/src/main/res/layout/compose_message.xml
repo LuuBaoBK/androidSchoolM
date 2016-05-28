@@ -33,7 +33,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
                     android:ems="10"
-                    android:text="t_0000001@schoolm.com"
                     android:gravity="center_vertical"
                     android:maxHeight="48dp"
                     android:textColor="#000000"

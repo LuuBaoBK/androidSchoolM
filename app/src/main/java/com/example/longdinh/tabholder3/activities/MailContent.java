@@ -62,13 +62,11 @@ public class MailContent  extends Activity implements TextWatcher{
         // doan ma get ma cua nguoi dung va chen vao trong user sender
 
         ((TextView)findViewById(R.id.tvEmailFrom)).setText(app.getId() + "@schoolm.com");
-        System.out.println("id get dc la -----" + app.getId() );
 
         if(type.equals("FORWARD")){
             etContent.setText(getData.getStringExtra("content"));
             etSubject.setText("Forward:" + getData.getStringExtra("subject"));
             isDraftMail = getData.getBooleanExtra("isTrashMail", false);
-            System.out.println("data content da get:" + getData.getStringExtra("subject"));
         }else if(type.equals("REPLY")){
             etNguoiNhan.setText(getData.getStringExtra("sender"));
             etSubject.setText(getData.getStringExtra("subject"));
@@ -106,11 +104,8 @@ public class MailContent  extends Activity implements TextWatcher{
                         EmailItem email = draftMailList.get(i);
                         RequestManager requestManager = new RequestManager();
 
-
-
                         if(idMail.equals(draftMailList.get(i).getId()+ "")){
                             draftMailList.remove(i);
-                            System.out.println("draft mail list- xoa mail " + idMail);
                             Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -121,12 +116,9 @@ public class MailContent  extends Activity implements TextWatcher{
                 if(isOnline()){//neu co mang thi gui len luon roi cho ket qua tra ve
                     //
                     if(isDraftMail){
-
                         new sentDraftMail(idMail,etSubject.getText().toString(), etNguoiNhan.getText().toString(), etContent.getText().toString()).execute();
-
                     }else{
                         new sentMail(etSubject.getText().toString(), etNguoiNhan.getText().toString(), etContent.getText().toString()).execute();
-
                     }
                 }else{//neu khong co mang thi cho luu vo ben outbox
                     // outbox luu thong tin nhung mail khong gui len server dc-> khong co ma
@@ -143,7 +135,6 @@ public class MailContent  extends Activity implements TextWatcher{
                     EmailItem item = new EmailItem(min-1, etSubject.getText().toString(), currentDateandTime, app.getId()+"@schoolm.com", etNguoiNhan.getText().toString(), etContent.getText().toString(),false, false );
                     app.addItem_OutboxhMailList(item);
                     //save nhu mail draft
-                    System.out.println("them vao trong outbox moi ");
                     Toast.makeText(getApplicationContext(), "Save as outbox mail id=" + (min-1), Toast.LENGTH_SHORT).show();
 
                 }
@@ -170,7 +161,6 @@ public class MailContent  extends Activity implements TextWatcher{
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent infoReturn = new Intent();
             if(ischanged == false){
-                System.out.println("Noi dung mai khong co doi");
                 Toast.makeText(getApplicationContext(), "Noi dung mail ko doi", Toast.LENGTH_SHORT).show();
             }
             else{
@@ -187,7 +177,6 @@ public class MailContent  extends Activity implements TextWatcher{
                                         + "&content=" + etContent.getText().toString()
                                         + "&id=" + idMail;
                                 new sentDraft().execute(data);
-                                System.out.println(data+"mail mail draft");
                             }else{
                                 app.addItem_DraftNewMail(idMail);
                             }
@@ -231,7 +220,6 @@ public class MailContent  extends Activity implements TextWatcher{
                     }
 
                     //save nhu mail draft
-                    System.out.println("save nhu mail draft moi ");
                     Toast.makeText(getApplicationContext(), "Save as draft mail... khongde", Toast.LENGTH_SHORT).show();
 //                    ham lay chi so lon nhat cua mail draft tai dien diem hien tai
 
@@ -270,8 +258,6 @@ public class MailContent  extends Activity implements TextWatcher{
             String data = params[0];
             RequestManager requestManager = new RequestManager();
             requestManager.postDataToServer("api/post/mailbox/save_draft", app.getToken(), data);
-
-            System.out.println(data+"mail send");
             return null;
         }
         @Override
@@ -303,8 +289,6 @@ public class MailContent  extends Activity implements TextWatcher{
             String data ="title=" + this.title + "&receiver=" + this.listEmail + "&content=" + this.content;
 
             requestManager.postDataToServer("api/post/mailbox/send_mail", app.getToken(), data);
-
-            System.out.println(data+"mail send");
             return null;
         }
         @Override
@@ -338,7 +322,6 @@ public class MailContent  extends Activity implements TextWatcher{
 
             requestManager.postDataToServer("api/post/mailbox/send_draftmail", app.getToken(), data);
 
-            System.out.println(data+"mail send");
             return null;
         }
         @Override
