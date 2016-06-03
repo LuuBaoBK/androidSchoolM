@@ -11,8 +11,6 @@ import android.text.Html;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.models.EmailItem;
-import com.example.longdinh.tabholder3.models.NavItemChild;
 import com.example.longdinh.tabholder3.models.NoticeBoardItem;
 
 import org.json.JSONException;
@@ -64,6 +62,7 @@ public class ShowDetailNotice extends Activity {
         int sizeCheck = noticeBoardItemList.size();
         sizeCheck = sizeCheck < 5?sizeCheck:5;
 
+        if(app.getRole().equals("2"))
         for(int i = 0; i < sizeCheck; i++){
             NoticeBoardItem item = noticeBoardItemList.get(i);
             if(nid.equals(item.getId())){
@@ -73,6 +72,8 @@ public class ShowDetailNotice extends Activity {
                 tvNgayTao.setText(item.getDatewrote());
                 tvDeadline.setText(item.getDeadline());
                 tvNotice.setText(Html.fromHtml(item.getNotice()));
+                System.out.println(item.toJsonString() + "--dd----");
+
                 return;
             }
         }
@@ -106,12 +107,12 @@ public class ShowDetailNotice extends Activity {
             try {
                 JSONObject notice = new JSONObject(result);
                 tvSubject.setText(notice.getString("subject"));
-                tvTitle.setText(notice.getString("title"));
+                tvTitle.setText(notice.getString("title")); // title
                 tvAuthor.setText(notice.getString("author"));
                 tvNgayTao.setText(notice.getString("ngaytao"));
                 tvDeadline.setText(notice.getString("deadline"));
                 tvNotice.setText(Html.fromHtml(notice.getString("notice")));
-
+                System.out.println(result + "Bao Dang test");
             } catch (JSONException e) {
                 e.printStackTrace();
             }

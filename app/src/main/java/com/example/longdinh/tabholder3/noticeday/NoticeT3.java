@@ -107,6 +107,9 @@ public class NoticeT3 extends Fragment {
                     noticeItem.setNotice(finalObject.getString("notice"));
                     noticeItem.setLevel(finalObject.getString("level"));
                     noticeItem.setDeadline(finalObject.getString("deadline"));
+                    noticeItem.setTitle(finalObject.getString("title"));
+                    noticeItem.setDatewrote(finalObject.getString("datewrote"));
+                    noticeItem.setAuthor(finalObject.getString("author"));
                     noticeBoardItemList.add(noticeItem);
                 }
 

@@ -93,6 +93,7 @@ public class MyProfile extends Fragment{
             String url = "api/user_info";
             RequestManager requestManager = new RequestManager();
             data = requestManager.methodGet(url,app.getToken());
+            System.out.println(app.getToken() + "----post data");
             System.out.println(data + "----get data");
 //            if(role.equals("0")){
 ////                data = "{\"mobilephone\":\"0124929961\",\"address\":\"18 Nguyễn Trãi, P2, Q5, TP.HCM\"}";
@@ -112,6 +113,7 @@ public class MyProfile extends Fragment{
                 app.setProfile(result);
                 profile = result;
                 showResult(result);
+                System.out.println(result+"test cai nay");
             }
 
             return;
