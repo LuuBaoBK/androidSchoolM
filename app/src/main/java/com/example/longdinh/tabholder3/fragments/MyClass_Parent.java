@@ -4,7 +4,6 @@ package com.example.longdinh.tabholder3.fragments;
  * Created by long dinh on 12/04/2016.
  */
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -100,9 +99,10 @@ public class MyClass_Parent extends Fragment {
         protected String doInBackground(String... params) {
 
             RequestManager requestManager = new RequestManager();
-            String data = "{\"listteachers\":[{\"avatar\":\"empty\",\"name\":\"Phan quoc Huy\",\"email\":\"t_0000013@schoolm\",\"subject\":\"Toan\"},{\"avatar\":\"empty\",\"name\":\"Phung Hung Qua\",\"email\":\"t_0000014@schoolm\",\"subject\":\"Ly\"},{\"avatar\":\"empty\",\"name\":\"Song Phan Lien\",\"email\":\"t_0000015@schoolm\",\"subject\":\"Hoa\"},{\"avatar\":\"empty\",\"name\":\"Quang Tra  Thu\",\"email\":\"t_0000016@schoolm\",\"subject\":\"Sinh\"}]}";
+//            String data = "{\"listteachers\":[{\"avatar\":\"empty\",\"name\":\"Phan quoc Huy\",\"email\":\"t_0000013@schoolm\",\"subject\":\"Toan\"},{\"avatar\":\"empty\",\"name\":\"Phung Hung Qua\",\"email\":\"t_0000014@schoolm\",\"subject\":\"Ly\"},{\"avatar\":\"empty\",\"name\":\"Song Phan Lien\",\"email\":\"t_0000015@schoolm\",\"subject\":\"Hoa\"},{\"avatar\":\"empty\",\"name\":\"Quang Tra  Thu\",\"email\":\"t_0000016@schoolm\",\"subject\":\"Sinh\"}]}";
 
-//            String data = requestManager.getInboxMail("api/post/teacher/get_stulist", app.getToken(), 1);
+            String data = requestManager.parentGetSchedule("api/post/get_te_list", app.getToken(), params[0]);
+            System.out.println("checkthis" + data);
             return data;
 
 

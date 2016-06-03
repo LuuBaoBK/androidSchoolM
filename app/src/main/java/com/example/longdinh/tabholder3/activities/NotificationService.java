@@ -10,12 +10,14 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.longdinh.tabholder3.R;
 import com.pusher.client.Pusher;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,16 +63,23 @@ public class NotificationService extends Service {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
                 System.out.println("---nhan them 1 notice moi");
-                notifiy(data);
+                notifiy(data + "send you new mail");
             }
         });
 
-//        channel.bind("new_notice_event", new SubscriptionEventListener() {
-//            @Override
-//            public void onEvent(String channelName, String eventName, final String data) {
-//                notifiy(data);
-//            }
-//        });
+        channel.bind("new_notice_event", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                String show_date = "error_exception";
+                try {
+                    JSONObject my_object = new JSONObject(data);
+                    show_date = my_object.getString("show_date");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                notifiy("New notice on: " + show_date);
+            }
+        });
 //        return Service.START_REDELIVER_INTENT;
 //        return Service.START_STICKY;
         return super.onStartCommand(intent, flags, startId);
@@ -114,7 +123,7 @@ public class NotificationService extends Service {
 
             FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE); //// MODE_PRIVATE will create the file (or replace a file of the same name) and make it private to your application. Other modes available are: MODE_APPEND, MODE_WORLD_READABLE, and MODE_WORLD_WRITEABLE.
 
-            buffer.append(userName.toString() + endOfLine);
+            buffer.append(userName.toString());
             fos.write(buffer.toString().getBytes());
             //      writer.write(userName);
 
