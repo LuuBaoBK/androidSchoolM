@@ -27,6 +27,8 @@ import android.widget.Toast;
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.fragments.MyClass;
+import com.example.longdinh.tabholder3.fragments.MyClass_Parent;
+import com.example.longdinh.tabholder3.fragments.MyClass_Student;
 import com.example.longdinh.tabholder3.fragments.MyProfile;
 import com.example.longdinh.tabholder3.fragments.NoticeBoardParent;
 import com.example.longdinh.tabholder3.fragments.NoticeBoardStudent;
@@ -61,6 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import com.example.longdinh.tabholder3.activities.NotificationService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -125,25 +128,9 @@ public class MainActivity extends AppCompatActivity {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).defaultDisplayImageOptions(defaultOptions).build();
         ImageLoader.getInstance().init(config);
 
-        pusher.connect();
-        Channel channel = pusher.subscribe("my-channel");
-        channel.bind("my-event", new SubscriptionEventListener() {
-            @Override
-            public void onEvent(String channelName, String eventName, final String data) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notice();
-                    }
-                });
-            }
-        });
 
-        if(isOnline()){
-            Toast.makeText(this, "Co mang", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "Vui long ket noi mang", Toast.LENGTH_SHORT).show();
-        }
+
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerPane = (RelativeLayout) findViewById(R.id.drawer_pane);
@@ -184,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             }else if(role.equals("3")){
                 tvRole.setText("Parent");
                 numChildren = user.getInt("numchild");
-                offsetNavList = 4;
+                offsetNavList = 5;
                 listChildren  = new ArrayList<>();
                 JSONArray children = user.getJSONArray("children");
                 listChildren.add(new StudentItemSpinner("0", "Choose a student"));
@@ -194,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 app.setListchildren(listChildren);
             }else{
                 tvRole.setText("Student");
-                offsetNavList = 4;
+                offsetNavList = 5;
             }
 
 
@@ -239,10 +226,13 @@ public class MainActivity extends AppCompatActivity {
             listFragments.add(new Schedule_Person());
             listFragments.add(new NoticeTeacher());
         }else if(role.equals("3")){
+            listFragments.add(new MyClass_Parent());
             listFragments.add(new Schedule_Parent());
             listFragments.add(new Transcript_Show());
             listFragments.add(new NoticeBoardParent());
+
         }else if(role.equals("2")){
+            listFragments.add(new MyClass_Student());
             listFragments.add(new Schedule_Person());
             listFragments.add(new Transcript_Show_Student());
             listFragments.add(new NoticeBoardStudent());
@@ -333,18 +323,29 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-
-        //AFTER FINISH CREATE DATA AND SCREENS THEN UPDATE OR SYNC DATA LOCAL
-        if(isOnline()){
-//            SyncDraftMail syncDraftMail = new SyncDraftMail(app, new RequestManager(), null, null);
-//            SyncOutboxMail syncOutboxMail = new SyncOutboxMail(app, new RequestManager(), null, null);
-//            SyncReadOrDeleteMail syncReadOrDeleteMail = new SyncReadOrDeleteMail(app, new RequestManager(), syncOutboxMail);
-//            syncReadOrDeleteMail.execute();
-//            syncOutboxMail.execute();
-        }
-
+        System.out.println("---bat dau khoi tao");
+        pusher.connect();
+        Channel channel = pusher.subscribe(app.getId()+"-channel");
+        channel.bind("new_mail_event", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        notice();
+                        mailList.get(0).setNum(mailList.get(0).getNum() + 1);
+                        listAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+        Intent intentNotification = new Intent(getApplicationContext(), NotificationService.class);
+        intentNotification.putExtra("id", app.getId());
+        startService(intentNotification);
+        System.out.println("---ket thuc khoi tao");
         listAdapter.notifyDataSetChanged();
     }
+
 
     //CREATING DATA FOR TEST
     public void creatingData(){
@@ -506,13 +507,11 @@ public class MainActivity extends AppCompatActivity {
                     String jsonString = sp.getString(id+"NOTICE_T7" + i, null);
                     app.addItem_NoticeListT7(new NoticeBoardItem(jsonString));
                 }
-
-
             }
 
 
         }else{
-            creatingData();
+//            creatingData(); tao du lieu ao cho viec test
         }
     };
 
@@ -733,14 +732,17 @@ public class MainActivity extends AppCompatActivity {
             listDataHeader.add(MailBox);
         }else if(role.equals("3")){
             listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
+            listDataHeader.add(new NavItem("Teacher In Class",  R.drawable.icon_class));
             listDataHeader.add(new NavItem("Schedule", R.drawable.icon_schedule));
-            listDataHeader.add(new NavItem("Transcript",  R.drawable.icon_notice));
+            listDataHeader.add(new NavItem("Transcript",  R.drawable.icon_transcript));
             listDataHeader.add(new NavItem("Notice Board",  R.drawable.icon_notice));
+
             listDataHeader.add(MailBox);
         }else if(role.equals("2")){
             listDataHeader.add(new NavItem("Profile", R.drawable.icon_profile));
+            listDataHeader.add(new NavItem("Teacher In Class",  R.drawable.icon_class));
             listDataHeader.add(new NavItem("Schedule", R.drawable.icon_schedule));
-            listDataHeader.add(new NavItem("Transcript",  R.drawable.icon_notice));
+            listDataHeader.add(new NavItem("Transcript",  R.drawable.icon_transcript));
             listDataHeader.add(new NavItem("Notice Board",  R.drawable.icon_notice));
             listDataHeader.add(MailBox);
         }
@@ -784,6 +786,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.logout:
                 saveDataLogin = false;
                 Intent Login = new Intent(getApplicationContext(), LoginActivity.class);
+                stopService(new Intent(getApplicationContext(), NotificationService.class));
                 startActivity(Login);
                 finish();
         }

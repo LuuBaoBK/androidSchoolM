@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="170dp"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
         android:id="@+id/imageView"
-        android:src="@drawable/login1" />
+        android:src="@drawable/login2" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/background_login"
         android:layout_below="@+id/imageView"
-        android:background="#afceed">
+        >
 
         <EditText
             android:layout_width="match_parent"
@@ -56,7 +56,9 @@
             android:onClick="login"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            android:background="#aabce2" />
+            android:background="#17199a"
+            android:textSize="22dp"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 

@@ -15,21 +15,32 @@
         android:padding="10dp"
         android:background="#069c07"
         android:textColor="#ffffff" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp">
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:id="@+id/splistChildren"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:minHeight="40dp" />
 
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:id="@+id/splistChildren"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:minHeight="40dp" />
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:id="@+id/spMonth"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:minHeight="40dp" />
+    </LinearLayout>
 
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:id="@+id/spMonth"
-        android:layout_marginBottom="5dp"
-        android:minHeight="40dp" />
+
 
     <ScrollView
         android:layout_width="match_parent"

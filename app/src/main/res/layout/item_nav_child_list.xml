@@ -5,13 +5,15 @@
     android:background="@drawable/background1"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:padding="10dp"
-    >
+    android:paddingLeft="10dp"
+    android:paddingTop="7dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="7dp">
 <ImageView
     android:layout_marginLeft="30dp"
     android:id="@+id/nav_icon"
-    android:layout_width="15dp"
-    android:layout_height="15dp"
+    android:layout_width="22dp"
+    android:layout_height="22dp"
     android:src="@drawable/icon_send" />
 
 <TextView
@@ -21,7 +23,6 @@
     android:text="Title"
     android:textColor="#000"
     android:textSize="18sp"
-    android:textStyle="bold"
     android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
 
     <TextView

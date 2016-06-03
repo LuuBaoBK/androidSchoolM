@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.models.StudentClass;
+import com.example.longdinh.tabholder3.models.StudentInClass;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -23,11 +23,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by long dinh on 13/05/2016.
  */
 public class StudentClassAdapter extends ArrayAdapter {
-    public List<StudentClass> studentClassList;
+    public List<StudentInClass> studentClassList;
     private int resource;
     private LayoutInflater inflater;
 
-    public StudentClassAdapter(Context context, int resource,List<StudentClass> objects) {
+    public StudentClassAdapter(Context context, int resource,List<StudentInClass> objects) {
         super(context, resource,  objects);
         this.studentClassList = objects;
         this.resource = resource;

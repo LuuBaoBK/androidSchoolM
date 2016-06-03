@@ -70,7 +70,9 @@ public class NoticeT3 extends Fragment {
             }
         });
 
-        new JsonTask().execute("");
+        if(!mahs.equals("nodata")){
+            new JsonTask().execute("");
+        }
 
         return v;
     }

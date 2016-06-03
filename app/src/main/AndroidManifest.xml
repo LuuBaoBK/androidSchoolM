@@ -5,15 +5,18 @@
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:name=".activities.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon_education"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="nosensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +26,7 @@
 
         <activity
             android:name=".activities.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT" />
@@ -31,6 +35,7 @@
         </activity>
         <activity
             android:name=".activities.MailContent"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
@@ -38,7 +43,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ShowDetailNotice">
+            android:name=".activities.ShowDetailNotice"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -46,7 +52,8 @@
         </activity>
 
         <activity
-            android:name=".activities.ShowDetailStudent">
+            android:name=".activities.ShowDetailStudent"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -56,6 +63,7 @@
 
         <activity
             android:name=".activities.ReadMailAcitivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
@@ -65,6 +73,7 @@
 
         <activity
             android:name=".activities.CreateNoticeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             >
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
@@ -75,6 +84,7 @@
 
         <activity
             android:name=".activities.ReadDraftMailAcitivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
@@ -82,13 +92,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ShowDetailNoticeTeacher">
+            android:name=".activities.ShowDetailNoticeTeacher"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT_OR_EDIT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+        <service android:name = ".activities.NotificationService" android:exported="false" />
+        <receiver android:name =".activities.BootReceiver">
+            <intent-filter>
+                <action android:name="com.example.longdinh.tabholder3.activities" />
+                <action android:name="android.intnet.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
-
 </manifest>

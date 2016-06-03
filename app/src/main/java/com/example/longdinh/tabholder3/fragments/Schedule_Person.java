@@ -71,11 +71,10 @@ public class Schedule_Person extends Fragment {
         for(int i = 0; i < 10; i++){
                 int resId = v.getResources().getIdentifier("cell" + i + position, "id", v.getContext().getPackageName());
                 TextView cell = (TextView) v.findViewById(resId);
-                cell.setBackgroundResource(R.drawable.cell_shape1);
+                cell.setBackgroundResource(R.drawable.current_date);
+//            cell.setBackgroundColor(0xffb93221);
         }
-    }
-
-    ;
+    };
 
 
     public class getSchedule extends AsyncTask<String, String , String> {

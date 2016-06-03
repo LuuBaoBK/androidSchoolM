@@ -64,7 +64,7 @@ public class Tab2Fragment extends Fragment {
             public void onRefresh() {
                 refreshLayout.setEnabled(false);
                 if(isOnline()){
-                    new getListMailInbox().execute("0");
+                    new getListMailInbox().execute("5");
                 }else{
                     Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
                 }
@@ -171,7 +171,7 @@ public class Tab2Fragment extends Fragment {
         });
 
         if(isOnline()){
-            new getListMailInbox().execute("0");
+            new getListMailInbox().execute("5");
         }
 
         return v;

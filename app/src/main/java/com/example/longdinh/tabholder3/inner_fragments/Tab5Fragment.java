@@ -50,7 +50,7 @@ public class Tab5Fragment extends Fragment{
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.tab1fragment, container, false);
+        View v = inflater.inflate(R.layout.tab2fragment, container, false);
         app = (MyApplication) getActivity().getApplication();
 
         dialog = new ProgressDialog(getActivity());
@@ -148,14 +148,11 @@ public class Tab5Fragment extends Fragment{
         lvEmailItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                vitri = position + "";
-//                new showMailDetail().execute(emailItemList.get(position).getId()+ "");
+
                 if(emailItemList.get(position).getIsRead()){
                     emailItemList.get(position).setIsRead(false);
                     app.addItem_InboxReadMail(emailItemList.get(position).getId() + "");
                     adapter.notifyDataSetChanged();
-                    System.out.println("da them mot mail moi-----");
-                    // cam kiem tra xem co mang khong hay co thuoc 100 mail dau tien khong
                 }
                 Intent intent = new Intent(getContext(), ReadMailAcitivity.class);
                 intent.putExtra("id", emailItemList.get(position).getId()+ "");
