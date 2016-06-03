@@ -62,14 +62,16 @@ public class NoticeT2 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                new showNoticeDetail().execute(noticeBoardItemList.get(position).getId() + "");
-                Intent intent = new Intent(getContext(),ShowDetailNotice.class);
+                Intent intent = new Intent(getContext(), ShowDetailNotice.class);
                 intent.putExtra("nid", noticeBoardItemList.get(position).getId());
                 intent.putExtra("date", "2");
                 startActivityForResult(intent, 333);
             }
         });
 
-        new JsonTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesData.txt");
+        if(!mahs.equals("nodata")){
+            new JsonTask().execute("");
+        }
 
         return v;
     }

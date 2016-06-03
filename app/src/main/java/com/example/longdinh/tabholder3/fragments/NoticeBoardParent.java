@@ -58,18 +58,21 @@ public class NoticeBoardParent extends Fragment implements OnTabChangeListener,
         v = inflater.inflate(R.layout.tabs_viewpager_layout, container, false);
         Spinner spinner = (Spinner) v.findViewById(R.id.spChild);
         app = (MyApplication) getActivity().getApplication();
+        app.setCurrentchild("nodata");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                initializeViewPager();
-                app.setCurrentchild(listChildren.get(position).getMahs());
-                v.post(new Runnable() {
-                           @Override
-                           public void run() {
-                               setPositionByDay();
+                if(position > 0){
+                    initializeViewPager();
+                    app.setCurrentchild(listChildren.get(position).getMahs());
+                    v.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   setPositionByDay();
+                               }
                            }
-                       }
-                );
+                    );
+                }
             }
 
             @Override
@@ -83,6 +86,14 @@ public class NoticeBoardParent extends Fragment implements OnTabChangeListener,
 
         adapter.notifyDataSetChanged();
         this.initializeTabHost(savedInstanceState);
+        this.initializeViewPager();
+        v.post(new Runnable() {
+                   @Override
+                   public void run() {
+                       setPositionByDay();
+                   }
+               }
+        );
         return v;
     }
 

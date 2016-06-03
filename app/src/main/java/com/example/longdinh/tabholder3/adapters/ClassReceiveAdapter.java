@@ -1,24 +1,16 @@
 package com.example.longdinh.tabholder3.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.models.ItemClassDate;
-import com.example.longdinh.tabholder3.models.StudentClass;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by long dinh on 13/05/2016.

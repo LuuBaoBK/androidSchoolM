@@ -59,7 +59,7 @@ public class CreateNoticeActivity extends Activity {
     int mYear;
     int mMonth;
     int mDay;
-    int  warning = 2;
+    int  warning = 1;
 
 
     @Override
@@ -264,7 +264,7 @@ public class CreateNoticeActivity extends Activity {
 
             if(warning != 0) {
                 warning --;
-                Toast.makeText(CreateNoticeActivity.this, "Warning: If you try to go back, the current notice will lose!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateNoticeActivity.this, "Warning: If you try to go back, the current notice will lose!!", Toast.LENGTH_SHORT).show();
                 return true;
             }
         }

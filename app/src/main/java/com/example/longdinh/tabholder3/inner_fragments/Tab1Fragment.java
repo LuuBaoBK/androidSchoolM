@@ -64,7 +64,7 @@ public class Tab1Fragment extends Fragment {
                 refreshLayout.setEnabled(false);
 
                 if(isOnline()){
-                    new getListMailInbox().execute("0");
+                    new getListMailInbox().execute("5");
                 }else{
                     Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
                 }
@@ -140,7 +140,7 @@ public class Tab1Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(isOnline()){
-                    String size = app.getSize_InboxMailList()+"";
+                    String size = app.getSize_InboxMailList() + "";
                     new getListMailInbox().execute(size);
                 }
                 Toast.makeText(getContext(), "Loading more", Toast.LENGTH_SHORT).show();
@@ -188,7 +188,7 @@ public class Tab1Fragment extends Fragment {
         });
 
         if(isOnline()){
-            new getListMailInbox().execute("0");
+            new getListMailInbox().execute("5");
         }
         return v;
     }
@@ -206,36 +206,7 @@ public class Tab1Fragment extends Fragment {
         //do nothing
     }
 
-    public class showMailDetail extends AsyncTask<String, String , String> {
-        @Override
-        protected String doInBackground(String... params) {
-            String id = params[0];
-            System.out.println("---------------da toi day 0");
-                String retur = new String("{ \"id\": 1,\"content\": \"Noi dung khong quan trong chay dung la dc\",\"title\": \"Mail sent to server\",\"date_time\": \"Apr 29\",\"author\": \"t0001@schoolm.com\"}");
-                return retur;
 
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            try {
-                JSONObject email = new JSONObject(result);
-
-                Intent intent = new Intent(getContext(), MailContent.class);
-                intent.putExtra("type", "COMPOSE");
-                intent.putExtra("id", email.getInt("id"));
-                intent.putExtra("date", email.getString("date_time"));
-                intent.putExtra("preview", email.getString("content"));
-                intent.putExtra("sender", email.getString("author"));
-                intent.putExtra("subject", email.getString("title"));
-                startActivityForResult(intent, EMAIL_COMPOSE_NEW);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public class updateDelete extends AsyncTask<String, String , String> {
         @Override

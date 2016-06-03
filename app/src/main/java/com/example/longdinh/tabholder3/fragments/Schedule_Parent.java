@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -43,6 +44,27 @@ public class Schedule_Parent extends Fragment implements AdapterView.OnItemSelec
         listChildren = app.getListchildren();
         adapter = new ListChildrenSpinnerAdapter(getContext(), R.layout.items_children_pinner, listChildren);
         spinner.setAdapter(adapter);
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        switch (day) {
+            case Calendar.MONDAY:
+                setCurrentColorDay(0);
+                break;
+            case Calendar.TUESDAY:
+                setCurrentColorDay(1);
+                break;
+            case Calendar.WEDNESDAY:
+                setCurrentColorDay(2);
+                break;
+            case Calendar.THURSDAY:
+                setCurrentColorDay(3);
+                break;
+            case Calendar.FRIDAY:
+                setCurrentColorDay(4);
+                break;
+        }
         return v;
     }
 
@@ -104,4 +126,13 @@ public class Schedule_Parent extends Fragment implements AdapterView.OnItemSelec
 
         }
     }
+
+    public void setCurrentColorDay(int position){
+        for(int i = 0; i < 10; i++){
+            int resId = v.getResources().getIdentifier("cell" + i + position, "id", v.getContext().getPackageName());
+            TextView cell = (TextView) v.findViewById(resId);
+            cell.setBackgroundResource(R.drawable.current_date);
+//
+        }
+    };
 }

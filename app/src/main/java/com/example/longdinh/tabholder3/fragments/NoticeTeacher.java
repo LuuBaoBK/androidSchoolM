@@ -99,7 +99,12 @@ public class NoticeTeacher extends Fragment {
             }
         });
 
-        new JsonTask().execute("");
+        if(isOnline()){
+            new JsonTask().execute("");
+        }else{
+            Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
+        }
+
 
         return v;
     }

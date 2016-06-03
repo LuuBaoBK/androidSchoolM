@@ -68,7 +68,9 @@ public class NoticeT5 extends Fragment {
             }
         });
 
-        new JsonTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesData.txt");
+        if(!mahs.equals("nodata")){
+            new JsonTask().execute("");
+        }
 
         return v;
     }

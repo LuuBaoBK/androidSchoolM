@@ -1,7 +1,10 @@
 package com.example.longdinh.tabholder3.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.google.android.gms.appindexing.Action;
@@ -71,7 +75,11 @@ public class LoginActivity extends AppCompatActivity {
         if (email.matches(email_pattern)) {
             if (password.length() >= 4) {
                 System.out.println("call connect");
-                new runLogin().execute();
+                if(isOnline())
+                    new runLogin().execute();
+                else{
+                    Toast.makeText(this, "No connection", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 tvPassword.setError("Password is more than 4 characters");
             }
@@ -174,6 +182,8 @@ public class LoginActivity extends AppCompatActivity {
 //            System.out.println("GEt data from server...");
 //
 //                    dataInfo = "{\"id\":\"t_00000013\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"1\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"num_new_mail\":4}";
+////            dataInfo = "{\"id\":\"s_00000013\",\"email\":\"s_0000013@schoolm.com\",\"role\":\"2\",\"fullname\":\"Trịnh Hiếu Vân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"num_new_mail\":4}";
+////                    dataInfo = "{\"id\":\"p_00000001\",\"email\":\"t_0000013@schoolm.com\",\"role\":\"3\",\"fullname\":\"TrịnhHiếuVân\",\"token\":\"4ad2b006ff575c89d0c30fdf8b5f2b6a9f4b6a90\",\"numchild\":2,\"children\":[{\"ma\":\"s_0000003\",\"fullname\":\"Nguyến Đinh Mai\"},{\"ma\":\"s_0000004\",\"fullname\":\"Nguyễn Phạn Hùng\"}],\"num_new_mail\":4}";
 //            return dataInfo;
         }
         @Override
@@ -191,6 +201,12 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
 

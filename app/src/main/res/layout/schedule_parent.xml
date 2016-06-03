@@ -10,8 +10,8 @@
         android:layout_width="220dp"
         android:layout_height="40dp"
         android:minHeight="40dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp" />
 
     <TextView
         android:id="@+id/tvDateUpdate"
@@ -35,7 +35,7 @@
         android:text="Giáo viên:"
         android:textColor="#fff9f9"
         android:padding="4dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="15dp" />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                     <TextView
                         android:background="@drawable/cell_shape"
                         android:layout_width="55dp"
-                        android:layout_height="35dp"
+                        android:layout_height="30dp"
                         android:text="Buổi"
                         android:layout_gravity="center"
                         android:gravity="fill_horizontal|fill_vertical"

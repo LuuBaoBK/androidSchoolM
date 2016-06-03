@@ -19,7 +19,7 @@ import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.activities.ShowDetailStudent;
 import com.example.longdinh.tabholder3.adapters.StudentClassAdapter;
-import com.example.longdinh.tabholder3.models.StudentClass;
+import com.example.longdinh.tabholder3.models.StudentInClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class MyClass extends Fragment {
     private ListView listview;
-    List<StudentClass> studentClassList = new ArrayList<>();
+    List<StudentInClass> studentClassList = new ArrayList<>();
     private MyApplication app;
     StudentClassAdapter   adapter;
 
@@ -86,6 +86,7 @@ public class MyClass extends Fragment {
             RequestManager requestManager = new RequestManager();
 
             String data = requestManager.getInboxMail("api/post/teacher/get_stulist", app.getToken(), 1);
+//            String data = "{\"liststudents\":[{\"avatar\":\"empty\",\"name\":\"Phan quoc Huy\",\"ma\":\"t_0000013@schoolm\",\"subject\":\"Toan\"},{\"avatar\":\"empty\",\"name\":\"Phung Hung Qua\",\"ma\":\"t_0000014@schoolm\",\"subject\":\"Ly\"},{\"avatar\":\"empty\",\"name\":\"Song Phan Lien\",\"ma\":\"t_0000015@schoolm\",\"subject\":\"Hoa\"},{\"avatar\":\"empty\",\"name\":\"Quang Tra  Thu\",\"ma\":\"t_0000016@schoolm\",\"subject\":\"Sinh\"}]}";
             return data;
 
 
@@ -103,7 +104,7 @@ public class MyClass extends Fragment {
 
                 for(int i = 0 ; i < jsonArray.length(); i++){
                     JSONObject finalObject = jsonArray.getJSONObject(i);
-                    StudentClass student =  new StudentClass();
+                    StudentInClass student =  new StudentInClass();
                     student.setImage(finalObject.getString("avatar"));
                     student.setMaHs(finalObject.getString("ma"));
                     student.setName(finalObject.getString("name"));

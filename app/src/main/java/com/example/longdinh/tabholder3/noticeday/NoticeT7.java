@@ -37,6 +37,7 @@ public class NoticeT7 extends Fragment {
     List<NoticeBoardItem> noticeBoardItemList = new ArrayList<>();
     NoticeBoardAdapter adapter;
     String mahs;
+
     MyApplication app;
 
 
@@ -47,6 +48,7 @@ public class NoticeT7 extends Fragment {
 
         app = (MyApplication) getActivity().getApplication();
         app.setData_NoticeListT4(noticeBoardItemList);
+        mahs = app.getCurrentchild();
 
         listView = (ListView) v.findViewById(R.id.lvNotice);
         dialog = new ProgressDialog(getActivity());
@@ -68,7 +70,10 @@ public class NoticeT7 extends Fragment {
             }
         });
 
-        new JsonTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesData.txt");
+
+        if(!mahs.equals("nodata")){
+            new JsonTask().execute("");
+        }
 
         return v;
     }
