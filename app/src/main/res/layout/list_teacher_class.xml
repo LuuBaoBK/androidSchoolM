@@ -3,10 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal">
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/spListClass"></Spinner>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -17,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="DANH SÁCH HỌC SINH"
+            android:text="DANH SÁCH GIÁO VIÊN"
             android:id="@+id/tvTitle"
             android:layout_gravity="center_horizontal"
             android:gravity="center"

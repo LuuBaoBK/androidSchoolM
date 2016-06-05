@@ -47,7 +47,7 @@ public class NoticeT7 extends Fragment {
         View v = inflater.inflate(R.layout.notice_day, container, false);
 
         app = (MyApplication) getActivity().getApplication();
-        app.setData_NoticeListT4(noticeBoardItemList);
+        app.setData_NoticeListT7(noticeBoardItemList);
         mahs = app.getCurrentchild();
 
         listView = (ListView) v.findViewById(R.id.lvNotice);
@@ -72,6 +72,7 @@ public class NoticeT7 extends Fragment {
 
 
         if(!mahs.equals("nodata")){
+            System.out.println("notice of--- " + app.getCurrentchild());
             new JsonTask().execute("");
         }
 
@@ -83,7 +84,7 @@ public class NoticeT7 extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog.show();
+//            dialog.show();
         }
 
         @Override
@@ -94,9 +95,11 @@ public class NoticeT7 extends Fragment {
                 RequestManager requestManager = new RequestManager();
                 String data;
                 if(app.getRole().equals("2")) {
+                    System.out.println("chay request of child---");
                     data = requestManager.studentGetNotice("api/post/student/get_noticeboard", app.getToken(), "5");
                 }else{
                     data = requestManager.parentGetNotice("api/post/parent/get_noticeboard", app.getToken(), "5", app.getCurrentchild());
+                    System.out.println("chay request of parent---");
                 }
                 JSONObject jsonObject = new JSONObject(data);
                 JSONArray jsonArray = jsonObject.getJSONArray("listnotice");
@@ -127,8 +130,9 @@ public class NoticeT7 extends Fragment {
 
         @Override
         protected void onPostExecute(List<NoticeBoardItem> result) {
+            System.out.println("chay xong phan request cho get ds hoc sinh---");
             super.onPostExecute(result);
-            dialog.dismiss();
+//            dialog.dismiss();
             adapter.notifyDataSetChanged();
         }
     }

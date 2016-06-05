@@ -30,38 +30,6 @@
             android:paddingTop="3dp"
             android:layout_margin="5dp">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingLeft="25dp"
-                android:paddingRight="25dp"
-                android:paddingBottom="3dp"
-                android:paddingTop="5dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Môn học:"
-                    android:layout_weight="1.1"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/etSubject"
-                    android:layout_weight="2.6"
-                    android:textSize="16dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:background="@drawable/fillentry"
-                    android:padding="3dp" />
-            </LinearLayout>
-
-
 
             <LinearLayout
                 android:orientation="horizontal"

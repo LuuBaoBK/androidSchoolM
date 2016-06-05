@@ -1,13 +1,16 @@
 package com.example.longdinh.tabholder3.fragments;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,24 +39,17 @@ public class Transcript_Show_Student extends Fragment {
     private MyApplication app;
     String mahs = null;
     View v;
-    TextView tvToan;
-    TextView tvNguVan;
-    TextView tvHoaHoc;
-    TextView tvAnhVan;
-    TextView tvMyThuat;
-    TextView tvTinHoc;
-    TextView tvVatLy;
-    TextView tvGDCD;
-    TextView tvCongNghe;
-    TextView tvSinhHoc;
-    TextView tvDiaLy;
-    TextView tvHatNhac;
-    TextView tvTheDuc;
-    TextView tvLichSu;
+    Button btnSaveTranscript;
 
     LinearLayout listScore;
+    String bangdiem = "empty";
 
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        app = (MyApplication) getActivity().getApplication();
+        this.loading();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -61,24 +57,9 @@ public class Transcript_Show_Student extends Fragment {
 
         v = inflater.inflate(R.layout.show_transcript_student, container, false);
 
-        app = (MyApplication) getActivity().getApplication();
         mahs = app.getId();
 
         listScore = (LinearLayout) v.findViewById(R.id.listScore);
-//        tvToan = (TextView) v.findViewById(R.id.tvToan);
-//                tvNguVan = (TextView) v.findViewById(R.id.tvNguVan);
-//        tvHoaHoc = (TextView) v.findViewById(R.id.tvHoaHoc);
-//                tvAnhVan = (TextView) v.findViewById(R.id.tvAnhVan);
-//        tvMyThuat = (TextView) v.findViewById(R.id.tvMyThuat);
-//                tvTinHoc = (TextView) v.findViewById(R.id.tvTinHoc);
-//        tvVatLy = (TextView) v.findViewById(R.id.tvVatLy);
-//                tvGDCD = (TextView) v.findViewById(R.id.tvGDCD);
-//        tvCongNghe = (TextView) v.findViewById(R.id.tvCongNghe);
-//                tvSinhHoc = (TextView) v.findViewById(R.id.tvSinhHoc);
-//        tvDiaLy = (TextView) v.findViewById(R.id.tvDiaLy);
-//                tvHatNhac = (TextView) v.findViewById(R.id.tvHatNhac);
-//        tvTheDuc = (TextView) v.findViewById(R.id.tvTheDuc);
-//                tvLichSu = (TextView) v.findViewById(R.id.tvLichSu);
 
         Spinner monthSpinner = (Spinner) v.findViewById(R.id.spMonth);
         monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -103,13 +84,55 @@ public class Transcript_Show_Student extends Fragment {
         listMonth.add("Average of all month");
 
 
+        btnSaveTranscript = (Button) v.findViewById(R.id.btnSaveTranscript);
+        btnSaveTranscript.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(btnSaveTranscript.getText().toString().equals("SAVE")){
+                    btnSaveTranscript.setText("DISCARD");
+                    app.setBangdiem(bangdiem);
+                }else{
+                    btnSaveTranscript.setText("SAVE");
+                    app.setBangdiem("empty");
+                }
+            }
+        });
+
 
         monthAdapter = new SpinnerAdapter(getContext(), R.layout.items_children_pinner, listMonth);
         monthSpinner.setAdapter(monthAdapter);
         monthAdapter.notifyDataSetChanged();
 
+
+        if(bangdiem != null){//trong moi truong hop de co hien thi thong tin local
+            if(!bangdiem.equals("empty")){
+                try {
+                    JSONObject jsonObject = new JSONObject(bangdiem);
+                    JSONArray returnListScore = jsonObject.getJSONArray("tb");
+                    JSONArray listSubject = jsonObject.getJSONArray("subject_list");
+                    if(listScore.getChildCount() > 0)
+                        listScore.removeAllViews();
+                    for(int i = 0; i < listSubject.length(); i++){
+                        addnewScore(listSubject.getString(i), returnListScore.getString(i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         return v;
     }
+
+    public void loading(){
+        System.out.println("loading bang diem------");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        bangdiem = sp.getString("BANGDIEM", null);
+        if(bangdiem != null)
+            app.setBangdiem(bangdiem);
+        System.out.println("bangdiem---" + bangdiem);
+    }
+
 
     public class getStranscript extends AsyncTask<String, String , String> {
         @Override
@@ -124,23 +147,9 @@ public class Transcript_Show_Student extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             System.out.println(result +"result bang diem----");
+            bangdiem = result;
             try {
                 JSONObject jsonObject = new JSONObject(result);
-//                tvToan.setText(jsonObject.getString("Toan"));
-//                        tvNguVan.setText(jsonObject.getString("NguVan"));
-//                tvHoaHoc.setText(jsonObject.getString("HoaHoc"));
-//                        tvAnhVan.setText(jsonObject.getString("AnhVan"));
-//                tvMyThuat.setText(jsonObject.getString("MyThuat"));
-//                        tvTinHoc.setText(jsonObject.getString("TinHoc"));
-//                tvVatLy.setText(jsonObject.getString("VatLy"));
-//                        tvGDCD.setText(jsonObject.getString("GDCD"));
-//                tvCongNghe.setText(jsonObject.getString("CongNghe"));
-//                        tvSinhHoc.setText(jsonObject.getString("SinhHoc"));
-//                tvDiaLy.setText(jsonObject.getString("DiaLy"));
-//                        tvHatNhac.setText(jsonObject.getString("HatNhac"));
-//                tvTheDuc.setText(jsonObject.getString("TheDuc"));
-//                        tvLichSu.setText(jsonObject.getString("LichSu"));
-
                 JSONArray returnListScore = jsonObject.getJSONArray("tb");
                 JSONArray listSubject = jsonObject.getJSONArray("subject_list");
                 if(listScore.getChildCount() > 0)
@@ -148,9 +157,6 @@ public class Transcript_Show_Student extends Fragment {
                 for(int i = 0; i < listSubject.length(); i++){
                     addnewScore(listSubject.getString(i), returnListScore.getString(i));
                 }
-
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -173,15 +179,6 @@ public class Transcript_Show_Student extends Fragment {
         );
 
         vparams.weight= 1 ;
-
-//        TextView SubjectTextView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_transcirpt_subject, null);
-////        SubjectTextView.setLayoutParams(vparams);
-//        SubjectTextView.setText(subject);
-//
-//        TextView ScoreTextView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_transcirpt_score, null);
-////        ScoreTextView.setLayoutParams(vparams);
-//        ScoreTextView.setText(score);
-
         LinearLayout linear = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_transcirpt, null);
         ((TextView)linear.findViewById(R.id.tvMon)).setText(subject);
         ((TextView)linear.findViewById(R.id.tvScore)).setText(score);

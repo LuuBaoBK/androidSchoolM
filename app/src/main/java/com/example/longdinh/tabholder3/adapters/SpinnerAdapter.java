@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
-import com.example.longdinh.tabholder3.models.StudentItemSpinner;
 
 import java.util.List;
 

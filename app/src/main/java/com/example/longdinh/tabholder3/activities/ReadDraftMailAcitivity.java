@@ -98,8 +98,6 @@ public class ReadDraftMailAcitivity extends Activity{
             }
 
 
-
-
             String retur = new String("{ \"id\": 1,\"content\": \"Noi dung khong quan trong chay dung la dc\",\"title\": \"Mail sent to server\",\"date_time\": \"Apr 29\",\"author\": \"t0001@schoolm.com\"}");
             return retur;
         }
@@ -114,7 +112,8 @@ public class ReadDraftMailAcitivity extends Activity{
                     tvStand.setText(Character.toString(Character.toUpperCase(email.getSubject().charAt(0))));
                     tvSubject.setText(email.getSubject());
                     tvSender.setText(app.getId()+"@schoolm.com");
-                    tvNguoiNhan.setText(email.getSender());
+//                    tvNguoiNhan.setText(email.getSender());// viec hien thi sai roi
+                    tvNguoiNhan.setText(email.getReceiver());
                     tvDate.setText(email.getDate());
                     tvContent.setText(email.getContent());
                     System.out.println("dang doc mail draft-----");

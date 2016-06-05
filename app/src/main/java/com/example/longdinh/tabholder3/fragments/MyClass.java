@@ -13,13 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.activities.ShowDetailStudent;
+import com.example.longdinh.tabholder3.adapters.ListChildrenSpinnerAdapter;
+import com.example.longdinh.tabholder3.adapters.SpinnerAdapter;
 import com.example.longdinh.tabholder3.adapters.StudentClassAdapter;
 import com.example.longdinh.tabholder3.models.StudentInClass;
+import com.example.longdinh.tabholder3.models.ItemSpinner;
+import com.example.longdinh.tabholder3.models.TeacherInClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +38,9 @@ public class MyClass extends Fragment {
     List<StudentInClass> studentClassList = new ArrayList<>();
     private MyApplication app;
     StudentClassAdapter   adapter;
+    ListChildrenSpinnerAdapter adapterSpinner;
+    Spinner spListClass;
+    List<ItemSpinner> listClasses = new ArrayList<>();
 
 
     @Override
@@ -42,6 +50,26 @@ public class MyClass extends Fragment {
 
         View v = inflater.inflate(R.layout.list_student_class, container, false);
         app = (MyApplication) getActivity().getApplication();
+
+
+        spListClass = (Spinner) v.findViewById(R.id.spListClass);
+        new getListClass().execute();
+        spListClass.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position > 0){
+                    new JsonTask().execute(listClasses.get(position).getMahs());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        adapterSpinner = new ListChildrenSpinnerAdapter(getContext(), R.layout.items_children_pinner, listClasses);
+        spListClass.setAdapter(adapterSpinner);
+
 
         listview = (ListView) v.findViewById(R.id.lvStudentClass);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,6 +100,58 @@ public class MyClass extends Fragment {
         new JsonTask().execute("");
 
     }
+
+
+
+    public class getListClass extends AsyncTask<String, String , String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            System.out.println("on pre execute---");
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+//            RequestManager requestManager = new RequestManager();
+            String data = "{listClasses:[{\"classid\":\"15_8_A_1\",\"classname\":\"8A1\"},{\"classid\":\"15_8_A_2\",\"classname\":\"8A2\"},{\"classid\":\"15_8_A_3\",\"classname\":\"8A3\"},{\"classid\":\"15_8_A_4\",\"classname\":\"8A4\"}]}";
+            System.out.println("checkthis" + data);
+            return data;
+
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("listClasses");
+
+
+                System.out.println("create list class");
+                ItemSpinner itemSpinner =  new ItemSpinner();
+                itemSpinner.setMahs("no id");
+                itemSpinner.setTen("Choose a class");
+                listClasses.add(itemSpinner);
+
+                for(int i = 0 ; i < jsonArray.length(); i++){
+                    JSONObject finalObject = jsonArray.getJSONObject(i);
+                    itemSpinner =  new ItemSpinner();
+                    itemSpinner.setMahs(finalObject.getString("classid"));
+                    itemSpinner.setTen(finalObject.getString("classname"));
+                    listClasses.add(itemSpinner);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+
+            }
+
+            adapterSpinner.notifyDataSetChanged();
+        }
+    }
+
 
     public class JsonTask extends AsyncTask<String, String , String> {
 

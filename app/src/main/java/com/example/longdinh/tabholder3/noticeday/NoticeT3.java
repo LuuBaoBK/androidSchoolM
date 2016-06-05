@@ -82,7 +82,7 @@ public class NoticeT3 extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog.show();
+//            dialog.show();
         }
 
         @Override
@@ -127,7 +127,7 @@ public class NoticeT3 extends Fragment {
         @Override
         protected void onPostExecute(List<NoticeBoardItem> result) {
             super.onPostExecute(result);
-            dialog.dismiss();
+//            dialog.dismiss();
             adapter.notifyDataSetChanged();
         }
     }

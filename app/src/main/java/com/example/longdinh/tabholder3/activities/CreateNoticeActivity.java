@@ -44,7 +44,6 @@ import java.util.List;
 public class CreateNoticeActivity extends Activity {
 
     ProgressDialog dialog;
-    EditText etSubject;
     EditText etTitle;
     RadioGroup radio_level;
     CheckBox checkbox_nextclass;
@@ -68,7 +67,6 @@ public class CreateNoticeActivity extends Activity {
         setContentView(R.layout.create_notice);
         app = (MyApplication)getApplicationContext();
 
-        etSubject = (EditText) findViewById(R.id.etSubject);
         etTitle = (EditText) findViewById(R.id.etTitle);
         radio_level = (RadioGroup) findViewById(R.id.radio_level);
         etCalendar= (EditText) findViewById(R.id.etDeadline);
@@ -147,7 +145,7 @@ public class CreateNoticeActivity extends Activity {
                     return ;
                 }
 
-                String data = "subject="+etSubject.getText()  + "&title=" + etTitle.getText()   + "&date="
+                String data = "title=" + etTitle.getText()   + "&date="
                         + etCalendar.getText()  +"&content=" + etContent.getText()
                         + "&level=" +level+"&nextday=" + checkbox_nextclass.isChecked() + "&listclass="+selected;
 

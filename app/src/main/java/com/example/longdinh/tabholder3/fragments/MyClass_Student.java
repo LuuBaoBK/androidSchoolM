@@ -41,7 +41,7 @@ public class MyClass_Student extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View v = inflater.inflate(R.layout.list_student_class, container, false);
+        View v = inflater.inflate(R.layout.list_teacher_class, container, false);
         app = (MyApplication) getActivity().getApplication();
 
         TextView tvTitle = (TextView) v.findViewById(R.id.tvTitle);

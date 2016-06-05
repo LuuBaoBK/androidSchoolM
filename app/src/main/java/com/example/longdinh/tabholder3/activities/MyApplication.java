@@ -6,12 +6,10 @@ import android.app.Application;
 import com.example.longdinh.tabholder3.adapters.EmailItemAdapter;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.models.EmailItem;
-import com.example.longdinh.tabholder3.models.ItemClassDate;
-import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
 import com.example.longdinh.tabholder3.models.NavItem;
 import com.example.longdinh.tabholder3.models.NavItemChild;
 import com.example.longdinh.tabholder3.models.NoticeBoardItem;
-import com.example.longdinh.tabholder3.models.StudentItemSpinner;
+import com.example.longdinh.tabholder3.models.ItemSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +46,15 @@ public class MyApplication extends Application {
     EmailItemAdapter OutboxAdapter;
 
 
-    public List<StudentItemSpinner> getListchildren() {
+    public List<ItemSpinner> getListchildren() {
         return listchildren;
     }
 
-    public void setListchildren(List<StudentItemSpinner> listchildren) {
+    public void setListchildren(List<ItemSpinner> listchildren) {
         this.listchildren = listchildren;
     }
 
-    private List<StudentItemSpinner> listchildren;
+    private List<ItemSpinner> listchildren;
     private String id;
     private String token;
     private String fullName;
@@ -327,5 +325,16 @@ public class MyApplication extends Application {
 
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+
+    private String bangdiem = "empty";
+
+    public String getBangdiem() {
+        return bangdiem;
+    }
+
+    public void setBangdiem(String bangdiem) {
+        this.bangdiem = bangdiem;
     }
 }

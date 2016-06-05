@@ -16,12 +16,27 @@
         android:background="#069c07"
         android:textColor="#ffffff" />
 
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:id="@+id/spMonth"
-        android:layout_marginBottom="5dp"
-        android:minHeight="40dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:id="@+id/spMonth"
+            android:layout_marginBottom="5dp"
+            android:minHeight="40dp" />
+        <Button
+            android:id="@+id/btnSaveTranscript"
+            android:text="SAVE"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            />
+    </LinearLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"

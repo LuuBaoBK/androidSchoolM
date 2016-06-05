@@ -22,7 +22,6 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.adapters.MyExpandableListAdapter;
@@ -46,7 +45,7 @@ import com.example.longdinh.tabholder3.models.EmailItem;
 import com.example.longdinh.tabholder3.models.NavItem;
 import com.example.longdinh.tabholder3.models.NavItemChild;
 import com.example.longdinh.tabholder3.models.NoticeBoardItem;
-import com.example.longdinh.tabholder3.models.StudentItemSpinner;
+import com.example.longdinh.tabholder3.models.ItemSpinner;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -63,7 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import com.example.longdinh.tabholder3.activities.NotificationService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     HashMap<String, List<NavItemChild>> listDataChild;
     List<NavItem> listNavItems;
     List<Fragment> listFragments;
-    List<StudentItemSpinner> listChildren;
+    List<ItemSpinner> listChildren;
     String id = "";
     String token;
     String role;
@@ -174,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
                 offsetNavList = 5;
                 listChildren  = new ArrayList<>();
                 JSONArray children = user.getJSONArray("children");
-                listChildren.add(new StudentItemSpinner("0", "Choose a student"));
+                listChildren.add(new ItemSpinner("0", "Choose a student"));
                 for(int i = 0; i < numChildren; i++){
-                    listChildren.add(new  StudentItemSpinner(children.getJSONObject(i).getString("ma"), children.getJSONObject(i).getString("fullname")));
+                    listChildren.add(new ItemSpinner(children.getJSONObject(i).getString("ma"), children.getJSONObject(i).getString("fullname")));
                 }
                 app.setListchildren(listChildren);
             }else{
@@ -334,6 +332,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
 //                        notice();
                         mailList.get(0).setNum(mailList.get(0).getNum() + 1);
+                        app.getNavInbox().setNum(mailList.get(0).getNum());
                         listAdapter.notifyDataSetChanged();
                     }
                 });
@@ -518,12 +517,14 @@ public class MainActivity extends AppCompatActivity {
     public void savingDataLogIn(SharedPreferences.Editor editor){
         editor.putString("DATA_INFO", dataInfo);
         editor.putString("PROFILE",app.getProfile());
+        editor.putString("BANGDIEM",app.getBangdiem());
         System.out.println("saving info" + dataInfo);
     };
 
     public void clearDataLogIn(SharedPreferences.Editor editor){
         editor.putString("DATA_INFO", null);
         editor.putString("PROFILE", null);
+        editor.putString("BANGDIEM", null);
         System.out.println("clear info" + dataInfo);
     };
 
@@ -703,6 +704,7 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(0, n);
         System.out.println("noticed");
         mailList.get(0).setNum(mailList.get(0).getNum() + 1);
+        app.getNavInbox().setNum(mailList.get(0).getNum());
         listAdapter.notifyDataSetChanged();
     }
 

@@ -106,7 +106,7 @@ public class MailContent  extends Activity implements TextWatcher{
 
                         if(idMail.equals(draftMailList.get(i).getId()+ "")){
                             draftMailList.remove(i);
-                            Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -135,7 +135,7 @@ public class MailContent  extends Activity implements TextWatcher{
                     EmailItem item = new EmailItem(min-1, etSubject.getText().toString(), currentDateandTime, app.getId()+"@schoolm.com", etNguoiNhan.getText().toString(), etContent.getText().toString(),false, false );
                     app.addItem_OutboxhMailList(item);
                     //save nhu mail draft
-                    Toast.makeText(getApplicationContext(), "Save as outbox mail id=" + (min-1), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Save as outbox mail id=" + (min-1), Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -161,7 +161,7 @@ public class MailContent  extends Activity implements TextWatcher{
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent infoReturn = new Intent();
             if(ischanged == false){
-                Toast.makeText(getApplicationContext(), "Noi dung mail ko doi", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Noi dung mail ko doi", Toast.LENGTH_SHORT).show();
             }
             else{
                 String currentDateandTime = new SimpleDateFormat("MMM dd").format(new Date());
@@ -190,12 +190,12 @@ public class MailContent  extends Activity implements TextWatcher{
                             email.setDate(currentDateandTime);
                             // va thi trong ds ve new draft cung phai luu lai trang thai cua mahi moi lam moi
 
-                            Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
                 else{//luu mail rac
-                    Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
                     if(isOnline()){//neu co mang
                         String data ="title=" + etSubject.getText().toString()
                                 + "&receiver=" + etNguoiNhan.getText().toString()
@@ -220,7 +220,7 @@ public class MailContent  extends Activity implements TextWatcher{
                     }
 
                     //save nhu mail draft
-                    Toast.makeText(getApplicationContext(), "Save as draft mail... khongde", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Save as draft mail... khongde", Toast.LENGTH_SHORT).show();
 //                    ham lay chi so lon nhat cua mail draft tai dien diem hien tai
 
                 }

@@ -24,7 +24,7 @@ import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.adapters.ListChildrenSpinnerAdapter;
 import com.example.longdinh.tabholder3.adapters.TeacherClassAdapter;
-import com.example.longdinh.tabholder3.models.StudentItemSpinner;
+import com.example.longdinh.tabholder3.models.ItemSpinner;
 import com.example.longdinh.tabholder3.models.TeacherInClass;
 
 import org.json.JSONArray;
@@ -38,7 +38,7 @@ public class MyClass_Parent extends Fragment {
     private ListView listview;
     List<TeacherInClass> teacherInClasses = new ArrayList<>();
     TeacherClassAdapter adapter;
-    List<StudentItemSpinner> listChildren = new ArrayList<>();
+    List<ItemSpinner> listChildren = new ArrayList<>();
     ListChildrenSpinnerAdapter adapterStudent;
     private MyApplication app;
     View v;

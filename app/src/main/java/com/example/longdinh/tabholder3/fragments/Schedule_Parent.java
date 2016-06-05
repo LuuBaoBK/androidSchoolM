@@ -15,7 +15,7 @@ import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.adapters.ListChildrenSpinnerAdapter;
-import com.example.longdinh.tabholder3.models.StudentItemSpinner;
+import com.example.longdinh.tabholder3.models.ItemSpinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class Schedule_Parent extends Fragment implements AdapterView.OnItemSelectedListener{
 
-    List<StudentItemSpinner> listChildren = new ArrayList<>();
+    List<ItemSpinner> listChildren = new ArrayList<>();
     ListChildrenSpinnerAdapter adapter;
     private MyApplication app;
     View v;

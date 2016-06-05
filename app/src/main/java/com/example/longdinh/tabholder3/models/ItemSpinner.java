@@ -5,16 +5,16 @@ import android.widget.ArrayAdapter;
 /**
  * Created by long dinh on 14/05/2016.
  */
-public class StudentItemSpinner{
+public class ItemSpinner {
     String mahs;
     String Ten;
 
-    public StudentItemSpinner(String mahs, String ten) {
+    public ItemSpinner(String mahs, String ten) {
         this.mahs = mahs;
         Ten = ten;
     }
 
-    public StudentItemSpinner() {
+    public ItemSpinner() {
     }
 
     public String getMahs() {

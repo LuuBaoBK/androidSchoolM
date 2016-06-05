@@ -30,11 +30,12 @@ public class ReadMailAcitivity extends Activity{
     TextView tvSubject;
     TextView tvStand;
     TextView tvSender;
-    TextView tvNguoiNhan;
+    TextView tvReceiver;
     TextView tvDate;
     TextView tvContent;
     LinearLayout btnReply;
     LinearLayout btnForward;
+    LinearLayout btnReplyAll;
     String id;
     Boolean isTrashMail = false;
     MyApplication app;
@@ -54,12 +55,12 @@ public class ReadMailAcitivity extends Activity{
         tvSubject = (TextView) findViewById(R.id.tvSubject);
          tvStand= (TextView) findViewById(R.id.tvStand);
          tvSender= (TextView) findViewById(R.id.tvSender);
-         tvNguoiNhan= (TextView) findViewById(R.id.tvNguoiNhan);
+        tvReceiver= (TextView) findViewById(R.id.tvReceiver);
          tvDate= (TextView) findViewById(R.id.tvDate);
          tvContent= (TextView) findViewById(R.id.tvContent);
         btnReply = (LinearLayout) findViewById(R.id.btnReply);
          btnForward = (LinearLayout) findViewById(R.id.btnForward);
-
+        btnReplyAll = (LinearLayout ) findViewById(R.id.btnReplyAll);
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -86,10 +87,28 @@ public class ReadMailAcitivity extends Activity{
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MailContent.class);
                 intent.putExtra("type", "REPLY");
-                if( tvNguoiNhan.getText().equals("To me")){
+                if( tvReceiver.getText().equals("To me")){
                     intent.putExtra("sender", tvSender.getText().toString().substring(5));
                 }else{
-                    intent.putExtra("sender", tvNguoiNhan.getText());
+                    intent.putExtra("sender", tvReceiver.getText());
+                }
+                intent.putExtra("subject", tvSubject.getText());
+                intent.putExtra("isTrashMail", isTrashMail);
+                startActivityForResult(intent, 321);
+                System.out.println("da kich hoat su kien reply");
+            }
+        });
+
+        btnReplyAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /// can xu li ki hon
+                Intent intent = new Intent(getApplicationContext(), MailContent.class);
+                intent.putExtra("type", "REPLY");
+                if( tvReceiver.getText().equals("To me")){
+                    intent.putExtra("sender", tvSender.getText().toString().substring(5));
+                }else{
+                    intent.putExtra("sender", tvReceiver.getText());
                 }
                 intent.putExtra("subject", tvSubject.getText());
                 intent.putExtra("isTrashMail", isTrashMail);
@@ -195,7 +214,7 @@ public class ReadMailAcitivity extends Activity{
                 tvStand.setText(Character.toString(Character.toUpperCase(email.getString("author").charAt(0))));
                 tvSubject.setText(email.getString("title"));
                 tvSender.setText(email.getString("author"));
-                tvNguoiNhan.setText(email.getString("receiver"));
+                tvReceiver.setText(email.getString("receiver"));
                 tvDate.setText(email.getString("date_time"));
                 tvContent.setText(Html.fromHtml(email.getString("content")));
             } catch (JSONException e) {

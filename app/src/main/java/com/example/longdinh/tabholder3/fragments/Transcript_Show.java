@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MyApplication;
 import com.example.longdinh.tabholder3.adapters.ListChildrenSpinnerAdapter;
 import com.example.longdinh.tabholder3.adapters.SpinnerAdapter;
-import com.example.longdinh.tabholder3.models.StudentItemSpinner;
+import com.example.longdinh.tabholder3.models.ItemSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,27 +30,15 @@ import java.util.List;
  */
 public class Transcript_Show extends Fragment {
 
-    List<StudentItemSpinner> listChildren;
+    List<ItemSpinner> listChildren;
     List<String> listMonth = new ArrayList<>();
     ListChildrenSpinnerAdapter childrenAdapter;
     SpinnerAdapter monthAdapter;
     private MyApplication app;
     String mahs = null;
     View v;
-    TextView tvToan;
-    TextView tvNguVan;
-    TextView tvHoaHoc;
-    TextView tvAnhVan;
-    TextView tvMyThuat;
-    TextView tvTinHoc;
-    TextView tvVatLy;
-    TextView tvGDCD;
-    TextView tvCongNghe;
-    TextView tvSinhHoc;
-    TextView tvDiaLy;
-    TextView tvHatNhac;
-    TextView tvTheDuc;
-    TextView tvLichSu;
+    LinearLayout listScore;
+
 
 
 
@@ -64,21 +53,9 @@ public class Transcript_Show extends Fragment {
         //2con neu co ham khoi tao va co du lieu gui qua thi do la con
         app = (MyApplication) getActivity().getApplication();
         final Spinner childrenSpinner = (Spinner) v.findViewById(R.id.splistChildren);
+        listScore = (LinearLayout) v.findViewById(R.id.listScore);
 
-        tvToan = (TextView) v.findViewById(R.id.tvToan);
-                tvNguVan = (TextView) v.findViewById(R.id.tvNguVan);
-        tvHoaHoc = (TextView) v.findViewById(R.id.tvHoaHoc);
-                tvAnhVan = (TextView) v.findViewById(R.id.tvAnhVan);
-        tvMyThuat = (TextView) v.findViewById(R.id.tvMyThuat);
-                tvTinHoc = (TextView) v.findViewById(R.id.tvTinHoc);
-        tvVatLy = (TextView) v.findViewById(R.id.tvVatLy);
-                tvGDCD = (TextView) v.findViewById(R.id.tvGDCD);
-        tvCongNghe = (TextView) v.findViewById(R.id.tvCongNghe);
-                tvSinhHoc = (TextView) v.findViewById(R.id.tvSinhHoc);
-        tvDiaLy = (TextView) v.findViewById(R.id.tvDiaLy);
-                tvHatNhac = (TextView) v.findViewById(R.id.tvHatNhac);
-        tvTheDuc = (TextView) v.findViewById(R.id.tvTheDuc);
-                tvLichSu = (TextView) v.findViewById(R.id.tvLichSu);
+
 
         //set up for spinner get data from children
 
@@ -125,7 +102,7 @@ public class Transcript_Show extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             ///get dulieu tu 2 spinner
-            String data ="{\"Toan\":\"1.2\",\"NguVan\":\"2.2\",\"HoaHoc\":\"3.2\",\"AnhVan\":\"4.2\",\"MyThuat\":\"5.2\",\"TinHoc\":\"6.2\",\"VatLy\":\"7.2\",\"GDCD\":\"8.2\",\"CongNghe\":\"9.2\",\"SinhHoc\":\"1.3\",\"DiaLy\":\"1.3\",\"HatNhac\":\"1.24\",\"TheDuc\":\"1.6\",\"LichSu\":\"1.3\"}";
+            String data ="{\"tb\":[\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\"],\"subject_list\":[\"To\\u00e1n\",\"Ng\\u1eef V\\u0103n\",\"V\\u1eadt L\\u00fd\",\"H\\u00f3a H\\u1ecdc\",\"Sinh H\\u1ecdc\",\"L\\u1ecbch S\\u1eed\",\"\\u0110\\u1ecba L\\u00fd\",\"\\u00c2m nh\\u1ea1c\",\"GDCD\",\"Th\\u1ec3 D\\u1ee5c\",\"Tin H\\u1ecdc\",\"Anh V\\u0103n\",\"M\\u1ef9 thu\\u1eadt\",\"C\\u00f4ng ngh\\u1ec7\"]}";
             return data;
         }
         @Override
@@ -133,22 +110,13 @@ public class Transcript_Show extends Fragment {
             super.onPostExecute(result);
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                tvToan.setText(jsonObject.getString("Toan"));
-                        tvNguVan.setText(jsonObject.getString("NguVan"));
-                tvHoaHoc.setText(jsonObject.getString("HoaHoc"));
-                        tvAnhVan.setText(jsonObject.getString("AnhVan"));
-                tvMyThuat.setText(jsonObject.getString("MyThuat"));
-                        tvTinHoc.setText(jsonObject.getString("TinHoc"));
-                tvVatLy.setText(jsonObject.getString("VatLy"));
-                        tvGDCD.setText(jsonObject.getString("GDCD"));
-                tvCongNghe.setText(jsonObject.getString("CongNghe"));
-                        tvSinhHoc.setText(jsonObject.getString("SinhHoc"));
-                tvDiaLy.setText(jsonObject.getString("DiaLy"));
-                        tvHatNhac.setText(jsonObject.getString("HatNhac"));
-                tvTheDuc.setText(jsonObject.getString("TheDuc"));
-                        tvLichSu.setText(jsonObject.getString("LichSu"));
-
-                System.out.println("da update diem--su--" + jsonObject.getString("LichSu"));
+                JSONArray returnListScore = jsonObject.getJSONArray("tb");
+                JSONArray listSubject = jsonObject.getJSONArray("subject_list");
+                if(listScore.getChildCount() > 0)
+                    listScore.removeAllViews();
+                for(int i = 0; i < listSubject.length(); i++){
+                    addnewScore(listSubject.getString(i), returnListScore.getString(i));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -156,5 +124,24 @@ public class Transcript_Show extends Fragment {
             return;
 
         }
+    }
+
+
+    public void addnewScore(String subject, String score){
+        LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        LinearLayout.LayoutParams vparams = new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+
+        vparams.weight= 1 ;
+        LinearLayout linear = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_transcirpt, null);
+        ((TextView)linear.findViewById(R.id.tvMon)).setText(subject);
+        ((TextView)linear.findViewById(R.id.tvScore)).setText(score);
+        listScore.addView(linear);
     }
 }

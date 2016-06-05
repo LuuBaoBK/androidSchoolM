@@ -32,7 +32,7 @@ import com.example.longdinh.tabholder3.adapters.MyFragmentPagerAdapter;
 import com.example.longdinh.tabholder3.noticeday.NoticeT7;
 import com.example.longdinh.tabholder3.noticeday.NoticeT3;
 import com.example.longdinh.tabholder3.noticeday.NoticeT2;
-import com.example.longdinh.tabholder3.models.StudentItemSpinner;
+import com.example.longdinh.tabholder3.models.ItemSpinner;
 import com.example.longdinh.tabholder3.noticeday.NoticeT5;
 import com.example.longdinh.tabholder3.noticeday.NoticeT6;
 import com.example.longdinh.tabholder3.noticeday.NoticeT4;
@@ -44,7 +44,7 @@ public class NoticeBoardParent extends Fragment implements OnTabChangeListener,
     private TabHost tabHost;
     private ViewPager viewPager;
     private MyFragmentPagerAdapter myViewPagerAdapter;
-    List<StudentItemSpinner> listChildren = new ArrayList<>();
+    List<ItemSpinner> listChildren = new ArrayList<>();
     ListChildrenSpinnerAdapter adapter;
     private MyApplication app;
     int i = 0;
