@@ -153,7 +153,8 @@
             android:gravity="center"
             android:clickable="true"
             android:id="@+id/btnReply"
-            android:background="@drawable/background">
+            android:background="@drawable/background"
+            android:paddingTop="3dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -177,7 +178,8 @@
             android:gravity="center"
             android:clickable="true"
             android:id="@+id/btnReplyAll"
-            android:background="@drawable/background">
+            android:background="@drawable/background"
+            android:paddingTop="3dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
@@ -205,7 +207,8 @@
             android:clickable="true"
             android:id="@+id/btnForward"
             android:longClickable="false"
-            android:background="@drawable/background">
+            android:background="@drawable/background"
+            android:paddingTop="3dp">
 
             <ImageView
                 android:layout_width="wrap_content"

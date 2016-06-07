@@ -471,39 +471,40 @@ public class MainActivity extends AppCompatActivity {
                 //NOTICE T2
                 int numNoticeT2 = sp.getInt(id+"NUM_NOTICE_T2", 0);
                 for (int i = 0; i < numNoticeT2; i++){
-                    String jsonString = sp.getString(id+"NOTICE_T3" + i, null);
+                    String jsonString = sp.getString(id+"NOTICE_T2" +(numNoticeT2 - 1 - i) , null);
                     app.addItem_NoticeListT2(new NoticeBoardItem(jsonString));
+                    System.out.println("jsonString +--- " + jsonString);
                 }
 
                 //NOTICE T3
                 int numNoticeT3 = sp.getInt(id + "NUM_NOTICE_T3", 0);
                 for (int i = 0; i < numNoticeT3; i++){
-                    String jsonString = sp.getString(id+"NOTICE_T3" + i, null);
+                    String jsonString = sp.getString(id+"NOTICE_T3" + (numNoticeT3 - 1 - i), null);
                     app.addItem_NoticeListT3(new NoticeBoardItem(jsonString));
                 }
 
                 //NOTICE T4
                 int numNoticeT4 = sp.getInt(id + "NUM_NOTICE_T4", 0);
                 for (int i = 0; i < numNoticeT4; i++){
-                    String jsonString = sp.getString(id+"NOTICE_T4" + i, null);
+                    String jsonString = sp.getString(id+"NOTICE_T4" + (numNoticeT4 - 1 - i), null);
                     app.addItem_NoticeListT4(new NoticeBoardItem(jsonString));
                 }
                 //NOTICE T5
                 int numNoticeT5 = sp.getInt(id + "NUM_NOTICE_T5", 0);
                 for (int i = 0; i < numNoticeT5; i++){
-                    String jsonString = sp.getString(id+"NOTICE_T5" + i, null);
+                    String jsonString = sp.getString(id+"NOTICE_T5" + (numNoticeT5 - 1 - i), null);
                     app.addItem_NoticeListT5(new NoticeBoardItem(jsonString));
                 }
                 //NOTICE T6
                 int numNoticeT6 = sp.getInt(id + "NUM_NOTICE_T6", 0);
                 for (int i = 0; i < numNoticeT6; i++){
-                    String jsonString = sp.getString(id+"NOTICE_T6" + i, null);
+                    String jsonString = sp.getString(id+"NOTICE_T6" + (numNoticeT6 - 1 - i), null);
                     app.addItem_NoticeListT6(new NoticeBoardItem(jsonString));
                 }
                 //NOTICE T7
                 int numNoticeT7 = sp.getInt(id + "NUM_NOTICE_T7", 0);
                 for (int i = 0; i < numNoticeT7; i++){
-                    String jsonString = sp.getString(id+"NOTICE_T7" + i, null);
+                    String jsonString = sp.getString(id+"NOTICE_T7" + (numNoticeT7 - 1 - i), null);
                     app.addItem_NoticeListT7(new NoticeBoardItem(jsonString));
                 }
             }
@@ -518,6 +519,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("DATA_INFO", dataInfo);
         editor.putString("PROFILE",app.getProfile());
         editor.putString("BANGDIEM",app.getBangdiem());
+        editor.putString("SCHEDULE",app.getSchedule());
         System.out.println("saving info" + dataInfo);
     };
 
@@ -525,6 +527,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("DATA_INFO", null);
         editor.putString("PROFILE", null);
         editor.putString("BANGDIEM", null);
+        editor.putString("SCHEDULE", null);
         System.out.println("clear info" + dataInfo);
     };
 
@@ -628,6 +631,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt(id+"NUM_NOTICE_T2", numNoticeT2);
             for (int i = 0; i < numNoticeT2; i++){
                 editor.putString(id+"NOTICE_T2" + i, app.getData_NoticeListT2().get(i).toJsonString());
+                System.out.println("saving notic t2--" + app.getData_NoticeListT2().get(i).toJsonString());
             }
 
             //NOTICE T3
@@ -787,8 +791,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logout:
                 saveDataLogin = false;
+
+                stopService(new Intent(this, NotificationService.class));
+                System.out.println("--da tat service");
                 Intent Login = new Intent(getApplicationContext(), LoginActivity.class);
-                stopService(new Intent(getApplicationContext(), NotificationService.class));
                 startActivity(Login);
                 finish();
         }

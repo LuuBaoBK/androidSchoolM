@@ -63,8 +63,8 @@ public class NoticeBoardParent extends Fragment implements OnTabChangeListener,
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position > 0){
-                    initializeViewPager();
                     app.setCurrentchild(listChildren.get(position).getMahs());
+                    initializeViewPager();
                     v.post(new Runnable() {
                                @Override
                                public void run() {

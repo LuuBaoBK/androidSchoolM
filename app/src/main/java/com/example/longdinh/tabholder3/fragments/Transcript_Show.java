@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MyApplication;
+import com.example.longdinh.tabholder3.activities.RequestManager;
 import com.example.longdinh.tabholder3.adapters.ListChildrenSpinnerAdapter;
 import com.example.longdinh.tabholder3.adapters.SpinnerAdapter;
 import com.example.longdinh.tabholder3.models.ItemSpinner;
@@ -72,7 +73,7 @@ public class Transcript_Show extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("month selected ----- " + position);
                 if (position != 0 && childrenSpinner.getSelectedItemPosition() != 0){
-                    new getStranscript().execute(listChildren.get(childrenSpinner.getSelectedItemPosition()).getMahs());
+                    new getStranscript().execute(listChildren.get(childrenSpinner.getSelectedItemPosition()).getMahs(), position + "");
                     System.out.println("vi tri month" + position + ", child " + childrenSpinner.getSelectedItemPosition());
                 }
             }
@@ -84,8 +85,8 @@ public class Transcript_Show extends Fragment {
 
         listMonth.clear();
         listMonth.add("Choose a month");
-        for(int i = 1 ; i <= 8; i++){
-            listMonth.add("Tháng " + (i+8)%12);
+        for(int i = 0 ; i < 10; i++){
+            listMonth.add("Tháng " + (1+(7+i)%12));
         }
         listMonth.add("Average of all month");
 
@@ -102,7 +103,10 @@ public class Transcript_Show extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             ///get dulieu tu 2 spinner
-            String data ="{\"tb\":[\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\"],\"subject_list\":[\"To\\u00e1n\",\"Ng\\u1eef V\\u0103n\",\"V\\u1eadt L\\u00fd\",\"H\\u00f3a H\\u1ecdc\",\"Sinh H\\u1ecdc\",\"L\\u1ecbch S\\u1eed\",\"\\u0110\\u1ecba L\\u00fd\",\"\\u00c2m nh\\u1ea1c\",\"GDCD\",\"Th\\u1ec3 D\\u1ee5c\",\"Tin H\\u1ecdc\",\"Anh V\\u0103n\",\"M\\u1ef9 thu\\u1eadt\",\"C\\u00f4ng ngh\\u1ec7\"]}";
+//            String data ="{\"tb\":[\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\"],\"subject_list\":[\"To\\u00e1n\",\"Ng\\u1eef V\\u0103n\",\"V\\u1eadt L\\u00fd\",\"H\\u00f3a H\\u1ecdc\",\"Sinh H\\u1ecdc\",\"L\\u1ecbch S\\u1eed\",\"\\u0110\\u1ecba L\\u00fd\",\"\\u00c2m nh\\u1ea1c\",\"GDCD\",\"Th\\u1ec3 D\\u1ee5c\",\"Tin H\\u1ecdc\",\"Anh V\\u0103n\",\"M\\u1ef9 thu\\u1eadt\",\"C\\u00f4ng ngh\\u1ec7\"]}";
+            RequestManager requestManager = new RequestManager();
+            String data = requestManager.getTranscript("api/post/get_transcript", app.getToken(),params[0], params[1]);
+            System.out.println("thong tin lay trancript + " +params[0] + params[1]);
             return data;
         }
         @Override

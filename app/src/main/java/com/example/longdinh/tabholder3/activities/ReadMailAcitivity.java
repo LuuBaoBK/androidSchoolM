@@ -81,21 +81,25 @@ public class ReadMailAcitivity extends Activity{
             }
         });
 
-
         btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MailContent.class);
                 intent.putExtra("type", "REPLY");
-                if( tvReceiver.getText().equals("To me")){
-                    intent.putExtra("sender", tvSender.getText().toString().substring(5));
-                }else{
-                    intent.putExtra("sender", tvReceiver.getText());
+
+                if(typeMail.equals("inbox")){
+                    intent.putExtra("receiver", tvSender.getText().toString());
+                }else if(typeMail.equals("outbox")){
+                    return;
+                }else if(typeMail.equals("send")){
+                    intent.putExtra("receiver", tvReceiver.getText().toString());
+                }else if(typeMail.equals("trash")){
+                    return;
                 }
+
                 intent.putExtra("subject", tvSubject.getText());
                 intent.putExtra("isTrashMail", isTrashMail);
                 startActivityForResult(intent, 321);
-                System.out.println("da kich hoat su kien reply");
             }
         });
 
@@ -105,11 +109,16 @@ public class ReadMailAcitivity extends Activity{
                 /// can xu li ki hon
                 Intent intent = new Intent(getApplicationContext(), MailContent.class);
                 intent.putExtra("type", "REPLY");
-                if( tvReceiver.getText().equals("To me")){
-                    intent.putExtra("sender", tvSender.getText().toString().substring(5));
-                }else{
-                    intent.putExtra("sender", tvReceiver.getText());
+                if(typeMail.equals("inbox")){
+                    intent.putExtra("receiver", tvSender.getText().toString() + " " + tvReceiver.getText().toString());
+                }else if(typeMail.equals("outbox")){
+                    return;
+                }else if(typeMail.equals("send")){
+                    intent.putExtra("receiver", tvReceiver.getText().toString());
+                }else if(typeMail.equals("trash")){
+                    return;
                 }
+
                 intent.putExtra("subject", tvSubject.getText());
                 intent.putExtra("isTrashMail", isTrashMail);
                 startActivityForResult(intent, 321);

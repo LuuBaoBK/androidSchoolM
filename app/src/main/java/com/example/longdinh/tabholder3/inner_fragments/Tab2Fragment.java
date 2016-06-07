@@ -107,8 +107,6 @@ public class Tab2Fragment extends Fragment {
                                     // goi ham update  thong tin mai
                                 }else{
                                     app.addItem_SendDeleteMail(selecteditem.getId()+ "");
-                                    System.out.println("Them vao sendDelete mail ----" + selecteditem.getId());
-                                    Toast.makeText(getContext(), "Them vao delete send mail", Toast.LENGTH_SHORT).show();
                                 }
                                 adapter.remove(selecteditem);
                             }

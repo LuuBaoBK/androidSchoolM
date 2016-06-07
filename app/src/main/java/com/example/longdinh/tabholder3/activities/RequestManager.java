@@ -22,11 +22,8 @@ public class RequestManager {
             URL url = new URL(url_);
             httpURLConnection = (HttpURLConnection) url.openConnection();
 
-
-
                 httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setRequestProperty(Constant.X_AUTH, token);
-
 
                 httpURLConnection.connect();
                 InputStream inputStream = httpURLConnection.getInputStream();

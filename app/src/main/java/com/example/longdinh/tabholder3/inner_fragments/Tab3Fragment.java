@@ -105,8 +105,6 @@ public class Tab3Fragment extends Fragment {
                                     // goi ham update  thong tin mai
                                 }else{
                                     app.addItem_DraftDeleteMail(selecteditem.getId() + "");
-                                    System.out.println("Them vao draft Delete mail ----" + selecteditem.getId());
-                                    Toast.makeText(getContext(), "Them vao draft Delete mail"+ selecteditem.getId(), Toast.LENGTH_SHORT).show();
                                 }
                                 adapter.remove(selecteditem);
                             }

@@ -95,9 +95,14 @@ public class Schedule_Parent extends Fragment implements AdapterView.OnItemSelec
             super.onPostExecute(result);
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                JSONObject tkb = jsonObject.getJSONObject("tkb");
+
                 String status = jsonObject.getString("status");
+                System.out.println("status--- " + status);
                 if(!status.equals("schedule")){
+                    ((TextView) v.findViewById(R.id.tvDateUpdate)).setText("Ngày cập nhật: ");
+                    ((TextView) v.findViewById(R.id.tvClass)).setText("Lớp: ");
+                    ((TextView) v.findViewById(R.id.tvTeacher)).setText("Giáo viên: ");
+
                     for(int i = 0; i < 10; i++){
                         for(int j = 0; j < 5; j ++){
                             int resId = v.getResources().getIdentifier("cell" + i + j, "id", v.getContext().getPackageName());
@@ -108,6 +113,7 @@ public class Schedule_Parent extends Fragment implements AdapterView.OnItemSelec
                     return;
                 }
 
+                JSONObject tkb = jsonObject.getJSONObject("tkb");
                 ((TextView) v.findViewById(R.id.tvDateUpdate)).setText("Ngày cập nhật: "+jsonObject.getString("date"));
                 ((TextView) v.findViewById(R.id.tvClass)).setText("Lớp: "+jsonObject.getString("class"));
                 ((TextView) v.findViewById(R.id.tvTeacher)).setText("Giáo viên: "+jsonObject.getString("teacher"));

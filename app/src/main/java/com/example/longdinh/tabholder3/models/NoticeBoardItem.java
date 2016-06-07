@@ -42,6 +42,7 @@ public class NoticeBoardItem {
 
     public NoticeBoardItem (String data){
         try {
+            System.out.println("jsonstring notice---" + data);
             JSONObject item  = new JSONObject(data);
             this.id = item.getString("id");
             this.subject = item.getString("subject");
@@ -133,7 +134,7 @@ public class NoticeBoardItem {
     }
 
     public String toJsonString(){
-        return "{\"id\":\" "+id+" \",\"subject\":\"  "+subject+" \",\"notice\":\" "+notice+" \",\"level\":\" "+level+" \",\"deadline\":\" "+deadline+" \",\"datewrote\":\" "+datewrote+" \",\"title\":\" "+title+" \",\"author\":\" "+author+" \"}";
+        return "{\"id\":\""+id+"\",\"subject\":\""+subject+"\",\"notice\":\""+notice+"\",\"level\":\" "+level+"\",\"deadline\":\""+deadline+"\",\"datewrote\":\""+datewrote+"\",\"title\":\""+title+"\",\"author\":\""+author+"\"}";
 //        return "{\"id\":\""+id+"\",\"subject\":\""+subject+"\",\"notice\":\""+notice+"\",\"level\":\""+level+"\",\"deadline\":\""+deadline+"\"}";
     };
 

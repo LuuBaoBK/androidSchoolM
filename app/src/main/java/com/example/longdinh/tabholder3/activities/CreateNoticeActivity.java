@@ -157,8 +157,8 @@ public class CreateNoticeActivity extends Activity {
             }
         });
 
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-//        etCalendar.setText(sdf.format(new Date()));
+        SimpleDateFormat sdf = new SimpleDateFormat("d-M-yyyy");
+        etCalendar.setText(sdf.format(new Date()));
         etCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +166,7 @@ public class CreateNoticeActivity extends Activity {
                 mYear = mcurrentDate.get(Calendar.YEAR);
                 mMonth=mcurrentDate.get(Calendar.MONTH);
                 mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
-                etCalendar.setText(mDay+"-" +(mMonth + 1) + "-" + mYear);// co the bi loi tai cho nay
+//                etCalendar.setText(mDay+"-" +(mMonth + 1) + "-" + mYear);// co the bi loi tai cho nay
 
                 DatePickerDialog mDatePicker=new DatePickerDialog(CreateNoticeActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {

@@ -97,8 +97,6 @@ public class MyClass extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new JsonTask().execute("");
-
     }
 
 
@@ -114,8 +112,11 @@ public class MyClass extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 //            RequestManager requestManager = new RequestManager();
-            String data = "{listClasses:[{\"classid\":\"15_8_A_1\",\"classname\":\"8A1\"},{\"classid\":\"15_8_A_2\",\"classname\":\"8A2\"},{\"classid\":\"15_8_A_3\",\"classname\":\"8A3\"},{\"classid\":\"15_8_A_4\",\"classname\":\"8A4\"}]}";
-            System.out.println("checkthis" + data);
+//            String data = "{listClasses:[{\"classid\":\"15_8_A_1\",\"classname\":\"8A1\"},{\"classid\":\"15_8_A_2\",\"classname\":\"8A2\"},{\"classid\":\"15_8_A_3\",\"classname\":\"8A3\"},{\"classid\":\"15_8_A_4\",\"classname\":\"8A4\"}]}";
+            RequestManager requestManager = new RequestManager();
+//            String data = requestManager.getInboxMail("api/get_list_classes", app.getToken(), 1);
+            String data = requestManager.methodGet("api/get_list_classes", app.getToken());
+            System.out.println("get list classes" + data);
             return data;
 
 
@@ -125,9 +126,9 @@ public class MyClass extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("listClasses");
-
+//                JSONObject jsonObject = new JSONObject(result);
+//                JSONArray jsonArray = jsonObject.getJSONArray("listClasses");
+                JSONArray jsonArray = new JSONArray(result);
 
                 System.out.println("create list class");
                 ItemSpinner itemSpinner =  new ItemSpinner();
@@ -138,8 +139,8 @@ public class MyClass extends Fragment {
                 for(int i = 0 ; i < jsonArray.length(); i++){
                     JSONObject finalObject = jsonArray.getJSONObject(i);
                     itemSpinner =  new ItemSpinner();
-                    itemSpinner.setMahs(finalObject.getString("classid"));
-                    itemSpinner.setTen(finalObject.getString("classname"));
+                    itemSpinner.setMahs(finalObject.getString("class_id"));
+                    itemSpinner.setTen(finalObject.getString("class_name"));
                     listClasses.add(itemSpinner);
                 }
             } catch (JSONException e) {
@@ -165,8 +166,11 @@ public class MyClass extends Fragment {
 
             RequestManager requestManager = new RequestManager();
 
-            String data = requestManager.getInboxMail("api/post/teacher/get_stulist", app.getToken(), 1);
+//            String data = requestManager.getInboxMail("api/post/teacher/get_stulist", app.getToken(), 1);
 //            String data = "{\"liststudents\":[{\"avatar\":\"empty\",\"name\":\"Phan quoc Huy\",\"ma\":\"t_0000013@schoolm\",\"subject\":\"Toan\"},{\"avatar\":\"empty\",\"name\":\"Phung Hung Qua\",\"ma\":\"t_0000014@schoolm\",\"subject\":\"Ly\"},{\"avatar\":\"empty\",\"name\":\"Song Phan Lien\",\"ma\":\"t_0000015@schoolm\",\"subject\":\"Hoa\"},{\"avatar\":\"empty\",\"name\":\"Quang Tra  Thu\",\"ma\":\"t_0000016@schoolm\",\"subject\":\"Sinh\"}]}";
+
+            String data = requestManager.parentGetSchedule("api/post/teacher/get_stulist", app.getToken(), params[0]);
+            System.out.println("checkthis" + data);
             return data;
 
 

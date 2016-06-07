@@ -68,7 +68,7 @@ public class MailContent  extends Activity implements TextWatcher{
             etSubject.setText("Forward:" + getData.getStringExtra("subject"));
             isDraftMail = getData.getBooleanExtra("isTrashMail", false);
         }else if(type.equals("REPLY")){
-            etNguoiNhan.setText(getData.getStringExtra("sender"));
+            etNguoiNhan.setText(getData.getStringExtra("receiver"));
             etSubject.setText(getData.getStringExtra("subject"));
             isDraftMail = getData.getBooleanExtra("isTrashMail", false);
         }else if(type.equals("COMPOSE")){
@@ -90,7 +90,7 @@ public class MailContent  extends Activity implements TextWatcher{
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!etNguoiNhan.getText().toString().matches("(([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)(\\s*;\\s*|\\s*$))"))
+                if(!etNguoiNhan.getText().toString().matches("((([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)(\\s*;\\s*|\\s*)))+"))
                 {
                     Toast.makeText(MailContent.this, "Error Email Address", Toast.LENGTH_SHORT).show();
                     return;
@@ -109,12 +109,9 @@ public class MailContent  extends Activity implements TextWatcher{
 //                            Toast.makeText(getApplicationContext(), "Draft mail list xoa mail " + idMail, Toast.LENGTH_SHORT).show();
                         }
                     }
-
-
                 }
 
                 if(isOnline()){//neu co mang thi gui len luon roi cho ket qua tra ve
-                    //
                     if(isDraftMail){
                         new sentDraftMail(idMail,etSubject.getText().toString(), etNguoiNhan.getText().toString(), etContent.getText().toString()).execute();
                     }else{
@@ -139,12 +136,7 @@ public class MailContent  extends Activity implements TextWatcher{
 
                 }
 
-
-
-
-//                new sentMail( etSubject.getText().toString(),etNguoiNhan.getText().toString(), etContent.getText().toString()).execute("url send mail");
                 Toast.makeText(getApplicationContext(), "Mail sending...", Toast.LENGTH_SHORT).show();
-
                 Intent infoReturn = new Intent();
                 setResult(RESULT_OK, infoReturn);
                 finish();
@@ -166,7 +158,7 @@ public class MailContent  extends Activity implements TextWatcher{
             else{
                 String currentDateandTime = new SimpleDateFormat("MMM dd").format(new Date());
                 if(isDraftMail){
-                    Toast.makeText(getApplicationContext(), "Save as draft mail... ghide", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Save as draft mail... ghide", Toast.LENGTH_SHORT).show();
                     List<EmailItem> draftMailList = app.getData_DraftMailList();
                     for(int i = 0; i < draftMailList.size(); i++){
                         EmailItem email = draftMailList.get(i);
@@ -218,11 +210,6 @@ public class MailContent  extends Activity implements TextWatcher{
                         app.addItem_DraftMailList(item);
 
                     }
-
-                    //save nhu mail draft
-//                    Toast.makeText(getApplicationContext(), "Save as draft mail... khongde", Toast.LENGTH_SHORT).show();
-//                    ham lay chi so lon nhat cua mail draft tai dien diem hien tai
-
                 }
             /// O DAY CO THE UPDATE MAIL TREN NOI BO
             }

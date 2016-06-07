@@ -46,7 +46,7 @@ public class NoticeT4 extends Fragment {
         View v = inflater.inflate(R.layout.notice_day, container, false);
 
         app = (MyApplication) getActivity().getApplication();
-        app.setData_NoticeListT4(noticeBoardItemList);
+        noticeBoardItemList = app.getData_NoticeListT4();
         mahs = app.getCurrentchild();
 
         listView = (ListView) v.findViewById(R.id.lvNotice);
@@ -107,9 +107,11 @@ public class NoticeT4 extends Fragment {
                     noticeItem.setNotice(finalObject.getString("notice"));
                     noticeItem.setLevel(finalObject.getString("level"));
                     noticeItem.setDeadline(finalObject.getString("deadline"));
-//                    noticeItem.setTitle(finalObject.getString("title"));
-//                    noticeItem.setDatewrote(finalObject.getString("datewrote"));
-//                    noticeItem.setAuthor(finalObject.getString("author"));
+                    if(app.getRole().equals("2")){
+                        noticeItem.setTitle(finalObject.getString("title"));
+                        noticeItem.setDatewrote(finalObject.getString("datewrote"));
+                        noticeItem.setAuthor(finalObject.getString("author"));
+                    }
                     noticeBoardItemList.add(noticeItem);
                 }
 

@@ -112,8 +112,6 @@ public class Tab1Fragment extends Fragment {
                                     listDelete += selecteditem.getId() + ",";
                                 } else {
                                     app.addItem_InboxDeleteMail(selecteditem.getId() + "");
-                                    System.out.println("Them vao inboxDelete mail ----" + selecteditem.getId());
-                                    Toast.makeText(getContext(), "Them vao inboxDelete mail", Toast.LENGTH_SHORT).show();
                                 }
                                 adapter.remove(selecteditem);
                             }
@@ -175,9 +173,7 @@ public class Tab1Fragment extends Fragment {
                 if(emailItemList.get(position).getIsRead()){
                     emailItemList.get(position).setIsRead(false);
                     app.addItem_InboxReadMail(emailItemList.get(position).getId() + "");
-                    Toast.makeText(getContext(), "Them vao read inbox mail", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
-                    System.out.println("read a inbox mail-----");
                     // cam kiem tra xem co mang khong hay co thuoc 100 mail dau tien khong
                 }
                 Intent intent = new Intent(getContext(), ReadMailAcitivity.class);

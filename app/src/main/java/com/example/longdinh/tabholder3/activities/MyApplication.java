@@ -337,4 +337,14 @@ public class MyApplication extends Application {
     public void setBangdiem(String bangdiem) {
         this.bangdiem = bangdiem;
     }
+
+    private String schedule = "empty";
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
 }

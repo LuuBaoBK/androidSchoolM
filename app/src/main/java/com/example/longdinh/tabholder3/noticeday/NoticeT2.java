@@ -46,7 +46,7 @@ public class NoticeT2 extends Fragment {
         View v = inflater.inflate(R.layout.notice_day, container, false);
 
         app = (MyApplication) getActivity().getApplication();
-        app.setData_NoticeListT2(noticeBoardItemList);
+        noticeBoardItemList = app.getData_NoticeListT2();
         mahs = app.getCurrentchild();
 
         listView = (ListView) v.findViewById(R.id.lvNotice);
@@ -100,6 +100,7 @@ public class NoticeT2 extends Fragment {
                 JSONArray jsonArray = jsonObject.getJSONArray("listnotice");
 
                 noticeBoardItemList.clear();
+//                System.out.println("print thu data_+_"+data);
                 for(int i = 0 ; i < jsonArray.length(); i++){
                     JSONObject finalObject = jsonArray.getJSONObject(i);
                     NoticeBoardItem noticeItem =  new NoticeBoardItem();
@@ -108,9 +109,11 @@ public class NoticeT2 extends Fragment {
                     noticeItem.setNotice(finalObject.getString("notice"));
                     noticeItem.setLevel(finalObject.getString("level"));
                     noticeItem.setDeadline(finalObject.getString("deadline"));
-                    noticeItem.setTitle(finalObject.getString("title"));
-                    noticeItem.setDatewrote(finalObject.getString("datewrote"));
-                    noticeItem.setAuthor(finalObject.getString("author"));
+                    if(app.getRole().equals("2")){
+                        noticeItem.setTitle(finalObject.getString("title"));
+                        noticeItem.setDatewrote(finalObject.getString("datewrote"));
+                        noticeItem.setAuthor(finalObject.getString("author"));
+                    }
                     noticeBoardItemList.add(noticeItem);
                 }
 

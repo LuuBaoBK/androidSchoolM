@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="NEW NOTICE"
+        android:text="NOTICE DETAIL"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:paddingBottom="10dp"

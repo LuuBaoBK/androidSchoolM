@@ -63,7 +63,7 @@ public class NotificationService extends Service {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
                 System.out.println("---nhan them 1 notice moi");
-                notifiy(data + "send you new mail");
+                notifiy(data.substring(1,10) + " send you new mail");
             }
         });
 
@@ -90,6 +90,8 @@ public class NotificationService extends Service {
     public void onDestroy() {
         Intent intent = new Intent("com.example.longdinh.tabholder3.activities");
         intent.putExtra("key", "locdinh");
+        System.out.println("da tat service---");
+        pusher.unsubscribe(id+"-channel");
         super.onDestroy();
     }
 

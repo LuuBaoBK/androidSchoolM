@@ -45,7 +45,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Chủ dề:"
+                    android:text="Chủ đề:"
                     android:layout_weight="1.1"
                     android:textSize="16dp"
                     android:textStyle="bold" />

@@ -125,12 +125,10 @@ public class Transcript_Show_Student extends Fragment {
     }
 
     public void loading(){
-        System.out.println("loading bang diem------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         bangdiem = sp.getString("BANGDIEM", null);
         if(bangdiem != null)
             app.setBangdiem(bangdiem);
-        System.out.println("bangdiem---" + bangdiem);
     }
 
 

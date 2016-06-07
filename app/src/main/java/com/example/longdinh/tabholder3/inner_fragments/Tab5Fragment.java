@@ -105,7 +105,6 @@ public class Tab5Fragment extends Fragment{
                         for (int i = (selected.size() - 1); i >= 0; i--) {
                             if (selected.valueAt(i)) {
                                 EmailItem selecteditem = (EmailItem) adapter.getItem(selected.keyAt(i));
-                                Toast.makeText(getContext(), "outbox mail xoa vinh vien "+ selecteditem.getId(), Toast.LENGTH_SHORT).show();
                                 adapter.remove(selecteditem);
                             }
                         }
