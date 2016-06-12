@@ -1,17 +1,22 @@
 package com.example.longdinh.tabholder3.noticeday;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.longdinh.tabholder3.R;
 import com.example.longdinh.tabholder3.activities.MyApplication;
@@ -38,6 +43,7 @@ public class NoticeT2 extends Fragment {
     NoticeBoardAdapter adapter;
     String mahs;
     MyApplication app;
+    SwipeRefreshLayout refreshLayout;
 
 
     @Nullable
@@ -66,6 +72,23 @@ public class NoticeT2 extends Fragment {
                 intent.putExtra("nid", noticeBoardItemList.get(position).getId());
                 intent.putExtra("date", "2");
                 startActivityForResult(intent, 333);
+            }
+        });
+
+
+        refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setEnabled(false);
+
+                if(isOnline()){
+                    new JsonTask().execute("0");
+                }else{
+                    Toast.makeText(getContext(), "No connection", Toast.LENGTH_SHORT).show();
+                }
+                refreshLayout.setRefreshing(false);
+                refreshLayout.setEnabled(true);
             }
         });
 
@@ -132,6 +155,13 @@ public class NoticeT2 extends Fragment {
 //            dialog.dismiss();
             adapter.notifyDataSetChanged();
         }
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 

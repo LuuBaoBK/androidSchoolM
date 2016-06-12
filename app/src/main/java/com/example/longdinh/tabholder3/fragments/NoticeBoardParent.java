@@ -122,6 +122,7 @@ public class NoticeBoardParent extends Fragment implements OnTabChangeListener,
 
         fragments.add(new NoticeT2());
         fragments.add(new NoticeT3());
+
         fragments.add(new NoticeT4());
         fragments.add(new NoticeT5());
         fragments.add(new NoticeT6());
