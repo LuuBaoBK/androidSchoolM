@@ -55,7 +55,7 @@ public class Schedule_Person extends Fragment {
 
     public void loading(){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        schedule = sp.getString("SCHEDULE", null);
+        schedule = sp.getString(app.getId()+"SCHEDULE", null);
         if(schedule != null)
             app.setSchedule(schedule);
     }

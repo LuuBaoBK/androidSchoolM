@@ -81,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
     List<String>        DraftNewMail = new ArrayList<String>();
     List<String>        DraftDeleteMail = new ArrayList<String>();
     List<EmailItem>        TrashMailList = new ArrayList<EmailItem>();
+    private List<NoticeBoardItem> NoticeListT2  = new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT3 = new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT4 = new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT5 = new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT6= new ArrayList<>();
+    private List<NoticeBoardItem> NoticeListT7= new ArrayList<>();
+
 
 
     public DrawerLayout drawerLayout;
@@ -125,10 +132,6 @@ public class MainActivity extends AppCompatActivity {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).defaultDisplayImageOptions(defaultOptions).build();
         ImageLoader.getInstance().init(config);
-
-
-
-
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerPane = (RelativeLayout) findViewById(R.id.drawer_pane);
@@ -205,8 +208,15 @@ public class MainActivity extends AppCompatActivity {
         app.setDraftDeleteMail(DraftDeleteMail);
 
         app.setData_TrashMailList(TrashMailList);
-
         app.setData_OutboxMailList(OutboxMailList);
+
+        app.setData_NoticeListT2(NoticeListT2);
+        app.setData_NoticeListT3(NoticeListT3);
+        app.setData_NoticeListT4(NoticeListT4);
+        app.setData_NoticeListT5(NoticeListT5);
+        app.setData_NoticeListT6(NoticeListT6);
+        app.setData_NoticeListT7(NoticeListT7);
+
 
         loadingdata();
 
@@ -465,7 +475,8 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("DraftDeleteMail is ---" + DraftDeleteMail);
             //END LOADING MAIL DRAFT
 
-            //SAVING NOTICE FOR STUDENT ROLE
+            //LOADING NOTICE FOR STUDENT ROLE
+            System.out.println("before loading notice" + id);
             if(role.equals("2")){
 
                 //NOTICE T2
@@ -517,17 +528,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void savingDataLogIn(SharedPreferences.Editor editor){
         editor.putString("DATA_INFO", dataInfo);
-        editor.putString("PROFILE",app.getProfile());
-        editor.putString("BANGDIEM",app.getBangdiem());
-        editor.putString("SCHEDULE",app.getSchedule());
+        editor.putString(app.getId()+"PROFILE",app.getProfile());
+        editor.putString(app.getId()+"BANGDIEM",app.getBangdiem());
+        editor.putString(app.getId()+"SCHEDULE",app.getSchedule());
         System.out.println("saving info" + dataInfo);
     };
 
     public void clearDataLogIn(SharedPreferences.Editor editor){
         editor.putString("DATA_INFO", null);
-        editor.putString("PROFILE", null);
-        editor.putString("BANGDIEM", null);
-        editor.putString("SCHEDULE", null);
+        editor.putString(app.getId()+"PROFILE", null);
+        editor.putString(app.getId()+"BANGDIEM", null);
+        editor.putString(app.getId()+"SCHEDULE", null);
+        editor.putInt(app.getId()+"NUM_NOTICE_T2", 0);
+        editor.putInt(app.getId()+"NUM_NOTICE_T3", 0);
+        editor.putInt(app.getId()+"NUM_NOTICE_T4", 0);
+        editor.putInt(app.getId()+"NUM_NOTICE_T5", 0);
+        editor.putInt(app.getId()+"NUM_NOTICE_T6", 0);
+        editor.putInt(app.getId()+"NUM_NOTICE_T7", 0);
         System.out.println("clear info" + dataInfo);
     };
 
@@ -540,141 +557,146 @@ public class MainActivity extends AppCompatActivity {
         //SAVING FOR DATA LOGIN
         if(saveDataLogin){
             savingDataLogIn(editor);
+            editor.putBoolean(id + "IS_SAVED", true);
+
+            //INBOX MAIL
+            int numInbox = InboxMailList.size();
+            numInbox = numInbox>5?5:numInbox;
+            editor.putInt(id+"NUM_INBOX", numInbox);
+            for (int i = 0; i < numInbox; i++){
+                editor.putString(id+"INBOX"+i, InboxMailList.get(i).toJsonString());
+                System.out.println(id+"INBOX"+i+ InboxMailList.get(i).toJsonString());
+            }
+
+
+
+            int numReadInbox = InboxReadMail.size();
+            editor.putInt(id+"NUM_READ_INBOX", numReadInbox);
+            for (int i = 0; i < numReadInbox; i++) {
+                editor.putInt(id + "ID_READ_INBOX" + i, Integer.parseInt(InboxReadMail.get(i)));
+                System.out.println(id + "ID_READ_INBOX" + i + Integer.parseInt(InboxReadMail.get(i)));
+            }
+
+            int numDeleteInbox = InboxDeleteMail.size();
+            editor.putInt("NUM_DELETE_INBOX", numDeleteInbox);
+            for (int i = 0; i < numDeleteInbox; i++) {
+                editor.putInt(id + "ID_DELETE_INBOX" + i, Integer.parseInt(InboxDeleteMail.get(i)));
+                System.out.println(id + "ID_DELETE_INBOX" + i + Integer.parseInt(InboxDeleteMail.get(i)));
+            }
+            //END INBOX MAIL
+
+            //MAIL SEND
+            int numSend = SendMailList.size();
+            numSend = numSend>5?5:numSend;
+            editor.putInt(id + "NUM_SEND", numSend);
+            for (int i = 0; i < numSend; i++){
+                editor.putString(id+"SEND"+i, SendMailList.get(i).toJsonString());
+            }
+
+            int numDeleteSend = SendDeleteMail.size();
+            editor.putInt(id+"NUM_DELETE_SEND", numDeleteSend);
+            for (int i = 0; i < numDeleteSend; i++) {
+                editor.putInt(id + "ID_DELETE_SEND" + i, Integer.parseInt(SendDeleteMail.get(i)));
+            }
+            //END MAIL SEND
+
+
+            //DRAFT MAIL
+            int numDraft = DraftMailList.size();
+            numDraft = numDraft>5?5:numDraft;
+            editor.putInt(id+"NUM_DRAFT", numDraft);
+            for (int i = 0; i < numDraft; i++){
+                editor.putString(id+"DRAFT" + i, DraftMailList.get(i).toJsonString());
+                System.out.println(id + "DRAFT" + i + DraftMailList.get(i).toJsonString());
+            }
+
+            int numDeleteDraft = DraftDeleteMail.size();
+            editor.putInt(id+"NUM_DELETE_DRAFT", numDeleteDraft);
+            for (int i = 0; i < numDeleteDraft; i++) {
+                editor.putInt(id + "ID_DELETE_DRAFT" + i, Integer.parseInt(DraftDeleteMail.get(i)));
+                System.out.println(id + "ID_DELETE_DRAFT" + i + Integer.parseInt(DraftDeleteMail.get(i)));
+            }
+
+            int numNewDraft = DraftNewMail.size();
+            editor.putInt(id+"NUM_NEW_DRAFT", numNewDraft);
+            for (int i = 0; i < numNewDraft; i++) {
+                editor.putInt(id + "ID_NEW_DRAFT" + i, Integer.parseInt(DraftNewMail.get(i)));
+                System.out.println(id + "ID_NEW_DRAFT" + i+ Integer.parseInt(DraftNewMail.get(i)));
+            }
+            //END DRAFT MAIL
+
+            //MAIL OUTBOX
+            int numOutbox = OutboxMailList.size();
+            editor.putInt(id+"NUM_OUTBOX", numOutbox);
+            for (int i = 0; i < numOutbox; i++){
+                editor.putString(id+"OUTBOX" + i, OutboxMailList.get(i).toJsonString());
+            }
+            //END MAIL OUTBOX
+
+
+
+            //SAVING NOTICE FOR STUDENT ROLE
+            if(role.equals("2")){
+
+                //NOTICE T2
+                int numNoticeT2 = app.getSize_NoticeListT2();
+                numNoticeT2 = numNoticeT2>5?5:numNoticeT2;
+                editor.putInt(id+"NUM_NOTICE_T2", numNoticeT2);
+                for (int i = 0; i < numNoticeT2; i++){
+                    editor.putString(id+"NOTICE_T2" + i, app.getData_NoticeListT2().get(i).toJsonString());
+                    System.out.println(id+"NOTICE_T2" + i + app.getData_NoticeListT2().get(i).toJsonString());
+                }
+
+
+                //NOTICE T3
+                int numNoticeT3 = app.getSize_NoticeListT3();
+                numNoticeT3 = numNoticeT3>5?5:numNoticeT3;
+                editor.putInt(id+"NUM_NOTICE_T3", numNoticeT3);
+                for (int i = 0; i < numNoticeT3; i++){
+                    editor.putString(id+"NOTICE_T3" + i, app.getData_NoticeListT3().get(i).toJsonString());
+                }
+
+
+                //NOTICE T4
+                int numNoticeT4 = app.getSize_NoticeListT4();
+                numNoticeT4 = numNoticeT2>5?5:numNoticeT4;
+                editor.putInt(id+"NUM_NOTICE_T4", numNoticeT4);
+                for (int i = 0; i < numNoticeT4; i++){
+                    editor.putString(id+"NOTICE_T4" + i, app.getData_NoticeListT4().get(i).toJsonString());
+                }
+
+
+                //NOTICE T5
+                int numNoticeT5 = app.getSize_NoticeListT5();
+                numNoticeT5 = numNoticeT5>5?5:numNoticeT5;
+                editor.putInt(id+"NUM_NOTICE_T5", numNoticeT5);
+                for (int i = 0; i < numNoticeT5; i++){
+                    editor.putString(id+"NOTICE_T5" + i, app.getData_NoticeListT5().get(i).toJsonString());
+                }
+
+                //NOTICE T6
+                int numNoticeT6 = app.getSize_NoticeListT6();
+                numNoticeT6 = numNoticeT6>5?5:numNoticeT6;
+                editor.putInt(id+"NUM_NOTICE_T6", numNoticeT6);
+                for (int i = 0; i < numNoticeT6; i++){
+                    editor.putString(id+"NOTICE_T6" + i, app.getData_NoticeListT6().get(i).toJsonString());
+                }
+
+                //NOTICE T7
+                int numNoticeT7 = app.getSize_NoticeListT7();
+                numNoticeT7 = numNoticeT2>5?5:numNoticeT7;
+                editor.putInt(id+"NUM_NOTICE_T7", numNoticeT7);
+                for (int i = 0; i < numNoticeT7; i++){
+                    editor.putString(id+"NOTICE_T7" + i, app.getData_NoticeListT7().get(i).toJsonString());
+                }
+            }
+
         }
         else{
-            System.out.println("clear");
+            clearDataLogIn(editor);
+            editor.putBoolean(id + "IS_SAVED", false);
+            System.out.println("clear not save");
         }
-
-        editor.putBoolean(id + "IS_SAVED", true);
-        //INBOX MAIL
-        int numInbox = InboxMailList.size();
-        numInbox = numInbox>5?5:numInbox;
-        editor.putInt(id+"NUM_INBOX", numInbox);
-        for (int i = 0; i < numInbox; i++){
-            editor.putString(id+"INBOX"+i, InboxMailList.get(i).toJsonString());
-            System.out.println(id+"INBOX"+i+ InboxMailList.get(i).toJsonString());
-        }
-
-
-
-        int numReadInbox = InboxReadMail.size();
-        editor.putInt(id+"NUM_READ_INBOX", numReadInbox);
-        for (int i = 0; i < numReadInbox; i++) {
-            editor.putInt(id + "ID_READ_INBOX" + i, Integer.parseInt(InboxReadMail.get(i)));
-            System.out.println(id + "ID_READ_INBOX" + i + Integer.parseInt(InboxReadMail.get(i)));
-        }
-
-        int numDeleteInbox = InboxDeleteMail.size();
-        editor.putInt("NUM_DELETE_INBOX", numDeleteInbox);
-        for (int i = 0; i < numDeleteInbox; i++) {
-            editor.putInt(id + "ID_DELETE_INBOX" + i, Integer.parseInt(InboxDeleteMail.get(i)));
-            System.out.println(id + "ID_DELETE_INBOX" + i + Integer.parseInt(InboxDeleteMail.get(i)));
-        }
-        //END INBOX MAIL
-
-        //MAIL SEND
-        int numSend = SendMailList.size();
-        numSend = numSend>5?5:numSend;
-        editor.putInt(id + "NUM_SEND", numSend);
-        for (int i = 0; i < numSend; i++){
-            editor.putString(id+"SEND"+i, SendMailList.get(i).toJsonString());
-        }
-
-        int numDeleteSend = SendDeleteMail.size();
-        editor.putInt(id+"NUM_DELETE_SEND", numDeleteSend);
-        for (int i = 0; i < numDeleteSend; i++) {
-            editor.putInt(id + "ID_DELETE_SEND" + i, Integer.parseInt(SendDeleteMail.get(i)));
-        }
-        //END MAIL SEND
-
-
-        //DRAFT MAIL
-        int numDraft = DraftMailList.size();
-        numDraft = numDraft>5?5:numDraft;
-        editor.putInt(id+"NUM_DRAFT", numDraft);
-        for (int i = 0; i < numDraft; i++){
-            editor.putString(id+"DRAFT" + i, DraftMailList.get(i).toJsonString());
-            System.out.println(id + "DRAFT" + i + DraftMailList.get(i).toJsonString());
-        }
-
-        int numDeleteDraft = DraftDeleteMail.size();
-        editor.putInt(id+"NUM_DELETE_DRAFT", numDeleteDraft);
-        for (int i = 0; i < numDeleteDraft; i++) {
-            editor.putInt(id + "ID_DELETE_DRAFT" + i, Integer.parseInt(DraftDeleteMail.get(i)));
-            System.out.println(id + "ID_DELETE_DRAFT" + i + Integer.parseInt(DraftDeleteMail.get(i)));
-        }
-
-        int numNewDraft = DraftNewMail.size();
-        editor.putInt(id+"NUM_NEW_DRAFT", numNewDraft);
-        for (int i = 0; i < numNewDraft; i++) {
-            editor.putInt(id + "ID_NEW_DRAFT" + i, Integer.parseInt(DraftNewMail.get(i)));
-            System.out.println(id + "ID_NEW_DRAFT" + i+ Integer.parseInt(DraftNewMail.get(i)));
-        }
-        //END DRAFT MAIL
-
-        //MAIL OUTBOX
-        int numOutbox = OutboxMailList.size();
-        editor.putInt(id+"NUM_OUTBOX", numOutbox);
-        for (int i = 0; i < numOutbox; i++){
-            editor.putString(id+"OUTBOX" + i, OutboxMailList.get(i).toJsonString());
-        }
-        //END MAIL OUTBOX
-
-
-
-        //SAVING NOTICE FOR STUDENT ROLE
-        if(role.equals("2")){
-
-            //NOTICE T2
-            int numNoticeT2 = app.getSize_NoticeListT2();
-            numNoticeT2 = numNoticeT2>5?5:numNoticeT2;
-            editor.putInt(id+"NUM_NOTICE_T2", numNoticeT2);
-            for (int i = 0; i < numNoticeT2; i++){
-                editor.putString(id+"NOTICE_T2" + i, app.getData_NoticeListT2().get(i).toJsonString());
-                System.out.println("saving notic t2--" + app.getData_NoticeListT2().get(i).toJsonString());
-            }
-
-            //NOTICE T3
-            int numNoticeT3 = app.getSize_NoticeListT3();
-            numNoticeT3 = numNoticeT3>5?5:numNoticeT3;
-            editor.putInt(id+"NUM_NOTICE_T3", numNoticeT3);
-            for (int i = 0; i < numNoticeT3; i++){
-                editor.putString(id+"NOTICE_T3" + i, app.getData_NoticeListT3().get(i).toJsonString());
-            }
-
-            //NOTICE T4
-            int numNoticeT4 = app.getSize_NoticeListT4();
-            numNoticeT4 = numNoticeT2>5?5:numNoticeT4;
-            editor.putInt(id+"NUM_NOTICE_T4", numNoticeT4);
-            for (int i = 0; i < numNoticeT4; i++){
-                editor.putString(id+"NOTICE_T4" + i, app.getData_NoticeListT4().get(i).toJsonString());
-            }
-
-            //NOTICE T5
-            int numNoticeT5 = app.getSize_NoticeListT5();
-            numNoticeT5 = numNoticeT5>5?5:numNoticeT5;
-            editor.putInt(id+"NUM_NOTICE_T5", numNoticeT5);
-            for (int i = 0; i < numNoticeT5; i++){
-                editor.putString(id+"NOTICE_T5" + i, app.getData_NoticeListT5().get(i).toJsonString());
-            }
-
-            //NOTICE T6
-            int numNoticeT6 = app.getSize_NoticeListT6();
-            numNoticeT6 = numNoticeT6>5?5:numNoticeT6;
-            editor.putInt(id+"NUM_NOTICE_T6", numNoticeT6);
-            for (int i = 0; i < numNoticeT6; i++){
-                editor.putString(id+"NOTICE_T6" + i, app.getData_NoticeListT6().get(i).toJsonString());
-            }
-
-            //NOTICE T7
-            int numNoticeT7 = app.getSize_NoticeListT7();
-            numNoticeT7 = numNoticeT2>5?5:numNoticeT7;
-            editor.putInt(id+"NUM_NOTICE_T7", numNoticeT7);
-            for (int i = 0; i < numNoticeT7; i++){
-                editor.putString(id+"NOTICE_T7" + i, app.getData_NoticeListT7().get(i).toJsonString());
-            }
-        }
-
 
 
         editor.commit();

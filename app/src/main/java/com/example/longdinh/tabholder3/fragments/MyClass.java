@@ -131,6 +131,7 @@ public class MyClass extends Fragment {
                 JSONArray jsonArray = new JSONArray(result);
 
                 System.out.println("create list class");
+                listClasses.clear();
                 ItemSpinner itemSpinner =  new ItemSpinner();
                 itemSpinner.setMahs("no id");
                 itemSpinner.setTen("Choose a class");

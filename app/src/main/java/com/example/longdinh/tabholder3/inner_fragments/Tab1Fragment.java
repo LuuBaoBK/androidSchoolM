@@ -106,7 +106,6 @@ public class Tab1Fragment extends Fragment {
                             if (selected.valueAt(i)) {
                                 EmailItem selecteditem = (EmailItem) adapter.getItem(selected.keyAt(i));
 
-
                                 //check if co mang thi gui len con neu khong co thi add vao trong list
                                 if (isOnline()) {
                                     listDelete += selecteditem.getId() + ",";

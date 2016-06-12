@@ -48,9 +48,6 @@ public class MyProfile extends Fragment{
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
-
-
         System.out.println("1 chay profile-----");
         role = app.getRole();
         if(role.equals("0")){
@@ -79,7 +76,7 @@ public class MyProfile extends Fragment{
     public void loading(){
         System.out.println("loading profile------");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        profile = sp.getString("PROFILE", null);
+        profile = sp.getString(app.getId()+"PROFILE", null);
         app.setProfile(profile);
         System.out.println("profile---" + profile);
     }

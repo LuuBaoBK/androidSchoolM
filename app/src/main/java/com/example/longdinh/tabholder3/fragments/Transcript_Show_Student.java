@@ -126,7 +126,7 @@ public class Transcript_Show_Student extends Fragment {
 
     public void loading(){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        bangdiem = sp.getString("BANGDIEM", null);
+        bangdiem = sp.getString(app.getId()+"BANGDIEM", null);
         if(bangdiem != null)
             app.setBangdiem(bangdiem);
     }
